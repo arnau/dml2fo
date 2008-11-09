@@ -77,7 +77,7 @@
 				if ( contains( @width, '%' ) ) then 
 					@width 
 				else 
-					( @width, 'px' )"/>
+					concat( @width, 'px' )"/>
 		</xsl:if>
 		<xsl:call-template name="common.attributes"/>
 		<xsl:apply-templates select="dml:group[@role='head']"/>

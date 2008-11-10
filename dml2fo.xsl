@@ -390,7 +390,7 @@
 	<xsl:template match="dml:figure/dml:title">
 		<xsl:variable name="numbering.figure">
 			<xsl:number count="dml:section" level="multiple" format=" 1"/>
-			<xsl:number from="dml:section" count="dml:figure" level="any" format="-1 "/>
+			<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
 		</xsl:variable>
 		
 		<fo:block xsl:use-attribute-sets="figure.title">

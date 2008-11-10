@@ -101,7 +101,7 @@
 	<xsl:template match="dml:table/dml:title">
 		<xsl:variable name="numbering.table">
 			<xsl:number count="dml:section" level="multiple" format=" 1"/>
-			<xsl:number from="dml:section" count="dml:table" level="any" format="-1 "/>
+			<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
 		</xsl:variable>
 		<xsl:variable name="colspan" select="count( ../dml:group[@role='head']/dml:group/dml:title )"/>
 		<fo:table-row>

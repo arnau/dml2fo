@@ -32,7 +32,11 @@
 		<xsl:attribute name="padding-bottom">0.8em</xsl:attribute>
 		<xsl:attribute name="text-align">center</xsl:attribute>
 	</xsl:attribute-set>
-	
+	<xsl:attribute-set name="table.label">
+		<xsl:attribute name="space-before">0.5em</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+
 	<xsl:attribute-set name="inside-table">
 		<xsl:attribute name="start-indent">0pt</xsl:attribute>
 		<xsl:attribute name="end-indent">0pt</xsl:attribute>
@@ -95,10 +99,17 @@
 	</xsl:template>
 
 	<xsl:template match="dml:table/dml:title">
+		<xsl:variable name="numbering.table">
+			<xsl:number count="dml:section" level="multiple" format=" 1"/>
+			<xsl:number from="dml:section" count="dml:table" level="any" format="-1 "/>
+		</xsl:variable>
 		<xsl:variable name="colspan" select="count( ../dml:group[@role='head']/dml:group/dml:title )"/>
 		<fo:table-row>
 			<fo:table-cell number-columns-spanned="{$colspan}">
 				<fo:block xsl:use-attribute-sets="table.title">
+					<fo:inline xsl:use-attribute-sets="table.label">
+						<xsl:value-of select="concat( $literals/literals/table.label, $numbering.table, ': ')"/>
+					</fo:inline>
 					<xsl:apply-templates/>
 				</fo:block>
 			</fo:table-cell>

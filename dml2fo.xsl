@@ -30,9 +30,7 @@
 	<xsl:output method="xml" version="1.0" encoding="utf-8" indent="no"/>
 	
 	<dml:note>Parameters</dml:note>
-
-	<xsl:param name="page.preposition">de</xsl:param>
-	
+	<xsl:variable name="literals" select="document( concat( 'literals/', /dml:dml/@xml:lang, '.xml' ) )"/>
 
 	<!-- page size -->
 	<xsl:param name="page-width">auto</xsl:param>
@@ -172,6 +170,19 @@
 		<xsl:attribute name="space-after">0.5em</xsl:attribute>
 	</xsl:attribute-set>
 
+	<xsl:attribute-set name="figure">
+		<xsl:attribute name="space-before">1em</xsl:attribute>
+		<xsl:attribute name="space-after">1em</xsl:attribute>
+		<xsl:attribute name="text-align">center</xsl:attribute>
+		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="figure.title"/>
+	<xsl:attribute-set name="figure.label">
+		<xsl:attribute name="space-before">0.5em</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+
 
 
 
@@ -253,7 +264,7 @@
 						<xsl:value-of select="$title"/>
 						<fo:leader/>
 						<fo:page-number/>
-						<xsl:value-of select="(' ',$page.preposition, ' ')"/>
+						<xsl:value-of select="( ' ', $literals/literals/pagenumber.preposition, ' ' )"/>
 						<fo:page-number-citation ref-id="last-page"/>
 					</fo:block>
 				</fo:block>
@@ -346,6 +357,25 @@
 	<xsl:template match="dml:p">
 		<fo:block xsl:use-attribute-sets="p">
 			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:block>
+	</xsl:template>
+
+	<xsl:template match="dml:figure">
+		<fo:block xsl:use-attribute-sets="figure">
+			<xsl:call-template name="common.attributes"/>
+			<xsl:apply-templates select="*[not( self::dml:title )]"/>
+			<xsl:apply-templates select="dml:title"/>
+		</fo:block>
+	</xsl:template>
+	<xsl:template match="dml:figure/dml:title">
+		<xsl:variable name="numbering.figure" select="''"/>
+		
+		<fo:block xsl:use-attribute-sets="figure.title">
+			<xsl:call-template name="common.attributes"/>
+			<fo:inline xsl:use-attribute-sets="figure.label">
+				<xsl:value-of select="concat( $literals/literals/figure.label, $numbering.figure, ': ')"/>
+			</fo:inline>
+			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
 

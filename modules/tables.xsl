@@ -107,9 +107,11 @@
 		<fo:table-row>
 			<fo:table-cell number-columns-spanned="{$colspan}">
 				<fo:block xsl:use-attribute-sets="table.title">
-					<fo:inline xsl:use-attribute-sets="table.label">
-						<xsl:value-of select="concat( $literals/literals/table.label, $numbering.table, ': ')"/>
-					</fo:inline>
+					<xsl:if test="$numbering.headers eq 'true'">
+						<fo:inline xsl:use-attribute-sets="table.label">
+							<xsl:value-of select="concat( $literals/literals/table.label, $numbering.table, ': ')"/>
+						</fo:inline>
+					</xsl:if>
 					<xsl:apply-templates/>
 				</fo:block>
 			</fo:table-cell>

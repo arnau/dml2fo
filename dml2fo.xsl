@@ -47,16 +47,21 @@
 	<xsl:param name="page-number-print-in-footer">true</xsl:param>
 
 	<!-- multi column -->
-	<xsl:param name="column-count">1</xsl:param>
-	<xsl:param name="column-gap">12pt</xsl:param>
+	<xsl:param name="column.count">1</xsl:param>
+	<xsl:param name="column.gap">12pt</xsl:param>
 
-	<!-- writing-mode: lr-tb | rl-tb | tb-rl -->
+	<!-- $writing-mode: lr-tb | rl-tb | tb-rl -->
 	<xsl:param name="writing-mode">lr-tb</xsl:param>
-	<!-- text-align: justify | start -->
+	<!-- $text-align: justify | start -->
 	<xsl:param name="text-align">start</xsl:param>
-	<!-- hyphenate: true | false -->
+	<!-- $hyphenate: true | false -->
 	<xsl:param name="hyphenate">false</xsl:param>
 
+	<!-- $date.issued: true | false -->
+	<xsl:param name="date.issued">true</xsl:param>
+
+	<!-- $numbering.headers: true | false -->
+	<xsl:param name="numbering.headers">true</xsl:param>
 
 
 	<dml:note>Attribute Sets</dml:note>
@@ -202,8 +207,8 @@
 					margin-right="{$page-margin-right}"
 					margin-bottom="{$page-margin-bottom}"
 					margin-left="{$page-margin-left}"
-					column-count="{$column-count}"
-					column-gap="{$column-gap}"/>
+					column-count="{$column.count}"
+					column-gap="{$column.gap}"/>
 				
 				<xsl:choose>
 					<xsl:when test="$writing-mode = 'tb-rl'">
@@ -290,7 +295,9 @@
 		<fo:block xsl:use-attribute-sets="date.issued">
 			<xsl:variable name="document.id" select="/dml:dml/@xml:id"/>
 			<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ''"/>
-			<xsl:value-of select="//*[@about=$document.metadata]//*[@property='dc:issued']"/>
+			<xsl:if test="//*[@about=$document.metadata]//*[@property='dc:issued'] and ( $date.issued eq 'true' )">
+				<xsl:value-of select="//*[@about=$document.metadata]//*[@property='dc:issued']"/>
+			</xsl:if>
 		</fo:block>
 	</xsl:template>
 
@@ -325,53 +332,46 @@
 	</xsl:template>
 	<xsl:template match="dml:section/dml:title">
 		<xsl:variable name="section.counter" select="count( ancestor::dml:section )"/>
-		<xsl:variable name="section.numbering">
-			<xsl:number count="dml:section" level="multiple" format="1. "/>
-		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$section.counter = 1">
 				<fo:block xsl:use-attribute-sets="h1">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:value-of select="$section.numbering"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
 			<xsl:when test="$section.counter = 2">
 				<fo:block xsl:use-attribute-sets="h2">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:value-of select="$section.numbering"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
 			<xsl:when test="$section.counter = 3">
 				<fo:block xsl:use-attribute-sets="h3">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:value-of select="$section.numbering"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
 			<xsl:when test="$section.counter = 4">
 				<fo:block xsl:use-attribute-sets="h4">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:value-of select="$section.numbering"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
 			<xsl:when test="$section.counter = 5">
 				<fo:block xsl:use-attribute-sets="h5">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:value-of select="$section.numbering"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:block xsl:use-attribute-sets="h6">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:value-of select="$section.numbering"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="header.children">
+		<xsl:call-template name="common.attributes"/>
+		<xsl:if test="$numbering.headers eq 'true'">
+			<xsl:number count="dml:section" level="multiple" format="1. "/>
+		</xsl:if>
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="dml:p">
@@ -395,9 +395,11 @@
 		
 		<fo:block xsl:use-attribute-sets="figure.title">
 			<xsl:call-template name="common.attributes"/>
-			<fo:inline xsl:use-attribute-sets="figure.label">
-				<xsl:value-of select="concat( $literals/literals/figure.label, $numbering.figure, ': ')"/>
-			</fo:inline>
+			<xsl:if test="$numbering.headers eq 'true'">
+				<fo:inline xsl:use-attribute-sets="figure.label">
+					<xsl:value-of select="concat( $literals/literals/figure.label, $numbering.figure, ': ')"/>
+				</fo:inline>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>

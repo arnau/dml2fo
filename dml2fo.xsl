@@ -324,34 +324,54 @@
 		</fo:block>
 	</xsl:template>
 	<xsl:template match="dml:section/dml:title">
-		<fo:block xsl:use-attribute-sets="h1">
-			<xsl:call-template name="common.attributes.and.children"/>
-		</fo:block>
-	</xsl:template>
-	<xsl:template match="dml:section/dml:section/dml:title">
-		<fo:block xsl:use-attribute-sets="h2">
-			<xsl:call-template name="common.attributes.and.children"/>
-		</fo:block>
-	</xsl:template>
-	<xsl:template match="dml:section/dml:section/dml:section/dml:title">
-		<fo:block xsl:use-attribute-sets="h3">
-			<xsl:call-template name="common.attributes.and.children"/>
-		</fo:block>
-	</xsl:template>
-	<xsl:template match="dml:section/dml:section/dml:section/dml:section/dml:title">
-		<fo:block xsl:use-attribute-sets="h4">
-			<xsl:call-template name="common.attributes.and.children"/>
-		</fo:block>
-	</xsl:template>
-	<xsl:template match="dml:section/dml:section/dml:section/dml:section/dml:section/dml:title">
-		<fo:block xsl:use-attribute-sets="h5">
-			<xsl:call-template name="common.attributes.and.children"/>
-		</fo:block>
-	</xsl:template>
-	<xsl:template match="dml:section/dml:section/dml:section/dml:section/dml:section/dml:section/dml:title">
-		<fo:block xsl:use-attribute-sets="h6">
-			<xsl:call-template name="common.attributes.and.children"/>
-		</fo:block>
+		<xsl:variable name="section.counter" select="count( ancestor::dml:section )"/>
+		<xsl:variable name="section.numbering">
+			<xsl:number count="dml:section" level="multiple" format="1. "/>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$section.counter = 1">
+				<fo:block xsl:use-attribute-sets="h1">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:value-of select="$section.numbering"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:when test="$section.counter = 2">
+				<fo:block xsl:use-attribute-sets="h2">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:value-of select="$section.numbering"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:when test="$section.counter = 3">
+				<fo:block xsl:use-attribute-sets="h3">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:value-of select="$section.numbering"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:when test="$section.counter = 4">
+				<fo:block xsl:use-attribute-sets="h4">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:value-of select="$section.numbering"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:when test="$section.counter = 5">
+				<fo:block xsl:use-attribute-sets="h5">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:value-of select="$section.numbering"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block xsl:use-attribute-sets="h6">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:value-of select="$section.numbering"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="dml:p">
@@ -368,7 +388,10 @@
 		</fo:block>
 	</xsl:template>
 	<xsl:template match="dml:figure/dml:title">
-		<xsl:variable name="numbering.figure" select="''"/>
+		<xsl:variable name="numbering.figure">
+			<xsl:number count="dml:section" level="multiple" format=" 1"/>
+			<xsl:number from="dml:section" count="dml:figure" level="any" format="-1 "/>
+		</xsl:variable>
 		
 		<fo:block xsl:use-attribute-sets="figure.title">
 			<xsl:call-template name="common.attributes"/>

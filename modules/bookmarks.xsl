@@ -21,7 +21,7 @@
 	</dml:note>
 
 	<!-- $numbering.bookmarks: true | false -->
-	<xsl:param name="bookmark.numbers">true</xsl:param>
+	<xsl:param name="bookmark.numbers">false</xsl:param>
 
 	<xsl:template match="dml:section" mode="bookmark">
 		<fo:bookmark>

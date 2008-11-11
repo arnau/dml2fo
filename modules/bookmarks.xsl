@@ -37,7 +37,7 @@
 				</xsl:if> -->
 				<xsl:value-of select="dml:title"/>
 			</fo:bookmark-title>
-			<xsl:apply-templates mode="bookmark"/>
+			<xsl:apply-templates select="dml:section" mode="bookmark"/>
 		</fo:bookmark>
 	</xsl:template>
 

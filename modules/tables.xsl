@@ -139,10 +139,20 @@
 		</fo:table-row>
 	</xsl:template>
 
+
 	<xsl:template match="dml:group[@role='head']/dml:group/dml:title[1]" priority="2.1">
-		<fo:table-cell xsl:use-attribute-sets="table.head.title.first">
-			<xsl:call-template name="table.cell"/>
-		</fo:table-cell>
+		<xsl:choose>
+			<xsl:when test="ancestor::dml:group[@role='head']/following-sibling::dml:group/dml:group/*[1][self::dml:cell]">
+				<fo:table-cell xsl:use-attribute-sets="table.head.title">
+					<xsl:call-template name="table.cell"/>
+				</fo:table-cell>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:table-cell xsl:use-attribute-sets="table.head.title.first">
+					<xsl:call-template name="table.cell"/>
+				</fo:table-cell>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="dml:group[@role='head']/dml:group/dml:title" priority="2">
 		<fo:table-cell xsl:use-attribute-sets="table.head.title">

@@ -5,8 +5,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-	exclude-result-prefixes="xs dml dc rdf">
+	exclude-result-prefixes="xs dml dc">
 	
 	<dml:note>
 		<dml:list>
@@ -22,33 +21,31 @@
 	</dml:note>
 
 
+	<xsl:param name="ul-label-1">&#x2022;</xsl:param>
+	<xsl:attribute-set name="ul-label-1">
+		<xsl:attribute name="font">1em serif</xsl:attribute>
+	</xsl:attribute-set>
 
+	<xsl:param name="ul-label-2">o</xsl:param>
+	<xsl:attribute-set name="ul-label-2">
+		<xsl:attribute name="font">0.67em monospace</xsl:attribute>
+		<xsl:attribute name="baseline-shift">0.25em</xsl:attribute>
+	</xsl:attribute-set>
 
-  <xsl:param name="ul-label-1">&#x2022;</xsl:param>
-  <xsl:attribute-set name="ul-label-1">
-    <xsl:attribute name="font">1em serif</xsl:attribute>
-  </xsl:attribute-set>
+	<xsl:param name="ul-label-3">-</xsl:param>
+	<xsl:attribute-set name="ul-label-3">
+		<xsl:attribute name="font">bold 0.9em sans-serif</xsl:attribute>
+		<xsl:attribute name="baseline-shift">0.05em</xsl:attribute>
+	</xsl:attribute-set>
 
-  <xsl:param name="ul-label-2">o</xsl:param>
-  <xsl:attribute-set name="ul-label-2">
-    <xsl:attribute name="font">0.67em monospace</xsl:attribute>
-    <xsl:attribute name="baseline-shift">0.25em</xsl:attribute>
-  </xsl:attribute-set>
+	<xsl:param name="ol-label-1">1.</xsl:param>
+	<xsl:attribute-set name="ol-label-1"/>
 
-  <xsl:param name="ul-label-3">-</xsl:param>
-  <xsl:attribute-set name="ul-label-3">
-    <xsl:attribute name="font">bold 0.9em sans-serif</xsl:attribute>
-    <xsl:attribute name="baseline-shift">0.05em</xsl:attribute>
-  </xsl:attribute-set>
+	<xsl:param name="ol-label-2">a.</xsl:param>
+	<xsl:attribute-set name="ol-label-2"/>
 
-  <xsl:param name="ol-label-1">1.</xsl:param>
-  <xsl:attribute-set name="ol-label-1"/>
-
-  <xsl:param name="ol-label-2">a.</xsl:param>
-  <xsl:attribute-set name="ol-label-2"/>
-
-  <xsl:param name="ol-label-3">i.</xsl:param>
-  <xsl:attribute-set name="ol-label-3"/>
+	<xsl:param name="ol-label-3">i.</xsl:param>
+	<xsl:attribute-set name="ol-label-3"/>
 
 	<xsl:attribute-set name="list">
 		<xsl:attribute name="space-before">1em</xsl:attribute>

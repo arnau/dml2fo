@@ -5,8 +5,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-	exclude-result-prefixes="xs dml dc rdf">
+	exclude-result-prefixes="xs dml dc">
 	
 	<dml:note>
 		<dml:list>

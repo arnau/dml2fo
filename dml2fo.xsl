@@ -5,13 +5,12 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-	xmlns:fnc="http://example.com/ns/functions/" 
-	exclude-result-prefixes="xs dml dc rdf fnc">
+	exclude-result-prefixes="xs dml dc">
 	
 	<xsl:import href="modules/inline.xsl"/>
 	<xsl:import href="modules/lists.xsl"/>
 	<xsl:import href="modules/tables.xsl"/>
+	<xsl:import href="modules/bookmarks.xsl"/>
 	
 	<dml:note>
 		<dml:list>
@@ -60,8 +59,11 @@
 	<!-- $date.issued: true | false -->
 	<xsl:param name="date.issued">true</xsl:param>
 
-	<!-- $numbering.headers: true | false -->
-	<xsl:param name="numbering.headers">true</xsl:param>
+	<!-- $header.numbers: true | false -->
+	<xsl:param name="header.numbers">true</xsl:param>
+
+	<!-- $bookmarks: true | false -->
+	<xsl:param name="bookmarks">true</xsl:param>
 
 
 	<dml:note>Attribute Sets</dml:note>
@@ -195,6 +197,11 @@
 		<fo:root xsl:use-attribute-sets="root">
 			<xsl:call-template name="common.attributes"/>
 			<xsl:call-template name="layout.master.set"/>
+			<xsl:if test="$bookmarks eq 'true'">
+				<fo:bookmark-tree>
+					<xsl:apply-templates select="/dml:dml/dml:section" mode="bookmark"/>
+				</fo:bookmark-tree>
+			</xsl:if>
 			<xsl:call-template name="body"/>
 		</fo:root>
 	</xsl:template>
@@ -316,14 +323,32 @@
 		<xsl:if test="@xml:lang">
 			<xsl:attribute name="xml:lang" select="@xml:lang"/>
 		</xsl:if>
-		<xsl:if test="@xml:id">
+		<!-- <xsl:if test="@xml:id">
 			<xsl:attribute name="id" select="@xml:id"/>
-		</xsl:if>
+		</xsl:if> -->
+		<xsl:call-template name="set.id"/>
 		<xsl:if test="@align">
 			<!-- TODO: must be ignored? -->
 			<xsl:attribute name="align" select="@align"/>
 		</xsl:if>
 	</xsl:template>
+
+	<xsl:template name="get.id">
+		<xsl:choose>
+			<xsl:when test="@xml:id">
+				<xsl:value-of select="@xml:id"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="generate-id()"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="set.id">
+		<xsl:attribute name="id">
+			<xsl:call-template name="get.id"/>
+		</xsl:attribute>
+	</xsl:template>
+
 
 	<xsl:template match="dml:section">
 		<fo:block xsl:use-attribute-sets="section">
@@ -368,7 +393,7 @@
 
 	<xsl:template name="header.children">
 		<xsl:call-template name="common.attributes"/>
-		<xsl:if test="$numbering.headers eq 'true'">
+		<xsl:if test="$header.numbers eq 'true'">
 			<xsl:number count="dml:section" level="multiple" format="1. "/>
 		</xsl:if>
 		<xsl:apply-templates/>
@@ -395,7 +420,7 @@
 		
 		<fo:block xsl:use-attribute-sets="figure.title">
 			<xsl:call-template name="common.attributes"/>
-			<xsl:if test="$numbering.headers eq 'true'">
+			<xsl:if test="$header.numbers eq 'true'">
 				<fo:inline xsl:use-attribute-sets="figure.label">
 					<xsl:value-of select="concat( $literals/literals/figure.label, $numbering.figure, ': ')"/>
 				</fo:inline>

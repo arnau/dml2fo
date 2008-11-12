@@ -6,5 +6,28 @@
 	<pagenumber.preposition>of</pagenumber.preposition>
 	<figure.label>Figure</figure.label>
 	<table.label>Table</table.label>
-
+	<days>
+		<item>Monday</item>
+		<item>Tuesday</item>
+		<item>Wendsday</item>
+		<item>Thursday</item>
+		<item>Friday</item>
+		<item>Saturday</item>
+		<item>Sunday</item>
+	</days>
+	<month>
+		<item>January</item>
+		<item>February</item>
+		<item>March</item>
+		<item>April</item>
+		<item>May</item>
+		<item>June</item>
+		<item>July</item>
+		<item>August</item>
+		<item>September</item>
+		<item>October</item>
+		<item>November</item>
+		<item>Desember</item>
+	</month>
+	<date.preposition>of</date.preposition>
 </literals>

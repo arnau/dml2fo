@@ -299,11 +299,23 @@
 	</xsl:template>
 	
 	<xsl:template name="date.issued">
+		<xsl:variable name="document.id" select="/dml:dml/@xml:id"/>
+		<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ''"/>
+
+		<xsl:variable name="isodate" select="//*[@about=$document.metadata]//*[@property='dc:issued']"/>
+		<xsl:variable name="day" select="number( format-date( $isodate, '[F1]' ) )"/>
+		<xsl:variable name="month" select="number( format-date( $isodate, '[M1]' ) )"/>
+
 		<fo:block xsl:use-attribute-sets="date.issued">
-			<xsl:variable name="document.id" select="/dml:dml/@xml:id"/>
-			<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ''"/>
-			<xsl:if test="//*[@about=$document.metadata]//*[@property='dc:issued'] and ( $date.issued eq 'true' )">
-				<xsl:value-of select="//*[@about=$document.metadata]//*[@property='dc:issued']"/>
+			<xsl:if test="$isodate and ( $date.issued eq 'true' )">
+				<xsl:choose>
+					<xsl:when test="lang('ca') or lang('es')">
+						<xsl:value-of select="( $literals/literals/month/item[$month], $literals/literals/date.preposition, year-from-date( $isodate ) )"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="( $literals/literals/month/item[$month], year-from-date( $isodate ) )"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:if>
 		</fo:block>
 	</xsl:template>

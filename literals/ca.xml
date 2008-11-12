@@ -6,5 +6,28 @@
 	<pagenumber.preposition>de</pagenumber.preposition>
 	<figure.label>Figura</figure.label>
 	<table.label>Taula</table.label>
-
+	<days>
+		<item>Dilluns</item>
+		<item>Dimarts</item>
+		<item>Dimecres</item>
+		<item>Dijous</item>
+		<item>Divendres</item>
+		<item>Dissabte</item>
+		<item>Diumenge</item>
+	</days>
+	<month>
+		<item>Gener</item>
+		<item>Febrer</item>
+		<item>Març</item>
+		<item>Abril</item>
+		<item>Maig</item>
+		<item>Juny</item>
+		<item>Juliol</item>
+		<item>Agost</item>
+		<item>Setembre</item>
+		<item>Octubre</item>
+		<item>Novembre</item>
+		<item>Desembre</item>
+	</month>
+	<date.preposition>del</date.preposition>
 </literals>

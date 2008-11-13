@@ -34,7 +34,7 @@
 	<!-- page size -->
 	<xsl:param name="page-width">auto</xsl:param>
 	<xsl:param name="page-height">auto</xsl:param>
-	<xsl:param name="page-margin-top">1in</xsl:param>
+	<xsl:param name="page-margin-top">1.1in</xsl:param>
 	<xsl:param name="page-margin-bottom">1in</xsl:param>
 	<xsl:param name="page-margin-left">1in</xsl:param>
 	<xsl:param name="page-margin-right">1in</xsl:param>
@@ -407,6 +407,9 @@
 		<xsl:call-template name="common.attributes"/>
 		<xsl:if test="$header.numbers eq 'true'">
 			<xsl:number count="dml:section" level="multiple" format="1. "/>
+		</xsl:if>
+		<xsl:if test="parent::dml:section[@role='appendix']">
+			<xsl:value-of select="$literals/literals/appendix.prefix"/>
 		</xsl:if>
 		<xsl:apply-templates/>
 	</xsl:template>

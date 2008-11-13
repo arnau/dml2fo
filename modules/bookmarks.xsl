@@ -32,9 +32,9 @@
 				<xsl:if test="( $header.numbers eq 'true' ) and ( $bookmark.numbers eq 'true' )">
 					<xsl:number count="dml:section" level="multiple" format="1. "/>
 				</xsl:if>
-				<!-- <xsl:if test="parent::html:*[@class='appendix'] and self::html:h1">
-					<xsl:value-of select="$appendix.prefix"/>
-				</xsl:if> -->
+				<xsl:if test="@role='appendix'">
+					<xsl:value-of select="$literals/literals/appendix.prefix"/>
+				</xsl:if>
 				<xsl:value-of select="dml:title"/>
 			</fo:bookmark-title>
 			<xsl:apply-templates select="dml:section" mode="bookmark"/>

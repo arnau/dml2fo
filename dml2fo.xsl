@@ -65,6 +65,11 @@
 	<!-- $bookmarks: true | false -->
 	<xsl:param name="bookmarks">true</xsl:param>
 
+	<!-- $appendix.format.number: true | false -->
+	<xsl:param name="appendix.format.number">true</xsl:param>
+	<!-- $appendix.format.number.type: 1. | I. | A. -->
+	<xsl:param name="appendix.format.number.type">A. </xsl:param>
+
 
 	<dml:note>Attribute Sets</dml:note>
 
@@ -405,9 +410,17 @@
 
 	<xsl:template name="header.children">
 		<xsl:call-template name="common.attributes"/>
-		<xsl:if test="$header.numbers eq 'true'">
+		<xsl:choose>
+			<xsl:when test="parent::dml:section[@role='appendix'] and ( $appendix.format.number eq 'true' )">
+				<xsl:number count="dml:section[@role='appendix']" level="multiple" format="{$appendix.format.number.type}"/>
+			</xsl:when>
+			<xsl:when test="$header.numbers eq 'true'">
+				<xsl:number count="dml:section" level="multiple" format="1. "/>
+			</xsl:when>
+		</xsl:choose>
+		<!-- <xsl:if test="$header.numbers eq 'true'">
 			<xsl:number count="dml:section" level="multiple" format="1. "/>
-		</xsl:if>
+		</xsl:if> -->
 		<xsl:if test="parent::dml:section[@role='appendix']">
 			<xsl:value-of select="$literals/literals/appendix.prefix"/>
 		</xsl:if>

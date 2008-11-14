@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<literals xml:lang="en"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-
+<literals xml:lang="en">
 	<pagenumber.preposition>of</pagenumber.preposition>
 	<figure.label>Figure</figure.label>
 	<table.label>Table</table.label>

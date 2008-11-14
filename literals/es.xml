@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<literals xml:lang="es">
+	<pagenumber.preposition>de</pagenumber.preposition>
+	<figure.label>Figura</figure.label>
+	<table.label>Tabla</table.label>
+	<days>
+		<item>Lunes</item>
+		<item>Martes</item>
+		<item>Miercoles</item>
+		<item>Jueves</item>
+		<item>Viernes</item>
+		<item>Sábado</item>
+		<item>Domingo</item>
+	</days>
+	<month>
+		<item>Enero</item>
+		<item>Febrero</item>
+		<item>Marzo</item>
+		<item>Abril</item>
+		<item>Maio</item>
+		<item>Junio</item>
+		<item>Julio</item>
+		<item>Agosto</item>
+		<item>Septiembre</item>
+		<item>Octubre</item>
+		<item>Noviembre</item>
+		<item>Diciembre</item>
+	</month>
+	<date.preposition>del</date.preposition>
+	<appendix.prefix>Apéndice — </appendix.prefix>
+	<toc.title>Tabla de contenidos</toc.title>
+</literals>

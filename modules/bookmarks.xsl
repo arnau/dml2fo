@@ -29,8 +29,8 @@
 				<xsl:call-template name="get.id"/>
 			</xsl:attribute>
 			<fo:bookmark-title>
-				<xsl:if test="( $header.numbers eq 'true' ) and ( $bookmark.numbers eq 'true' )">
-					<xsl:number count="dml:section" level="multiple" format="1. "/>
+				<xsl:if test="$bookmark.numbers eq 'true'">
+					<xsl:call-template name="header.number"/>
 				</xsl:if>
 				<xsl:if test="@role='appendix'">
 					<xsl:value-of select="$literals/literals/appendix.prefix"/>

@@ -11,6 +11,7 @@
 	<xsl:import href="modules/lists.xsl"/>
 	<xsl:import href="modules/tables.xsl"/>
 	<xsl:import href="modules/bookmarks.xsl"/>
+	<xsl:import href="modules/toc.xsl"/>
 	
 	<dml:note>
 		<dml:list>
@@ -61,14 +62,21 @@
 
 	<!-- $header.numbers: true | false -->
 	<xsl:param name="header.numbers">true</xsl:param>
-
-	<!-- $bookmarks: true | false -->
-	<xsl:param name="bookmarks">true</xsl:param>
-
 	<!-- $appendix.format.number: true | false -->
 	<xsl:param name="appendix.format.number">true</xsl:param>
 	<!-- $appendix.format.number.type: 1. | I. | A. -->
 	<xsl:param name="appendix.format.number.type">A. </xsl:param>
+
+	<!-- $bookmarks: true | false -->
+	<xsl:param name="bookmarks">true</xsl:param>
+	<!-- $toc: true | false -->
+	<xsl:param name="toc">true</xsl:param>
+	<!-- $toc.deep: integer-->
+	<xsl:param name="toc.deep">3</xsl:param>
+	<!-- $toc.skipped.sections: integer -->
+	<xsl:param name="toc.skipped.sections">1</xsl:param>
+	<!-- $toc.position: positiveInteger | -1 (puts ToC after all content) -->
+	<xsl:param name="toc.position">1</xsl:param>
 
 
 	<dml:note>Attribute Sets</dml:note>
@@ -293,10 +301,19 @@
 				<xsl:call-template name="date.issued"/>
 				<fo:block xsl:use-attribute-sets="body">
 					<xsl:call-template name="common.attributes"/>
+					<xsl:if test="( $toc eq 'true' ) and ( xs:integer( $toc.position ) eq 0 )">
+						<xsl:call-template name="toc"/>
+					</xsl:if>
+
 					<xsl:apply-templates select="dml:section"/>
 
 					<!-- calls the endnotes template -->
 					<!-- <xsl:call-template name="make.endnotes.list"/> -->
+
+					<xsl:if test="( $toc eq 'true' ) and ( xs:integer( $toc.position ) eq -1 )">
+						<xsl:call-template name="toc"/>
+					</xsl:if>
+
 					<fo:block id="last-page"/>
 				</fo:block>
 			</fo:flow>
@@ -335,7 +352,7 @@
 	<xsl:template name="common.attributes">
 		<xsl:attribute name="role">
 			<!-- TODO: it makes sense or need to be something like html:h1? -->
-			<xsl:value-of select="concat('dml:', local-name())"/>
+			<xsl:value-of select="concat( 'dml:', local-name() )"/>
 		</xsl:attribute>
 		<xsl:if test="@xml:lang">
 			<xsl:attribute name="xml:lang" select="@xml:lang"/>
@@ -371,6 +388,9 @@
 		<fo:block xsl:use-attribute-sets="section">
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:block>
+		<xsl:if test="( $toc eq 'true' ) and parent::dml:dml and ( position() eq xs:integer( $toc.position ) )">
+			<xsl:call-template name="toc"/>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template match="dml:section/dml:title">
 		<xsl:variable name="section.counter" select="count( ancestor::dml:section )"/>
@@ -410,21 +430,24 @@
 
 	<xsl:template name="header.children">
 		<xsl:call-template name="common.attributes"/>
-		<xsl:choose>
-			<xsl:when test="parent::dml:section[@role='appendix'] and ( $appendix.format.number eq 'true' )">
-				<xsl:number count="dml:section[@role='appendix']" level="multiple" format="{$appendix.format.number.type}"/>
-			</xsl:when>
-			<xsl:when test="$header.numbers eq 'true'">
-				<xsl:number count="dml:section" level="multiple" format="1. "/>
-			</xsl:when>
-		</xsl:choose>
-		<!-- <xsl:if test="$header.numbers eq 'true'">
-			<xsl:number count="dml:section" level="multiple" format="1. "/>
-		</xsl:if> -->
+		<xsl:call-template name="header.number"/>
 		<xsl:if test="parent::dml:section[@role='appendix']">
 			<xsl:value-of select="$literals/literals/appendix.prefix"/>
 		</xsl:if>
 		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template name="header.number">
+		<xsl:if test="$header.numbers eq 'true'">
+			<xsl:choose>
+				<xsl:when test="@role='appendix' and ( $appendix.format.number eq 'true' )">
+					<xsl:number count="dml:section[@role='appendix']" level="multiple" format="{$appendix.format.number.type}"/>
+				</xsl:when>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="dml:p">

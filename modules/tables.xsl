@@ -24,7 +24,7 @@
 		<xsl:attribute name="border-collapse">collapse</xsl:attribute>
 		<xsl:attribute name="table-layout">fixed</xsl:attribute>
 		<xsl:attribute name="width">100%</xsl:attribute>
-		<xsl:attribute name="space-after">1em</xsl:attribute>
+		<xsl:attribute name="space-after">1.5em</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="table.title">
 		<xsl:attribute name="margin-top">1em</xsl:attribute>

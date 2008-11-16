@@ -342,7 +342,9 @@
 		</fo:block>
 	</xsl:template>
 
-	<xsl:template name="header.content"/>
+	<xsl:template name="header.content">
+		<fo:block></fo:block>
+	</xsl:template>
 
 	<xsl:template name="common.attributes.and.children">
 		<xsl:call-template name="common.attributes"/>

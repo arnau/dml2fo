@@ -203,6 +203,20 @@
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 	</xsl:attribute-set>
 
+	<xsl:attribute-set name="example">
+		<xsl:attribute name="space-before">1.5em</xsl:attribute>
+		<xsl:attribute name="space-after">1.5em</xsl:attribute>
+		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="example.title">
+		<xsl:attribute name="space-before">1em</xsl:attribute>
+		<xsl:attribute name="space-after">1em</xsl:attribute>
+		<xsl:attribute name="text-align">center</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="example.label">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
 
 
 
@@ -476,6 +490,29 @@
 			<xsl:if test="$header.numbers eq 'true'">
 				<fo:inline xsl:use-attribute-sets="figure.label">
 					<xsl:value-of select="concat( $literals/literals/figure.label, $numbering.figure, ': ')"/>
+				</fo:inline>
+			</xsl:if>
+			<xsl:apply-templates/>
+		</fo:block>
+	</xsl:template>
+
+
+	<xsl:template match="dml:example">
+		<fo:block xsl:use-attribute-sets="example">
+			<xsl:apply-templates/>
+		</fo:block>
+	</xsl:template>
+	<xsl:template match="dml:example/dml:title">
+		<xsl:variable name="numbering.figure">
+			<xsl:number count="dml:section" level="multiple" format=" 1"/>
+			<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
+		</xsl:variable>
+		
+		<fo:block xsl:use-attribute-sets="example.title">
+			<xsl:call-template name="common.attributes"/>
+			<xsl:if test="$header.numbers eq 'true'">
+				<fo:inline xsl:use-attribute-sets="example.label">
+					<xsl:value-of select="concat( $literals/literals/example.label, $numbering.figure, ': ')"/>
 				</fo:inline>
 			</xsl:if>
 			<xsl:apply-templates/>

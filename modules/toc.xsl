@@ -65,7 +65,12 @@
 						<xsl:value-of select="dml:title"/>
 					</fo:basic-link>
 					<fo:leader leader-pattern="dots"/>
-					<fo:page-number-citation ref-id="{generate-id()}"/>
+					<!-- <fo:page-number-citation ref-id="{generate-id()}"/> -->
+					<fo:page-number-citation>
+						<xsl:attribute name="ref-id">
+							<xsl:call-template name="get.id"/>
+						</xsl:attribute>
+					</fo:page-number-citation>
 					<xsl:if test="dml:section and ( count( ancestor::dml:section ) + 1 lt xs:integer( $toc.deep ) )">
 						<fo:list-block xsl:use-attribute-sets="list.nested toc.number">
 							<xsl:apply-templates select="dml:section" mode="toc"/>
@@ -75,6 +80,5 @@
 			</fo:list-item-body>
 		</fo:list-item>
 	</xsl:template>
-
 
 </xsl:stylesheet>

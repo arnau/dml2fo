@@ -4,14 +4,18 @@
 	xmlns:fo="http://www.w3.org/1999/XSL/Format" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
+	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	exclude-result-prefixes="xs dml dc">
+	xmlns:fnc="dml2fo:functions" 
+	exclude-result-prefixes="xs dml cdml dc fnc">
 	
 	<xsl:import href="modules/inline.xsl"/>
 	<xsl:import href="modules/lists.xsl"/>
 	<xsl:import href="modules/tables.xsl"/>
 	<xsl:import href="modules/bookmarks.xsl"/>
 	<xsl:import href="modules/toc.xsl"/>
+
+	<xsl:import href="functions/highlight.xsl"/>
 	
 	<dml:note>
 		<dml:list>
@@ -207,15 +211,31 @@
 		<xsl:attribute name="space-before">1.5em</xsl:attribute>
 		<xsl:attribute name="space-after">1.5em</xsl:attribute>
 		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
+		<xsl:attribute name="border-bottom">2pt solid #ccc</xsl:attribute>
+		<xsl:attribute name="border-top">2pt solid #ccc</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="example.with.title" use-attribute-sets="example">
+		<xsl:attribute name="border-top">0</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="example.title">
-		<xsl:attribute name="space-before">1em</xsl:attribute>
 		<xsl:attribute name="space-after">1em</xsl:attribute>
 		<xsl:attribute name="text-align">center</xsl:attribute>
+		<xsl:attribute name="border-bottom">2pt solid #ccc</xsl:attribute>
+		<xsl:attribute name="padding">3pt 0</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="example.label">
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="monospace">
+		<xsl:attribute name="font-size">0.83em</xsl:attribute>
+		<xsl:attribute name="font-family">monospace</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="code.block" use-attribute-sets="monospace">
+		<xsl:attribute name="white-space">pre</xsl:attribute>
+		<xsl:attribute name="space-before">1em</xsl:attribute>
+		<xsl:attribute name="padding">0 3pt</xsl:attribute>
 	</xsl:attribute-set>
 
 
@@ -319,7 +339,7 @@
 						<xsl:call-template name="toc"/>
 					</xsl:if>
 
-					<xsl:apply-templates select="dml:section"/>
+					<xsl:apply-templates select="dml:*[not( self::dml:list[@about and preceding-sibling::dml:title] or self::dml:title )]"/>
 
 					<!-- calls the endnotes template -->
 					<!-- <xsl:call-template name="make.endnotes.list"/> -->
@@ -498,10 +518,20 @@
 
 
 	<xsl:template match="dml:example">
-		<fo:block xsl:use-attribute-sets="example">
-			<xsl:apply-templates/>
-		</fo:block>
+		<xsl:choose>
+			<xsl:when test="dml:title">
+				<fo:block xsl:use-attribute-sets="example.with.title">
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block xsl:use-attribute-sets="example">
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
+
 	<xsl:template match="dml:example/dml:title">
 		<xsl:variable name="numbering.figure">
 			<xsl:number count="dml:section" level="multiple" format=" 1"/>
@@ -516,6 +546,19 @@
 				</fo:inline>
 			</xsl:if>
 			<xsl:apply-templates/>
+		</fo:block>
+	</xsl:template>
+
+	<xsl:template match="*[( self::dml:section, self::dml:example )]/cdml:code">
+		<fo:block xsl:use-attribute-sets="code.block">
+			<xsl:choose>
+				<xsl:when test="@language='xml'">
+					<xsl:copy-of select="fnc:xml( ., 80 )"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</fo:block>
 	</xsl:template>
 

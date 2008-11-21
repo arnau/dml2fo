@@ -229,7 +229,7 @@
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="monospace">
-		<xsl:attribute name="font-size">0.83em</xsl:attribute>
+		<xsl:attribute name="font-size">0.85em</xsl:attribute>
 		<xsl:attribute name="font-family">monospace</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="code.block" use-attribute-sets="monospace">
@@ -553,7 +553,10 @@
 		<fo:block xsl:use-attribute-sets="code.block">
 			<xsl:choose>
 				<xsl:when test="@language='xml'">
-					<xsl:copy-of select="fnc:xml( ., 80 )"/>
+					<xsl:copy-of select="fnc:xml( ., 85 )"/>
+				</xsl:when>
+				<xsl:when test="@language='css'">
+					<xsl:copy-of select="fnc:css( ., 85 )"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:apply-templates/>

@@ -23,7 +23,7 @@
 
 	<xsl:param name="ul-label-1">&#x2022;</xsl:param>
 	<xsl:attribute-set name="ul-label-1">
-		<xsl:attribute name="font">1em serif</xsl:attribute>
+		<xsl:attribute name="font">1.2em serif</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:param name="ul-label-2">o</xsl:param>
@@ -83,7 +83,7 @@
 		</fo:list-block>
 	</xsl:template>
 
-	<xsl:template match="dml:item//dml:list">
+	<xsl:template match="dml:item[not( dml:title )]//dml:list">
 		<!-- TODO: review styles -->
 		<fo:list-block xsl:use-attribute-sets="list.nested">
 			<xsl:call-template name="common.attributes.and.children"/>
@@ -96,7 +96,7 @@
 			<xsl:call-template name="common.attributes"/>
 			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
 				<fo:block>
-					<xsl:variable name="depth" select="count( ancestor::dml:list )"/>
+					<xsl:variable name="depth" select="count( ancestor::dml:list[dml:item[not( dml:title )]] )"/>
 					<xsl:choose>
 						<xsl:when test="$depth = 1">
 							<fo:inline xsl:use-attribute-sets="ul-label-1">

@@ -4,9 +4,10 @@
 	xmlns:fo="http://www.w3.org/1999/XSL/Format" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
+	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-	exclude-result-prefixes="xs dml dc rdf">
+	xmlns:fnc="dml2fo:functions" 
+	exclude-result-prefixes="xs dml cdml dc fnc">
 	
 	<dml:note>
 		<dml:list>
@@ -68,6 +69,10 @@
 	<xsl:attribute-set name="quote.nested"/>
 
 	<xsl:attribute-set name="object"/>
+
+	<xsl:attribute-set name="code.inline" use-attribute-sets="monospace">
+		<xsl:attribute name="white-space">pre</xsl:attribute>
+	</xsl:attribute-set>
 
 
 	<xsl:template match="dml:em">
@@ -190,6 +195,20 @@
 			</xsl:choose>
 		</xsl:if>
 		<xsl:call-template name="common.attributes"/>
+	</xsl:template>
+
+
+	<xsl:template match="cdml:code">
+		<fo:inline xsl:use-attribute-sets="code.inline">
+			<xsl:choose>
+				<xsl:when test="@language='xml'">
+					<xsl:copy-of select="fnc:xml( ., 85 )"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</fo:inline>
 	</xsl:template>
 
 

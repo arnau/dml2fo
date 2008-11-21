@@ -70,10 +70,7 @@
 
 	<xsl:attribute-set name="object"/>
 
-	<xsl:attribute-set name="code.inline" use-attribute-sets="monospace">
-		<xsl:attribute name="white-space">pre</xsl:attribute>
-	</xsl:attribute-set>
-
+	<xsl:attribute-set name="code.inline" use-attribute-sets="monospace"/>
 
 	<xsl:template match="dml:em">
 		<fo:inline xsl:use-attribute-sets="em">
@@ -204,12 +201,14 @@
 				<xsl:when test="@language='xml'">
 					<xsl:copy-of select="fnc:xml( ., 85 )"/>
 				</xsl:when>
+				<xsl:when test="@language='css'">
+					<xsl:copy-of select="fnc:css( ., 85 )"/>
+				</xsl:when>
 				<xsl:otherwise>
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</fo:inline>
 	</xsl:template>
-
 
 </xsl:stylesheet>

@@ -29,8 +29,6 @@
 			</dml:item>
 		</dml:list>
 	</dml:note>
-
-	
 	<xsl:output method="xml" version="1.0" encoding="utf-8" indent="no"/>
 	
 	<dml:note>Parameters</dml:note>
@@ -235,6 +233,7 @@
 	<xsl:attribute-set name="code.block" use-attribute-sets="monospace">
 		<xsl:attribute name="white-space">pre</xsl:attribute>
 		<xsl:attribute name="space-before">1em</xsl:attribute>
+		<xsl:attribute name="space-after">1em</xsl:attribute>
 		<xsl:attribute name="padding">0 3pt</xsl:attribute>
 	</xsl:attribute-set>
 

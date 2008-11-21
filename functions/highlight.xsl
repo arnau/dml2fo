@@ -24,13 +24,12 @@
 	</xsl:attribute-set>
 	<xsl:attribute-set name="xml.tag">
 		<xsl:attribute name="color">#067</xsl:attribute>
-		<!-- <xsl:attribute name="font-weight">bold</xsl:attribute> -->
 	</xsl:attribute-set>
 	<xsl:attribute-set name="xml.ns">
 		<xsl:attribute name="color">#056</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="xml.attribute">
-		<xsl:attribute name="font-weight">normal</xsl:attribute>
+		<xsl:attribute name="color">#067</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="xml.attribute.ns" use-attribute-sets="xml.ns"/>
 	<xsl:attribute-set name="xml.attribute.value">
@@ -68,13 +67,17 @@
 		<xsl:param name="limit" as="xs:integer"/>
 		<xsl:variable name="comment" as="xs:string">&lt;!--[\w\W-[&lt;&gt;]]*--></xsl:variable>
 		<xsl:variable name="tag" as="xs:string">(&lt;/?)([a-zA-Z]+:)?([\w\W-[&lt;&gt;]]*)(&gt;)</xsl:variable>
-		<xsl:variable name="attribute" as="xs:string">([a-zA-Z]+:)?([a-z\-]+=&#34;)([\w\W-[&#34;]]*)(&#34;)</xsl:variable>
 
 		<xsl:variable name="context.formatted">
-			<xsl:value-of select="fnc:linelength( $context, $limit )"/>
+			<xsl:value-of select="fnc:linelength( $context, $limit )" separator=""/>
 		</xsl:variable>
 
-		<xsl:analyze-string select="if ( $limit ) then $context.formatted else $context" regex="{$comment}">
+		<xsl:analyze-string select="
+			if ( $limit ) then 
+				(: strip last &#xA; :)
+				replace( $context.formatted, '(.+)\s*$', '$1' )
+			else $context
+		" regex="{$comment}">
 			<xsl:matching-substring>
 				<fo:inline xsl:use-attribute-sets="xml.comment">
 					<xsl:copy-of select="."/>
@@ -90,49 +93,55 @@
 									<xsl:value-of select="regex-group(2)"/>
 								</fo:inline>
 							</xsl:if>
-
-							<xsl:analyze-string select="regex-group(3)" regex="{$attribute}">
-								<xsl:matching-substring>
-									<fo:inline xsl:use-attribute-sets="xml.attribute">
-										<xsl:if test="regex-group(1)">
-											<fo:inline xsl:use-attribute-sets="xml.attribute.ns">
-												<xsl:value-of select="regex-group(1)"/>
-											</fo:inline>
-										</xsl:if>
-										<xsl:value-of select="regex-group(2)"/>
-										<xsl:if test="regex-group(3)">
-											<fo:inline xsl:use-attribute-sets="xml.attribute.value">
-												<!-- attempt to control mixin sintax -->
-												<!--
-												<xsl:choose>
-													<xsl:when test="matches( regex-group(2), '(match|select)' )">
-														<xsl:copy-of select="fnc:xpath( regex-group(3) )"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="regex-group(3)"/>
-													</xsl:otherwise>
-												</xsl:choose>
-												-->
-												<xsl:value-of select="regex-group(3)"/>
-											</fo:inline>
-										</xsl:if>
-										<xsl:value-of select="regex-group(4)"/>
-									</fo:inline>
-								</xsl:matching-substring>
-								<xsl:non-matching-substring>
-									<xsl:value-of select="."/>
-								</xsl:non-matching-substring>
-							</xsl:analyze-string>
+							<xsl:copy-of select="fnc:xml.attribute( regex-group(3) )"/>
 							<xsl:value-of select="regex-group(4)"/>
 						</fo:inline>
 					</xsl:matching-substring>
 					<xsl:non-matching-substring>
-						<xsl:copy-of select="."/>
+						<xsl:copy-of select="fnc:xml.attribute(.)"/>
 					</xsl:non-matching-substring>
 				</xsl:analyze-string>
 			</xsl:non-matching-substring>
 		</xsl:analyze-string>
 	</xsl:function>
+	
+	<xsl:function name="fnc:xml.attribute">
+		<xsl:param name="context"/>
+		<xsl:variable name="attribute" as="xs:string">([a-zA-Z]+:)?([a-z\-]+=&#34;)([\w\W-[&#34;]]*)(&#34;)</xsl:variable>
+		<xsl:analyze-string select="$context" regex="{$attribute}">
+			<xsl:matching-substring>
+				<fo:inline xsl:use-attribute-sets="xml.attribute">
+					<xsl:if test="regex-group(1)">
+						<fo:inline xsl:use-attribute-sets="xml.attribute.ns">
+							<xsl:value-of select="regex-group(1)"/>
+						</fo:inline>
+					</xsl:if>
+					<xsl:value-of select="regex-group(2)"/>
+					<xsl:if test="regex-group(3)">
+						<fo:inline xsl:use-attribute-sets="xml.attribute.value">
+							<!-- attempt to control mixin sintax -->
+							<!--
+							<xsl:choose>
+								<xsl:when test="matches( regex-group(2), '(match|select)' )">
+									<xsl:copy-of select="fnc:xpath( regex-group(3) )"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="regex-group(3)"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							-->
+							<xsl:value-of select="regex-group(3)"/>
+						</fo:inline>
+					</xsl:if>
+					<xsl:value-of select="regex-group(4)"/>
+				</fo:inline>
+			</xsl:matching-substring>
+			<xsl:non-matching-substring>
+				<xsl:copy-of select="."/>
+			</xsl:non-matching-substring>
+		</xsl:analyze-string>
+	</xsl:function>
+	
 	
 	<xsl:function name="fnc:xpath">
 		<xsl:param name="context"/>
@@ -158,7 +167,12 @@
 			<xsl:value-of select="fnc:linelength( $context, $limit )"/>
 		</xsl:variable>
 
-		<xsl:analyze-string select="if ( $limit ) then $context.formatted else $context" regex="{$rule}">
+		<xsl:analyze-string select="
+			if ( $limit ) then 
+				(: strip last &#xA; :)
+				replace( $context.formatted, '(.+)\s*$', '$1' )
+			else $context
+		" regex="{$rule}">
 			<xsl:matching-substring>
 				<fo:inline xsl:use-attribute-sets="css.rule">
 					<fo:inline xsl:use-attribute-sets="css.selector">

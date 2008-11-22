@@ -205,7 +205,10 @@
 					<xsl:copy-of select="fnc:css( ., 85 )"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates/>
+					<xsl:variable name="context">
+						<xsl:value-of select="fnc:linelength( ., $limit )"/>
+					</xsl:variable>
+					<xsl:copy-of select="replace( $context, '(.+)\s*$', '$1' )"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</fo:inline>

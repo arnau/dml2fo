@@ -549,16 +549,20 @@
 	</xsl:template>
 
 	<xsl:template match="*[( self::dml:section, self::dml:example )]/cdml:code">
+		<xsl:variable name="limit" select="85"/>
 		<fo:block xsl:use-attribute-sets="code.block">
 			<xsl:choose>
 				<xsl:when test="@language='xml'">
-					<xsl:copy-of select="fnc:xml( ., 85 )"/>
+					<xsl:copy-of select="fnc:xml( ., $limit )"/>
 				</xsl:when>
 				<xsl:when test="@language='css'">
-					<xsl:copy-of select="fnc:css( ., 85 )"/>
+					<xsl:copy-of select="fnc:css( ., $limit )"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates/>
+					<xsl:variable name="context">
+						<xsl:value-of select="fnc:linelength( ., $limit )"/>
+					</xsl:variable>
+					<xsl:copy-of select="replace( $context, '(.+)\s*$', '$1' )"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</fo:block>

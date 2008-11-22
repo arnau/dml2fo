@@ -43,7 +43,7 @@
 		<xsl:variable name="line" as="xs:string">^(.+)$</xsl:variable>
 		<xsl:analyze-string select="$context" regex="{$line}" flags="m">
 			<xsl:matching-substring>
-				<xsl:value-of select="fnc:linelength.controller( ., $limit )" separator=""/>
+				<xsl:value-of select="fnc:linelength.controller( ., $limit )"/>
 			</xsl:matching-substring>
 		</xsl:analyze-string>
 	</xsl:function>
@@ -72,7 +72,7 @@
 							)" separator=""/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="fnc:linelength.controller( $context, $limit - 1 )" separator=""/>
+						<xsl:value-of select="fnc:linelength.controller( $context, $limit - 1 )"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>

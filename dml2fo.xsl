@@ -12,6 +12,7 @@
 	<xsl:import href="modules/inline.xsl"/>
 	<xsl:import href="modules/lists.xsl"/>
 	<xsl:import href="modules/tables.xsl"/>
+	<xsl:import href="modules/code.xsl"/>
 	<xsl:import href="modules/bookmarks.xsl"/>
 	<xsl:import href="modules/toc.xsl"/>
 
@@ -229,12 +230,6 @@
 	<xsl:attribute-set name="monospace">
 		<xsl:attribute name="font-size">0.85em</xsl:attribute>
 		<xsl:attribute name="font-family">monospace</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="code.block" use-attribute-sets="monospace">
-		<xsl:attribute name="white-space">pre</xsl:attribute>
-		<xsl:attribute name="space-before">1em</xsl:attribute>
-		<xsl:attribute name="space-after">1em</xsl:attribute>
-		<xsl:attribute name="padding">0 3pt</xsl:attribute>
 	</xsl:attribute-set>
 
 
@@ -545,26 +540,6 @@
 				</fo:inline>
 			</xsl:if>
 			<xsl:apply-templates/>
-		</fo:block>
-	</xsl:template>
-
-	<xsl:template match="*[( self::dml:section, self::dml:example )]/cdml:code">
-		<xsl:variable name="limit" select="85"/>
-		<fo:block xsl:use-attribute-sets="code.block">
-			<xsl:choose>
-				<xsl:when test="@language='xml'">
-					<xsl:copy-of select="fnc:xml( ., $limit )"/>
-				</xsl:when>
-				<xsl:when test="@language='css'">
-					<xsl:copy-of select="fnc:css( ., $limit )"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:variable name="context">
-						<xsl:value-of select="fnc:linelength( ., $limit )"/>
-					</xsl:variable>
-					<xsl:copy-of select="replace( $context, '(.+)\s*$', '$1' )"/>
-				</xsl:otherwise>
-			</xsl:choose>
 		</fo:block>
 	</xsl:template>
 

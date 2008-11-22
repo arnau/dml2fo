@@ -36,27 +36,27 @@
 	<xsl:variable name="literals" select="document( concat( 'literals/', /dml:dml/@xml:lang, '.xml' ) )"/>
 
 	<!-- page size -->
-	<xsl:param name="page-width">auto</xsl:param>
-	<xsl:param name="page-height">auto</xsl:param>
-	<xsl:param name="page-margin-top">1.1in</xsl:param>
-	<xsl:param name="page-margin-bottom">1in</xsl:param>
-	<xsl:param name="page-margin-left">1in</xsl:param>
-	<xsl:param name="page-margin-right">1in</xsl:param>
+	<xsl:param name="page.width">auto</xsl:param>
+	<xsl:param name="page.height">auto</xsl:param>
+	<xsl:param name="page.margin.top">1.1in</xsl:param>
+	<xsl:param name="page.margin.bottom">1in</xsl:param>
+	<xsl:param name="page.margin.left">1in</xsl:param>
+	<xsl:param name="page.margin.right">1in</xsl:param>
 
 	<!-- page header and footer -->
 	<xsl:param name="page.header.margin">0.5in</xsl:param>
 	<xsl:param name="page.footer.margin">0.5in</xsl:param>
-	<xsl:param name="title-print-in-header">true</xsl:param>
-	<xsl:param name="page-number-print-in-footer">true</xsl:param>
+	<xsl:param name="title.print.in.header">true</xsl:param>
+	<xsl:param name="page.number.print.in.footer">true</xsl:param>
 
 	<!-- multi column -->
 	<xsl:param name="column.count">1</xsl:param>
 	<xsl:param name="column.gap">12pt</xsl:param>
 
-	<!-- $writing-mode: lr-tb | rl-tb | tb-rl -->
-	<xsl:param name="writing-mode">lr-tb</xsl:param>
-	<!-- $text-align: justify | start -->
-	<xsl:param name="text-align">start</xsl:param>
+	<!-- $writing.mode: lr-tb | rl-tb | tb-rl -->
+	<xsl:param name="writing.mode">lr-tb</xsl:param>
+	<!-- $text.align: justify | start -->
+	<xsl:param name="text.align">start</xsl:param>
 	<!-- $hyphenate: true | false -->
 	<xsl:param name="hyphenate">false</xsl:param>
 
@@ -85,14 +85,14 @@
 	<dml:note>Attribute Sets</dml:note>
 
 	<xsl:attribute-set name="root">
-		<xsl:attribute name="writing-mode"><xsl:value-of select="$writing-mode"/></xsl:attribute>
+		<xsl:attribute name="writing-mode"><xsl:value-of select="$writing.mode"/></xsl:attribute>
 		<xsl:attribute name="hyphenate"><xsl:value-of select="$hyphenate"/></xsl:attribute>
-		<xsl:attribute name="text-align"><xsl:value-of select="$text-align"/></xsl:attribute>
+		<xsl:attribute name="text-align"><xsl:value-of select="$text.align"/></xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="page">
-		<xsl:attribute name="page-width"><xsl:value-of select="$page-width"/></xsl:attribute>
-		<xsl:attribute name="page-height"><xsl:value-of select="$page-height"/></xsl:attribute>
+		<xsl:attribute name="page-width"><xsl:value-of select="$page.width"/></xsl:attribute>
+		<xsl:attribute name="page-height"><xsl:value-of select="$page.height"/></xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="body">
@@ -249,53 +249,53 @@
 
 	<xsl:template name="layout.master.set">
 		<fo:layout-master-set>
-			<fo:simple-page-master master-name="all-pages" xsl:use-attribute-sets="page">
+			<fo:simple-page-master master-name="all.pages" xsl:use-attribute-sets="page">
 				<fo:region-body 
-					margin-top="{$page-margin-top}"
-					margin-right="{$page-margin-right}"
-					margin-bottom="{$page-margin-bottom}"
-					margin-left="{$page-margin-left}"
+					margin-top="{$page.margin.top}"
+					margin-right="{$page.margin.right}"
+					margin-bottom="{$page.margin.bottom}"
+					margin-left="{$page.margin.left}"
 					column-count="{$column.count}"
 					column-gap="{$column.gap}"/>
 				
 				<xsl:choose>
-					<xsl:when test="$writing-mode = 'tb-rl'">
-						<fo:region-before extent="{$page-margin-right}" precedence="true"/>
-						<fo:region-after extent="{$page-margin-left}" precedence="true"/>
+					<xsl:when test="$writing.mode = 'tb-rl'">
+						<fo:region-before extent="{$page.margin.right}" precedence="true"/>
+						<fo:region-after extent="{$page.margin.left}" precedence="true"/>
 						<fo:region-start 
 							region-name="page.header"
-							extent="{$page-margin-top}"
+							extent="{$page.margin.top}"
 							writing-mode="lr-tb"
 							display-align="before"/>
 						<fo:region-end 
 							region-name="page.footer"
-							extent="{$page-margin-bottom}"
+							extent="{$page.margin.bottom}"
 							writing-mode="lr-tb"
 							display-align="after"/>
 					</xsl:when>
-					<xsl:when test="$writing-mode = 'rl-tb'">
+					<xsl:when test="$writing.mode = 'rl-tb'">
 						<fo:region-before 
 							region-name="page.header"
-							extent="{$page-margin-top}"
+							extent="{$page.margin.top}"
 							display-align="before"/>
 						<fo:region-after 
 							region-name="page.footer"
-							extent="{$page-margin-bottom}"
+							extent="{$page.margin.bottom}"
 							display-align="after"/>
-						<fo:region-start extent="{$page-margin-right}"/>
-						<fo:region-end extent="{$page-margin-left}"/>
+						<fo:region-start extent="{$page.margin.right}"/>
+						<fo:region-end extent="{$page.margin.left}"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<fo:region-before 
 							region-name="page.header"
-							extent="{$page-margin-top}"
+							extent="{$page.margin.top}"
 							display-align="before"/>
 						<fo:region-after 
 							region-name="page.footer"
-							extent="{$page-margin-bottom}"
+							extent="{$page.margin.bottom}"
 							display-align="after"/>
-						<fo:region-start extent="{$page-margin-left}"/>
-						<fo:region-end extent="{$page-margin-bottom}"/>
+						<fo:region-start extent="{$page.margin.left}"/>
+						<fo:region-end extent="{$page.margin.bottom}"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</fo:simple-page-master>
@@ -304,7 +304,7 @@
 
 	<xsl:template name="body">
 		<xsl:variable name="title" select="/dml:dml/dml:title"/>
-		<fo:page-sequence master-reference="all-pages">
+		<fo:page-sequence master-reference="all.pages">
 			<fo:title>
 				<xsl:value-of select="$title"/>
 			</fo:title>
@@ -318,7 +318,7 @@
 						<fo:leader/>
 						<fo:page-number/>
 						<xsl:value-of select="( ' ', $literals/literals/pagenumber.preposition, ' ' )"/>
-						<fo:page-number-citation ref-id="last-page"/>
+						<fo:page-number-citation ref-id="last.page"/>
 					</fo:block>
 				</fo:block>
 			</fo:static-content>
@@ -342,7 +342,7 @@
 						<xsl:call-template name="toc"/>
 					</xsl:if>
 
-					<fo:block id="last-page"/>
+					<fo:block id="last.page"/>
 				</fo:block>
 			</fo:flow>
 		</fo:page-sequence>

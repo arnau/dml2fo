@@ -21,31 +21,31 @@
 	</dml:note>
 
 
-	<xsl:param name="ul-label-1">&#x2022;</xsl:param>
-	<xsl:attribute-set name="ul-label-1">
+	<xsl:param name="ul.label.1">&#x2022;</xsl:param>
+	<xsl:attribute-set name="ul.label.1">
 		<xsl:attribute name="font">1.2em serif</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:param name="ul-label-2">o</xsl:param>
-	<xsl:attribute-set name="ul-label-2">
+	<xsl:param name="ul.label.2">o</xsl:param>
+	<xsl:attribute-set name="ul.label.2">
 		<xsl:attribute name="font">0.67em monospace</xsl:attribute>
 		<xsl:attribute name="baseline-shift">0.25em</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:param name="ul-label-3">-</xsl:param>
-	<xsl:attribute-set name="ul-label-3">
+	<xsl:param name="ul.label.3">-</xsl:param>
+	<xsl:attribute-set name="ul.label.3">
 		<xsl:attribute name="font">bold 0.9em sans-serif</xsl:attribute>
 		<xsl:attribute name="baseline-shift">0.05em</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:param name="ol-label-1">1.</xsl:param>
-	<xsl:attribute-set name="ol-label-1"/>
+	<xsl:param name="ol.label.1">1.</xsl:param>
+	<xsl:attribute-set name="ol.label.1"/>
 
-	<xsl:param name="ol-label-2">a.</xsl:param>
-	<xsl:attribute-set name="ol-label-2"/>
+	<xsl:param name="ol.label.2">a.</xsl:param>
+	<xsl:attribute-set name="ol.label.2"/>
 
-	<xsl:param name="ol-label-3">i.</xsl:param>
-	<xsl:attribute-set name="ol-label-3"/>
+	<xsl:param name="ol.label.3">i.</xsl:param>
+	<xsl:attribute-set name="ol.label.3"/>
 
 	<xsl:attribute-set name="list">
 		<xsl:attribute name="space-before">1em</xsl:attribute>
@@ -92,25 +92,24 @@
 
 	<xsl:template match="dml:list/dml:item">
 		<fo:list-item xsl:use-attribute-sets="item">
-
 			<xsl:call-template name="common.attributes"/>
 			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
 				<fo:block>
 					<xsl:variable name="depth" select="count( ancestor::dml:list[dml:item[not( dml:title )]] )"/>
 					<xsl:choose>
 						<xsl:when test="$depth = 1">
-							<fo:inline xsl:use-attribute-sets="ul-label-1">
-								<xsl:value-of select="$ul-label-1"/>
+							<fo:inline xsl:use-attribute-sets="ul.label.1">
+								<xsl:value-of select="$ul.label.1"/>
 							</fo:inline>
 						</xsl:when>
 						<xsl:when test="$depth = 2">
-							<fo:inline xsl:use-attribute-sets="ul-label-2">
-								<xsl:value-of select="$ul-label-2"/>
+							<fo:inline xsl:use-attribute-sets="ul.label.2">
+								<xsl:value-of select="$ul.label.2"/>
 							</fo:inline>
 						</xsl:when>
 						<xsl:otherwise>
-							<fo:inline xsl:use-attribute-sets="ul-label-3">
-								<xsl:value-of select="$ul-label-3"/>
+							<fo:inline xsl:use-attribute-sets="ul.label.3">
+								<xsl:value-of select="$ul.label.3"/>
 							</fo:inline>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -118,34 +117,34 @@
 			</fo:list-item-label>
 			<fo:list-item-body start-indent="body-start()">
 				<fo:block>
-					<xsl:apply-templates/>
+					<xsl:call-template name="common.children"/>
 				</fo:block>
 			</fo:list-item-body>
 
 		</fo:list-item>
 	</xsl:template>
 
-	<xsl:template match="dml:list[@type='ordered']/dml:item" priority="2">
+	<xsl:template match="dml:list[@role='ordered']/dml:item" priority="2">
 		<fo:list-item xsl:use-attribute-sets="item">
 
 			<xsl:call-template name="common.attributes"/>
 			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
 				<fo:block>
-					<xsl:variable name="depth" select="count( ancestor::dml:list[@type='ordered'] )"/>
+					<xsl:variable name="depth" select="count( ancestor::dml:list[@role='ordered'] )"/>
 					<xsl:choose>
 						<xsl:when test="$depth = 1">
-							<fo:inline xsl:use-attribute-sets="ol-label-1">
-								<xsl:number format="{$ol-label-1}"/>
+							<fo:inline xsl:use-attribute-sets="ol.label.1">
+								<xsl:number format="{$ol.label.1}"/>
 							</fo:inline>
 						</xsl:when>
 						<xsl:when test="$depth = 2">
-							<fo:inline xsl:use-attribute-sets="ol-label-2">
-								<xsl:number format="{$ol-label-2}"/>
+							<fo:inline xsl:use-attribute-sets="ol.label.2">
+								<xsl:number format="{$ol.label.2}"/>
 							</fo:inline>
 						</xsl:when>
 						<xsl:otherwise>
-							<fo:inline xsl:use-attribute-sets="ol-label-3">
-								<xsl:number format="{$ol-label-3}"/>
+							<fo:inline xsl:use-attribute-sets="ol.label.3">
+								<xsl:number format="{$ol.label.3}"/>
 							</fo:inline>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -153,7 +152,7 @@
 			</fo:list-item-label>
 			<fo:list-item-body start-indent="body-start()">
 				<fo:block>
-					<xsl:apply-templates/>
+					<xsl:call-template name="common.children"/>
 				</fo:block>
 			</fo:list-item-body>
 
@@ -177,27 +176,26 @@
 		</fo:list-item>
 	</xsl:template>
 
-	<xsl:template match="dml:list[@type='ordered']/dml:item[dml:title]" priority="2.1">
+	<xsl:template match="dml:list[@role='ordered']/dml:item[dml:title]" priority="2.1">
 		<fo:list-item xsl:use-attribute-sets="item">
-
 			<xsl:call-template name="common.attributes"/>
 			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
 				<fo:block xsl:use-attribute-sets="item.group">
-					<xsl:variable name="depth" select="count( ancestor::dml:list[@type='ordered'] )"/>
+					<xsl:variable name="depth" select="count( ancestor::dml:list[@role='ordered'] )"/>
 					<xsl:choose>
 						<xsl:when test="$depth = 1">
-							<fo:inline xsl:use-attribute-sets="ol-label-1">
-								<xsl:number format="{$ol-label-1}"/>
+							<fo:inline xsl:use-attribute-sets="ol.label.1">
+								<xsl:number format="{$ol.label.1}"/>
 							</fo:inline>
 						</xsl:when>
 						<xsl:when test="$depth = 2">
-							<fo:inline xsl:use-attribute-sets="ol-label-2">
-								<xsl:number format="{$ol-label-2}"/>
+							<fo:inline xsl:use-attribute-sets="ol.label.2">
+								<xsl:number format="{$ol.label.2}"/>
 							</fo:inline>
 						</xsl:when>
 						<xsl:otherwise>
-							<fo:inline xsl:use-attribute-sets="ol-label-3">
-								<xsl:number format="{$ol-label-3}"/>
+							<fo:inline xsl:use-attribute-sets="ol.label.3">
+								<xsl:number format="{$ol.label.3}"/>
 							</fo:inline>
 						</xsl:otherwise>
 					</xsl:choose>

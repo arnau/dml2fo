@@ -56,22 +56,21 @@
 						<xsl:attribute name="internal-destination">
 							<xsl:call-template name="get.id"/>
 						</xsl:attribute>
-						<xsl:call-template name="header.number"/>
 						<xsl:if test="@role='appendix'">
 							<fo:inline xsl:use-attribute-sets="appendix.prefix">
 								<xsl:value-of select="$literals/literals/appendix.prefix"/>
 							</fo:inline>
 						</xsl:if>
+						<xsl:call-template name="header.number"/>
 						<xsl:value-of select="dml:title"/>
 					</fo:basic-link>
 					<fo:leader leader-pattern="dots"/>
-					<!-- <fo:page-number-citation ref-id="{generate-id()}"/> -->
 					<fo:page-number-citation>
 						<xsl:attribute name="ref-id">
 							<xsl:call-template name="get.id"/>
 						</xsl:attribute>
 					</fo:page-number-citation>
-					<xsl:if test="dml:section and ( count( ancestor::dml:section ) + 1 lt xs:integer( $toc.deep ) )">
+					<xsl:if test="dml:section and ( count( ancestor::dml:section ) + 1 lt xs:integer( $toc.depth ) )">
 						<fo:list-block xsl:use-attribute-sets="list.nested toc.number">
 							<xsl:apply-templates select="dml:section" mode="toc"/>
 						</fo:list-block>

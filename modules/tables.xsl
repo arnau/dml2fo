@@ -102,7 +102,14 @@
 
 	<xsl:template match="dml:table/dml:title">
 		<xsl:variable name="numbering.table">
-			<xsl:number count="dml:section" level="multiple" format=" 1"/>
+			<xsl:choose>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
+				</xsl:when>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
 		</xsl:variable>
 		<xsl:variable name="colspan" select="count( ../dml:group[@role='head']/dml:group/dml:title )"/>

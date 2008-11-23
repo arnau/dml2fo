@@ -4,6 +4,8 @@
 	<figure.label>Figura</figure.label>
 	<table.label>Tabla</table.label>
 	<example.label>Ejemplo</example.label>
+	<page abbr="pág.">página</page>
+	<section abbr="sec.">Sección</section>
 	<days>
 		<item>Lunes</item>
 		<item>Martes</item>
@@ -28,6 +30,6 @@
 		<item>Diciembre</item>
 	</month>
 	<date.preposition>del</date.preposition>
-	<appendix.prefix>Apéndice — </appendix.prefix>
+	<appendix.prefix>Apéndice</appendix.prefix>
 	<toc.title>Tabla de contenidos</toc.title>
 </literals>

@@ -6,8 +6,9 @@
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:xlink="http://www.w3.org/1999/xlink" 
 	xmlns:fnc="dml2fo:functions" 
-	exclude-result-prefixes="xs dml cdml dc fnc">
+	exclude-result-prefixes="xs dml cdml dc fnc xlink">
 	
 	<xsl:import href="modules/inline.xsl"/>
 	<xsl:import href="modules/lists.xsl"/>
@@ -68,14 +69,14 @@
 	<!-- $appendix.format.number: true | false -->
 	<xsl:param name="appendix.format.number">true</xsl:param>
 	<!-- $appendix.format.number.type: 1. | I. | A. -->
-	<xsl:param name="appendix.format.number.type">A. </xsl:param>
+	<xsl:param name="appendix.format.number.type"> A.1</xsl:param>
 
 	<!-- $bookmarks: true | false -->
 	<xsl:param name="bookmarks">true</xsl:param>
 	<!-- $toc: true | false -->
 	<xsl:param name="toc">true</xsl:param>
 	<!-- $toc.deep: integer-->
-	<xsl:param name="toc.deep">3</xsl:param>
+	<xsl:param name="toc.depth">3</xsl:param>
 	<!-- $toc.skipped.sections: integer -->
 	<xsl:param name="toc.skipped.sections">1</xsl:param>
 	<!-- $toc.position: positiveInteger | -1 (puts ToC after all content) -->
@@ -232,6 +233,9 @@
 		<xsl:attribute name="font-family">monospace</xsl:attribute>
 	</xsl:attribute-set>
 
+	<xsl:attribute-set name="xref">
+		<!-- <xsl:attribute name="font-size">0.85em</xsl:attribute> -->
+	</xsl:attribute-set>
 
 
 	<xsl:template match="dml:dml">
@@ -376,7 +380,89 @@
 
 	<xsl:template name="common.attributes.and.children">
 		<xsl:call-template name="common.attributes"/>
-		<xsl:apply-templates/>
+		<xsl:call-template name="common.children"/>
+	</xsl:template>
+
+	<xsl:template name="common.children">
+		<xsl:choose>
+			<xsl:when test="@xlink:href">
+				<xsl:variable name="first.char" select="substring( @xlink:href, 1, 1 )"/>
+				<xsl:variable name="idref" select="substring-after( @xlink:href, '#' )"/>
+				<xsl:variable name="element.name" select="id( $idref )/local-name()"/>
+
+				<fo:basic-link xsl:use-attribute-sets="toc.link">
+					<xsl:choose>
+						<xsl:when test="$first.char eq '#'">
+							<xsl:attribute name="internal-destination" select="substring-after( @xlink:href, '#' )"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="external-destination" select="@xlink:href"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:apply-templates/>
+				</fo:basic-link>
+				<fo:inline xsl:use-attribute-sets="xref">
+					<xsl:text> (</xsl:text>
+					<xsl:choose>
+						<xsl:when test="$first.char eq '#'">
+							<xsl:for-each select="id( $idref )">
+								<xsl:choose>
+									<xsl:when test="$element.name eq 'table'">
+										<xsl:value-of select="$literals/literals/table.label"/>
+										<xsl:choose>
+											<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+												<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
+											</xsl:when>
+											<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+												<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
+											</xsl:when>
+										</xsl:choose>
+										<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
+									</xsl:when>
+									<xsl:when test="$element.name eq 'figure'">
+										<xsl:value-of select="$literals/literals/figure.label"/>
+										<xsl:choose>
+											<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+												<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
+											</xsl:when>
+											<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+												<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
+											</xsl:when>
+										</xsl:choose>
+										<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
+									</xsl:when>
+									<xsl:when test="$element.name eq 'example'">
+										<xsl:value-of select="$literals/literals/example.label"/>
+										<xsl:choose>
+											<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+												<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
+											</xsl:when>
+											<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+												<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
+											</xsl:when>
+										</xsl:choose>
+										<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$literals/literals/section"/>
+										<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format=" 1"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:for-each>
+							<xsl:value-of select="concat( ', ', $literals/literals/page/@abbr, ' ' )"/>
+							<fo:page-number-citation ref-id="{$idref}"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="@xlink:href"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text>)</xsl:text>
+				</fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="common.attributes">
@@ -387,9 +473,6 @@
 		<xsl:if test="@xml:lang">
 			<xsl:attribute name="xml:lang" select="@xml:lang"/>
 		</xsl:if>
-		<!-- <xsl:if test="@xml:id">
-			<xsl:attribute name="id" select="@xml:id"/>
-		</xsl:if> -->
 		<xsl:call-template name="set.id"/>
 		<xsl:if test="@align">
 			<!-- TODO: must be ignored? -->
@@ -460,18 +543,18 @@
 
 	<xsl:template name="header.children">
 		<xsl:call-template name="common.attributes"/>
-		<xsl:call-template name="header.number"/>
 		<xsl:if test="parent::dml:section[@role='appendix']">
 			<xsl:value-of select="$literals/literals/appendix.prefix"/>
 		</xsl:if>
+		<xsl:call-template name="header.number"/>
 		<xsl:apply-templates/>
 	</xsl:template>
 	
 	<xsl:template name="header.number">
 		<xsl:if test="$header.numbers eq 'true'">
 			<xsl:choose>
-				<xsl:when test="@role='appendix' and ( $appendix.format.number eq 'true' )">
-					<xsl:number count="dml:section[@role='appendix']" level="multiple" format="{$appendix.format.number.type}"/>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type} — "/>
 				</xsl:when>
 				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
 					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
@@ -495,7 +578,14 @@
 	</xsl:template>
 	<xsl:template match="dml:figure/dml:title">
 		<xsl:variable name="numbering.figure">
-			<xsl:number count="dml:section" level="multiple" format=" 1"/>
+			<xsl:choose>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
+				</xsl:when>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
 		</xsl:variable>
 		
@@ -515,11 +605,13 @@
 		<xsl:choose>
 			<xsl:when test="dml:title">
 				<fo:block xsl:use-attribute-sets="example.with.title">
+					<xsl:call-template name="common.attributes"/>
 					<xsl:apply-templates/>
 				</fo:block>
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:block xsl:use-attribute-sets="example">
+					<xsl:call-template name="common.attributes"/>
 					<xsl:apply-templates/>
 				</fo:block>
 			</xsl:otherwise>
@@ -528,7 +620,14 @@
 
 	<xsl:template match="dml:example/dml:title">
 		<xsl:variable name="numbering.figure">
-			<xsl:number count="dml:section" level="multiple" format=" 1"/>
+			<xsl:choose>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
+				</xsl:when>
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="1. "/>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
 		</xsl:variable>
 		

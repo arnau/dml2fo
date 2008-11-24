@@ -61,7 +61,10 @@
 								<xsl:value-of select="$literals/literals/appendix.prefix"/>
 							</fo:inline>
 						</xsl:if>
-						<xsl:call-template name="header.number"/>
+						<xsl:call-template name="header.number">
+							<xsl:with-param name="format.number.type">1. </xsl:with-param>
+							<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' — ' )"/>
+						</xsl:call-template>
 						<xsl:value-of select="dml:title"/>
 					</fo:basic-link>
 					<fo:leader leader-pattern="dots"/>

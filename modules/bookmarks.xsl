@@ -30,7 +30,10 @@
 			</xsl:attribute>
 			<fo:bookmark-title>
 				<xsl:if test="$bookmark.numbers eq 'true'">
-					<xsl:call-template name="header.number"/>
+					<xsl:call-template name="header.number">
+						<xsl:with-param name="format.number.type">1. </xsl:with-param>
+						<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' — ' )"/>
+					</xsl:call-template>
 				</xsl:if>
 				<xsl:if test="@role='appendix'">
 					<xsl:value-of select="$literals/literals/appendix.prefix"/>

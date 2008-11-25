@@ -43,7 +43,7 @@
 		<xsl:variable name="line" as="xs:string">^(.+)$</xsl:variable>
 		<xsl:analyze-string select="$context" regex="{$line}" flags="m">
 			<xsl:matching-substring>
-				<xsl:value-of select="fnc:linelength.controller( ., $limit )"/>
+				<xsl:value-of select="fnc:linelength.controller( ., $limit, $limit )"/>
 			</xsl:matching-substring>
 		</xsl:analyze-string>
 	</xsl:function>
@@ -51,6 +51,7 @@
 	<xsl:function name="fnc:linelength.controller">
 		<xsl:param name="context"/>
 		<xsl:param name="limit"/>
+		<xsl:param name="original.limit"/>
 		<xsl:choose>
 			<xsl:when test="string-length( $context ) le $limit">
 				<xsl:value-of select="( $context, '&#xA;' )" separator=""/>
@@ -67,12 +68,12 @@
 								$first.part.line, 
 								'&#xA;', 
 								$indent.spaces.line,
-								$second.part.line, 
+								fnc:linelength( $second.part.line, $original.limit - string-length( $indent.spaces.line ) ), 
 								'&#xA;'
 							)" separator=""/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="fnc:linelength.controller( $context, $limit - 1 )"/>
+						<xsl:value-of select="fnc:linelength.controller( $context, $limit - 1, $original.limit )"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>

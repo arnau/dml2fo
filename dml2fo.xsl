@@ -82,6 +82,9 @@
 	<!-- $toc.position: positiveInteger | -1 (puts ToC after all content) -->
 	<xsl:param name="toc.position">1</xsl:param>
 
+	<!-- $debug: true | false -->
+	<xsl:param name="debug">true</xsl:param>
+
 
 	<dml:note>Attribute Sets</dml:note>
 
@@ -233,9 +236,7 @@
 		<xsl:attribute name="font-family">monospace</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:attribute-set name="xref">
-		<!-- <xsl:attribute name="font-size">0.85em</xsl:attribute> -->
-	</xsl:attribute-set>
+	<xsl:attribute-set name="xref"/>
 
 
 	<xsl:template match="dml:dml">
@@ -380,6 +381,9 @@
 
 	<xsl:template name="common.attributes.and.children">
 		<xsl:call-template name="common.attributes"/>
+		<xsl:if test="xs:boolean( $debug )">
+			<xsl:call-template name="debug.attributes"/>
+		</xsl:if>
 		<xsl:call-template name="common.children"/>
 	</xsl:template>
 
@@ -475,7 +479,13 @@
 			<xsl:attribute name="align" select="@align"/>
 		</xsl:if>
 	</xsl:template>
-
+	
+	<xsl:template name="debug.attributes">
+		<xsl:if test="some $i in tokenize( @role, '\s+' ) satisfies $i eq 'draft'">
+			<xsl:attribute name="background-color">#FFE862</xsl:attribute>
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template name="get.id">
 		<xsl:choose>
 			<xsl:when test="@xml:id">

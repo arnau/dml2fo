@@ -6,6 +6,10 @@
 	<example.label>Example</example.label>
 	<page abbr="pg.">page</page>
 	<section abbr="sec.">Section</section>
+	<appendix.prefix>Appendix</appendix.prefix>
+	<toc.title>Table of Contents</toc.title>
+	<debug.draft>Draft</debug.draft>
+	<debug.review>Review</debug.review>
 	<days>
 		<item>Monday</item>
 		<item>Tuesday</item>
@@ -30,6 +34,4 @@
 		<item>Desember</item>
 	</month>
 	<date.preposition>of</date.preposition>
-	<appendix.prefix>Appendix</appendix.prefix>
-	<toc.title>Table of Contents</toc.title>
 </literals>

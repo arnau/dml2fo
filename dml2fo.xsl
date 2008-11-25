@@ -238,6 +238,13 @@
 
 	<xsl:attribute-set name="xref"/>
 
+	<xsl:template name="draft.attribute.set">
+		<xsl:attribute name="background-color">#FFE862</xsl:attribute>
+	</xsl:template>
+	<xsl:template name="review.attribute.set">
+		<xsl:attribute name="background-color">#eee</xsl:attribute>
+	</xsl:template>
+
 
 	<xsl:template match="dml:dml">
 		<fo:root xsl:use-attribute-sets="root">
@@ -481,8 +488,13 @@
 	</xsl:template>
 	
 	<xsl:template name="debug.attributes">
-		<xsl:if test="some $i in tokenize( @role, '\s+' ) satisfies $i eq 'draft'">
-			<xsl:attribute name="background-color">#FFE862</xsl:attribute>
+		<xsl:if test="some $i in tokenize( @status, '\s+' ) satisfies $i eq 'draft'">
+			<xsl:call-template name="draft.attribute.set"/>
+			<fo:inline>(<xsl:value-of select="$literals/literals/debug.draft"/>) </fo:inline>
+		</xsl:if>
+		<xsl:if test="some $i in tokenize( @status, '\s+' ) satisfies $i eq 'review'">
+			<xsl:call-template name="review.attribute.set"/>
+			<fo:inline>(<xsl:value-of select="$literals/literals/debug.review"/>) </fo:inline>
 		</xsl:if>
 	</xsl:template>
 	

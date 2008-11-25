@@ -29,7 +29,7 @@
 				<xsl:call-template name="get.id"/>
 			</xsl:attribute>
 			<fo:bookmark-title>
-				<xsl:if test="$bookmark.numbers eq 'true'">
+				<xsl:if test="xs:boolean( $bookmark.numbers )">
 					<xsl:call-template name="header.number">
 						<xsl:with-param name="format.number.type">1. </xsl:with-param>
 						<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' — ' )"/>

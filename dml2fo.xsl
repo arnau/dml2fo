@@ -250,7 +250,7 @@
 		<fo:root xsl:use-attribute-sets="root">
 			<xsl:call-template name="common.attributes"/>
 			<xsl:call-template name="layout.master.set"/>
-			<xsl:if test="$bookmarks eq 'true'">
+			<xsl:if test="xs:boolean( $bookmarks )">
 				<fo:bookmark-tree>
 					<xsl:apply-templates select="/dml:dml/dml:section" mode="bookmark"/>
 				</fo:bookmark-tree>
@@ -341,7 +341,7 @@
 				<xsl:call-template name="date.issued"/>
 				<fo:block xsl:use-attribute-sets="body">
 					<xsl:call-template name="common.attributes"/>
-					<xsl:if test="( $toc eq 'true' ) and ( xs:integer( $toc.position ) eq 0 )">
+					<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq 0 )">
 						<xsl:call-template name="toc"/>
 					</xsl:if>
 
@@ -350,7 +350,7 @@
 					<!-- calls the endnotes template -->
 					<!-- <xsl:call-template name="make.endnotes.list"/> -->
 
-					<xsl:if test="( $toc eq 'true' ) and ( xs:integer( $toc.position ) eq -1 )">
+					<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq -1 )">
 						<xsl:call-template name="toc"/>
 					</xsl:if>
 
@@ -369,7 +369,7 @@
 		<xsl:variable name="month" select="number( format-date( $isodate, '[M1]' ) )"/>
 
 		<fo:block xsl:use-attribute-sets="date.issued">
-			<xsl:if test="$isodate and ( $date.issued eq 'true' )">
+			<xsl:if test="$isodate and xs:boolean( $date.issued )">
 				<xsl:choose>
 					<xsl:when test="lang('ca') or lang('es')">
 						<xsl:value-of select="( $literals/literals/month/item[$month], $literals/literals/date.preposition, year-from-date( $isodate ) )"/>
@@ -416,7 +416,7 @@
 					<xsl:text> (</xsl:text>
 					<xsl:choose>
 						<xsl:when test="$first.char eq '#'">
-							<xsl:if test="$header.numbers eq 'true'">
+							<xsl:if test="xs:boolean( $header.numbers )">
 								<xsl:for-each select="id( $idref )">
 									<xsl:choose>
 										<xsl:when test="$element.name eq 'table'">
@@ -519,7 +519,7 @@
 		<fo:block xsl:use-attribute-sets="section">
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:block>
-		<xsl:if test="( $toc eq 'true' ) and parent::dml:dml and ( position() eq xs:integer( $toc.position ) )">
+		<xsl:if test="xs:boolean( $toc ) and parent::dml:dml and ( position() eq xs:integer( $toc.position ) )">
 			<xsl:call-template name="toc"/>
 		</xsl:if>
 	</xsl:template>
@@ -574,9 +574,9 @@
 	<xsl:template name="header.number">
 		<xsl:param name="format.number.type"/>
 		<xsl:param name="appendix.format.number.type" select="$appendix.format.number.type"/>
-		<xsl:if test="$header.numbers eq 'true'">
+		<xsl:if test="xs:boolean( $header.numbers )">
 			<xsl:choose>
-				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and ( $appendix.format.number eq 'true' )">
+				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and xs:boolean( $appendix.format.number )">
 					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
 				</xsl:when>
 				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
@@ -609,7 +609,7 @@
 		
 		<fo:block xsl:use-attribute-sets="figure.title">
 			<xsl:call-template name="common.attributes"/>
-			<xsl:if test="$header.numbers eq 'true'">
+			<xsl:if test="xs:boolean( $header.numbers )">
 				<fo:inline xsl:use-attribute-sets="figure.label">
 					<xsl:value-of select="concat( $literals/literals/figure.label, $numbering.figure, ': ')"/>
 				</fo:inline>
@@ -646,7 +646,7 @@
 		
 		<fo:block xsl:use-attribute-sets="example.title">
 			<xsl:call-template name="common.attributes"/>
-			<xsl:if test="$header.numbers eq 'true'">
+			<xsl:if test="xs:boolean( $header.numbers )">
 				<fo:inline xsl:use-attribute-sets="example.label">
 					<xsl:value-of select="concat( $literals/literals/example.label, $numbering.example, ': ')"/>
 				</fo:inline>

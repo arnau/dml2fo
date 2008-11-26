@@ -44,6 +44,11 @@
 	</xsl:template>
 
 	<xsl:template match="dml:section" mode="toc">
+		<xsl:variable name="number">
+			<xsl:call-template name="header.number">
+				<xsl:with-param name="format.number.type">1. </xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
 		<fo:list-item xsl:use-attribute-sets="item">
 			<!-- <fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap"> -->
 			<fo:list-item-label start-indent="body-start()">
@@ -56,15 +61,12 @@
 						<xsl:attribute name="internal-destination">
 							<xsl:call-template name="get.id"/>
 						</xsl:attribute>
-						<xsl:if test="@role='appendix'">
-							<fo:inline xsl:use-attribute-sets="appendix.prefix">
-								<xsl:value-of select="$literals/literals/appendix.prefix"/>
-							</fo:inline>
-						</xsl:if>
-						<xsl:call-template name="header.number">
-							<xsl:with-param name="format.number.type">1. </xsl:with-param>
-							<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' — ' )"/>
-						</xsl:call-template>
+						<xsl:value-of select="
+							if ( @role='appendix' ) then
+								concat( $literals/literals/appendix.prefix, $number, $appendix.separator )
+							else
+								$number
+						"/>
 						<xsl:value-of select="dml:title"/>
 					</fo:basic-link>
 					<fo:leader leader-pattern="dots"/>

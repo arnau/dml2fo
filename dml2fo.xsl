@@ -70,9 +70,14 @@
 	<xsl:param name="appendix.format.number">true</xsl:param>
 	<!-- $appendix.format.number.type: 1. | I. | A. -->
 	<xsl:param name="appendix.format.number.type"> A.1</xsl:param>
+	<!-- $appendix.separator: string -->
+	<xsl:param name="appendix.separator"> — </xsl:param>
 
 	<!-- $bookmarks: true | false -->
 	<xsl:param name="bookmarks">true</xsl:param>
+	<!-- $numbering.bookmarks: true | false -->
+	<xsl:param name="bookmark.numbers">false</xsl:param>
+
 	<!-- $toc: true | false -->
 	<xsl:param name="toc">true</xsl:param>
 	<!-- $toc.deep: integer-->
@@ -560,14 +565,18 @@
 	</xsl:template>
 
 	<xsl:template name="header.children">
+		<xsl:variable name="number">
+			<xsl:call-template name="header.number">
+				<xsl:with-param name="format.number.type">1. </xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:call-template name="common.attributes"/>
-		<xsl:if test="parent::dml:section[@role='appendix']">
-			<xsl:value-of select="$literals/literals/appendix.prefix"/>
-		</xsl:if>
-		<xsl:call-template name="header.number">
-			<xsl:with-param name="format.number.type">1. </xsl:with-param>
-			<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' — ' )"/>
-		</xsl:call-template>
+		<xsl:value-of select="
+			if ( parent::dml:section[@role='appendix'] ) then
+				concat( $literals/literals/appendix.prefix, $number, $appendix.separator )
+			else
+				$number
+		"/>
 		<xsl:apply-templates/>
 	</xsl:template>
 	

@@ -20,24 +20,25 @@
 		</dml:list>
 	</dml:note>
 
-	<!-- $numbering.bookmarks: true | false -->
-	<xsl:param name="bookmark.numbers">false</xsl:param>
-
 	<xsl:template match="dml:section" mode="bookmark">
+		<xsl:variable name="number">
+			<xsl:if test="xs:boolean( $bookmark.numbers )">
+				<xsl:call-template name="header.number">
+					<xsl:with-param name="format.number.type">1. </xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
+		</xsl:variable>
 		<fo:bookmark>
 			<xsl:attribute name="internal-destination">
 				<xsl:call-template name="get.id"/>
 			</xsl:attribute>
 			<fo:bookmark-title>
-				<xsl:if test="xs:boolean( $bookmark.numbers )">
-					<xsl:call-template name="header.number">
-						<xsl:with-param name="format.number.type">1. </xsl:with-param>
-						<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' — ' )"/>
-					</xsl:call-template>
-				</xsl:if>
-				<xsl:if test="@role='appendix'">
-					<xsl:value-of select="$literals/literals/appendix.prefix"/>
-				</xsl:if>
+				<xsl:value-of select="
+					if ( @role='appendix' ) then
+						concat( $literals/literals/appendix.prefix, $number, $appendix.separator )
+					else
+						$number
+				"/>
 				<xsl:value-of select="dml:title"/>
 			</fo:bookmark-title>
 			<xsl:apply-templates select="dml:section" mode="bookmark"/>

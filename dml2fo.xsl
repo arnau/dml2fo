@@ -512,7 +512,7 @@
 			</xsl:when>
 			<xsl:when test="@status eq 'deleted'">
 				<xsl:call-template name="deleted.attribute.set"/>
-				<fo:inline>-<xsl:value-of select="$literals/literals/debug.deleted"/> </fo:inline>
+				<fo:inline><xsl:value-of select="$literals/literals/debug.deleted"/> </fo:inline>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

@@ -67,6 +67,11 @@
 		<xsl:attribute name="margin-bottom">0.5em</xsl:attribute>
 	</xsl:attribute-set>
 
+	<xsl:attribute-set name="item.group.leaded">
+		<xsl:attribute name="margin-top">0.2em</xsl:attribute>
+		<xsl:attribute name="margin-bottom">0.2em</xsl:attribute>
+	</xsl:attribute-set>
+
 	<xsl:attribute-set name="item.title">
 		<!-- <xsl:attribute name="font-weight">bold</xsl:attribute> -->
 		<xsl:attribute name="space-after">0.2em</xsl:attribute>
@@ -176,29 +181,51 @@
 		</fo:list-item>
 	</xsl:template>
 
-	<xsl:template match="dml:list[@role='ordered']/dml:item[dml:title]" priority="2.1">
+	<xsl:template match="dml:list[@role]/dml:item[dml:title]" priority="2.1">
+		<xsl:choose>
+			<!-- <xsl:when test="some $i in tokenize( @role, '\s+' ) satisfies $i eq 'leaded'"> -->
+			<xsl:when test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded'">
+				<xsl:call-template name="list.leaded"/>
+			</xsl:when>
+			<xsl:when test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'ordered'">
+				<xsl:call-template name="list.ordered"/>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="list.leaded">
 		<fo:list-item xsl:use-attribute-sets="item">
 			<xsl:call-template name="common.attributes"/>
 			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
-				<fo:block xsl:use-attribute-sets="item.group">
-					<xsl:variable name="depth" select="count( ancestor::dml:list[@role='ordered'] )"/>
-					<xsl:choose>
-						<xsl:when test="$depth = 1">
-							<fo:inline xsl:use-attribute-sets="ol.label.1">
-								<xsl:number format="{$ol.label.1}"/>
-							</fo:inline>
-						</xsl:when>
-						<xsl:when test="$depth = 2">
-							<fo:inline xsl:use-attribute-sets="ol.label.2">
-								<xsl:number format="{$ol.label.2}"/>
-							</fo:inline>
-						</xsl:when>
-						<xsl:otherwise>
-							<fo:inline xsl:use-attribute-sets="ol.label.3">
-								<xsl:number format="{$ol.label.3}"/>
-							</fo:inline>
-						</xsl:otherwise>
-					</xsl:choose>
+				<fo:block xsl:use-attribute-sets="item.group.leaded">
+					<xsl:if test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'ordered'">
+						<xsl:call-template name="list.ordered.numbers"/>
+					</xsl:if>
+				</fo:block>
+			</fo:list-item-label>
+			<fo:list-item-body>
+				<xsl:if test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'ordered'">
+					<xsl:attribute name="start-indent">body-start()</xsl:attribute>
+				</xsl:if>
+				<fo:block xsl:use-attribute-sets="item.group.leaded" text-align-last="justify">
+					<xsl:apply-templates select="dml:title/node()"/>
+					<fo:leader leader-pattern="dots"/>
+					<!-- <fo:leader leader-pattern="use-content"> .</fo:leader> -->
+					<xsl:text> </xsl:text>
+					<fo:inline>
+						<xsl:apply-templates select="*[not( self::dml:title )]/node()"/>
+					</fo:inline>
+				</fo:block>
+			</fo:list-item-body>
+		</fo:list-item>
+	</xsl:template>
+
+	<xsl:template name="list.ordered">
+		<fo:list-item xsl:use-attribute-sets="item">
+			<xsl:call-template name="common.attributes"/>
+			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
+				<fo:block>
+					<xsl:call-template name="list.ordered.numbers"/>
 				</fo:block>
 			</fo:list-item-label>
 			<fo:list-item-body start-indent="body-start()">
@@ -209,8 +236,28 @@
 					</fo:block>
 				</fo:block>
 			</fo:list-item-body>
-
 		</fo:list-item>
+	</xsl:template>
+
+	<xsl:template name="list.ordered.numbers">
+		<xsl:variable name="depth" select="count( ancestor::dml:list[some $i in tokenize( @role, '\s+' ) satisfies $i eq 'ordered'] )"/>
+		<xsl:choose>
+			<xsl:when test="$depth = 1">
+				<fo:inline xsl:use-attribute-sets="ol.label.1">
+					<xsl:number format="{$ol.label.1}"/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:when test="$depth = 2">
+				<fo:inline xsl:use-attribute-sets="ol.label.2">
+					<xsl:number format="{$ol.label.2}"/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline xsl:use-attribute-sets="ol.label.3">
+					<xsl:number format="{$ol.label.3}"/>
+				</fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="dml:list/dml:item/dml:title">

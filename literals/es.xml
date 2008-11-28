@@ -9,7 +9,8 @@
 	<appendix.prefix>Apéndice</appendix.prefix>
 	<toc.title>Tabla de contenidos</toc.title>
 	<debug.draft>Borrador</debug.draft>
-	<debug.review>Revisar</debug.review>
+	<debug.added>+++</debug.added>
+	<debug.deleted>---</debug.deleted>
 	<days>
 		<item>Lunes</item>
 		<item>Martes</item>

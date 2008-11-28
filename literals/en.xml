@@ -9,7 +9,8 @@
 	<appendix.prefix>Appendix</appendix.prefix>
 	<toc.title>Table of Contents</toc.title>
 	<debug.draft>Draft</debug.draft>
-	<debug.review>Review</debug.review>
+	<debug.added>+++</debug.added>
+	<debug.deleted>---</debug.deleted>
 	<days>
 		<item>Monday</item>
 		<item>Tuesday</item>

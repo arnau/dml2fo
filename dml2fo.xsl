@@ -246,8 +246,11 @@
 	<xsl:template name="draft.attribute.set">
 		<xsl:attribute name="background-color">#FFE862</xsl:attribute>
 	</xsl:template>
-	<xsl:template name="review.attribute.set">
-		<xsl:attribute name="background-color">#eee</xsl:attribute>
+	<xsl:template name="added.attribute.set">
+		<xsl:attribute name="background-color">#DFD</xsl:attribute>
+	</xsl:template>
+	<xsl:template name="deleted.attribute.set">
+		<xsl:attribute name="background-color">#FDD</xsl:attribute>
 	</xsl:template>
 
 
@@ -396,7 +399,12 @@
 		<xsl:if test="xs:boolean( $debug )">
 			<xsl:call-template name="debug.attributes"/>
 		</xsl:if>
-		<xsl:call-template name="common.children"/>
+		<xsl:choose>
+			<xsl:when test="not( xs:boolean( $debug ) ) and ( @status eq 'deleted' )"/>
+			<xsl:otherwise>
+				<xsl:call-template name="common.children"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="common.children">
@@ -493,14 +501,20 @@
 	</xsl:template>
 	
 	<xsl:template name="debug.attributes">
-		<xsl:if test="some $i in tokenize( @status, '\s+' ) satisfies $i eq 'draft'">
-			<xsl:call-template name="draft.attribute.set"/>
-			<fo:inline>(<xsl:value-of select="$literals/literals/debug.draft"/>) </fo:inline>
-		</xsl:if>
-		<xsl:if test="some $i in tokenize( @status, '\s+' ) satisfies $i eq 'review'">
-			<xsl:call-template name="review.attribute.set"/>
-			<fo:inline>(<xsl:value-of select="$literals/literals/debug.review"/>) </fo:inline>
-		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="@status eq 'draft'">
+				<xsl:call-template name="draft.attribute.set"/>
+				<fo:inline>(<xsl:value-of select="$literals/literals/debug.draft"/>) </fo:inline>
+			</xsl:when>
+			<xsl:when test="@status eq 'added'">
+				<xsl:call-template name="added.attribute.set"/>
+				<fo:inline><xsl:value-of select="$literals/literals/debug.added"/> </fo:inline>
+			</xsl:when>
+			<xsl:when test="@status eq 'deleted'">
+				<xsl:call-template name="deleted.attribute.set"/>
+				<fo:inline>-<xsl:value-of select="$literals/literals/debug.deleted"/> </fo:inline>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="get.id">

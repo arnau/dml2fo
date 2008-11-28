@@ -9,7 +9,8 @@
 	<appendix.prefix>Apèndix</appendix.prefix>
 	<toc.title>Sumari</toc.title>
 	<debug.draft>Esborrany</debug.draft>
-	<debug.review>Revisar</debug.review>
+	<debug.added>+++</debug.added>
+	<debug.deleted>---</debug.deleted>
 	<days>
 		<item>Dilluns</item>
 		<item>Dimarts</item>

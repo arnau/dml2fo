@@ -109,22 +109,12 @@
 			<xsl:call-template name="common.attributes"/>
 			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
 				<fo:block>
-					<xsl:variable name="depth" select="count( ancestor::dml:list[dml:item[not( dml:title )]] )"/>
 					<xsl:choose>
-						<xsl:when test="$depth = 1">
-							<fo:inline xsl:use-attribute-sets="ul.label.1">
-								<xsl:value-of select="$ul.label.1"/>
-							</fo:inline>
-						</xsl:when>
-						<xsl:when test="$depth = 2">
-							<fo:inline xsl:use-attribute-sets="ul.label.2">
-								<xsl:value-of select="$ul.label.2"/>
-							</fo:inline>
+						<xsl:when test="parent::dml:list/@role eq 'ordered'">
+							<xsl:call-template name="list.ordered.numbers"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<fo:inline xsl:use-attribute-sets="ul.label.3">
-								<xsl:value-of select="$ul.label.3"/>
-							</fo:inline>
+							<xsl:call-template name="list.unordered.labels"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</fo:block>
@@ -134,25 +124,6 @@
 					<xsl:call-template name="common.children"/>
 				</fo:block>
 			</fo:list-item-body>
-
-		</fo:list-item>
-	</xsl:template>
-
-	<xsl:template match="dml:list[@role='ordered']/dml:item" priority="2">
-		<fo:list-item xsl:use-attribute-sets="item">
-
-			<xsl:call-template name="common.attributes"/>
-			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
-				<fo:block>
-					<xsl:call-template name="list.ordered.numbers"/>
-				</fo:block>
-			</fo:list-item-label>
-			<fo:list-item-body start-indent="body-start()">
-				<fo:block>
-					<xsl:call-template name="common.children"/>
-				</fo:block>
-			</fo:list-item-body>
-
 		</fo:list-item>
 	</xsl:template>
 
@@ -191,7 +162,7 @@
 			</xsl:when>
 			<xsl:when test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'ordered'">
 				<fo:list-item xsl:use-attribute-sets="item">
-					<xsl:call-template name="list.ordered"/>
+					<xsl:call-template name="item.with.title"/>
 				</fo:list-item>
 			</xsl:when>
 		</xsl:choose>
@@ -222,7 +193,7 @@
 		</fo:list-item-body>
 	</xsl:template>
 
-	<xsl:template name="list.ordered">
+	<xsl:template name="item.with.title">
 		<xsl:call-template name="common.attributes"/>
 		<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
 			<fo:block>
@@ -237,6 +208,27 @@
 				</fo:block>
 			</fo:block>
 		</fo:list-item-body>
+	</xsl:template>
+
+	<xsl:template name="list.unordered.labels">
+		<xsl:variable name="depth" select="count( ancestor::dml:list[dml:item[not( dml:title )]] )"/>
+		<xsl:choose>
+			<xsl:when test="$depth = 1">
+				<fo:inline xsl:use-attribute-sets="ul.label.1">
+					<xsl:value-of select="$ul.label.1"/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:when test="$depth = 2">
+				<fo:inline xsl:use-attribute-sets="ul.label.2">
+					<xsl:value-of select="$ul.label.2"/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline xsl:use-attribute-sets="ul.label.3">
+					<xsl:value-of select="$ul.label.3"/>
+				</fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="list.ordered.numbers">

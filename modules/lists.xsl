@@ -144,24 +144,7 @@
 			<xsl:call-template name="common.attributes"/>
 			<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
 				<fo:block>
-					<xsl:variable name="depth" select="count( ancestor::dml:list[@role='ordered'] )"/>
-					<xsl:choose>
-						<xsl:when test="$depth = 1">
-							<fo:inline xsl:use-attribute-sets="ol.label.1">
-								<xsl:number format="{$ol.label.1}"/>
-							</fo:inline>
-						</xsl:when>
-						<xsl:when test="$depth = 2">
-							<fo:inline xsl:use-attribute-sets="ol.label.2">
-								<xsl:number format="{$ol.label.2}"/>
-							</fo:inline>
-						</xsl:when>
-						<xsl:otherwise>
-							<fo:inline xsl:use-attribute-sets="ol.label.3">
-								<xsl:number format="{$ol.label.3}"/>
-							</fo:inline>
-						</xsl:otherwise>
-					</xsl:choose>
+					<xsl:call-template name="list.ordered.numbers"/>
 				</fo:block>
 			</fo:list-item-label>
 			<fo:list-item-body start-indent="body-start()">
@@ -192,7 +175,7 @@
 
 	<xsl:template match="dml:list[@role]/dml:item[dml:title]" priority="2.1">
 		<xsl:choose>
-			<xsl:when test="( some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded' ) and @role eq 'footer'">
+			<xsl:when test="( some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded' ) and ( @role eq 'footer' )">
 				<fo:list-item xsl:use-attribute-sets="item.footer">
 					<xsl:call-template name="list.leaded">
 						<xsl:with-param name="leader.pattern" select="$leader.pattern.footer"/>

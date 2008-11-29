@@ -22,7 +22,7 @@
 
 
 	<xsl:param name="leader.pattern">.</xsl:param>
-	<xsl:param name="leader.pattern.footer" select="' '"/>
+	<xsl:param name="leader.pattern.foot" select="' '"/>
 
 	<xsl:param name="ul.label.1">&#x2022;</xsl:param>
 	<xsl:attribute-set name="ul.label.1">
@@ -65,7 +65,7 @@
 		<xsl:attribute name="padding-bottom">0.1em</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:attribute-set name="item.footer" use-attribute-sets="item">
+	<xsl:attribute-set name="item.foot" use-attribute-sets="item">
 		<xsl:attribute name="border-top">2pt solid #000</xsl:attribute>
 		<xsl:attribute name="space-before">0.5em</xsl:attribute>
 		<xsl:attribute name="padding-top">0.5em</xsl:attribute>
@@ -146,10 +146,10 @@
 
 	<xsl:template match="dml:list[@role]/dml:item[dml:title]" priority="2.1">
 		<xsl:choose>
-			<xsl:when test="( some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded' ) and ( @role eq 'footer' )">
-				<fo:list-item xsl:use-attribute-sets="item.footer">
+			<xsl:when test="( some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded' ) and ( @role eq 'foot' )">
+				<fo:list-item xsl:use-attribute-sets="item.foot">
 					<xsl:call-template name="list.leaded">
-						<xsl:with-param name="leader.pattern" select="$leader.pattern.footer"/>
+						<xsl:with-param name="leader.pattern" select="$leader.pattern.foot"/>
 					</xsl:call-template>
 				</fo:list-item>
 			</xsl:when>

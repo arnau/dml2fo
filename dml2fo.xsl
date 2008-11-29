@@ -409,18 +409,19 @@
 
 	<xsl:template name="common.children">
 		<xsl:choose>
-			<xsl:when test="@xlink:href">
-				<xsl:variable name="first.char" select="substring( @xlink:href, 1, 1 )"/>
-				<xsl:variable name="idref" select="substring-after( @xlink:href, '#' )"/>
+			<xsl:when test="@xlink:href or @href">
+				<xsl:variable name="href" select="@xlink:href | @href"/>
+				<xsl:variable name="first.char" select="substring( $href, 1, 1 )"/>
+				<xsl:variable name="idref" select="substring-after( $href, '#' )"/>
 				<xsl:variable name="element.name" select="id( $idref )/local-name()"/>
 
 				<fo:basic-link xsl:use-attribute-sets="toc.link">
 					<xsl:choose>
 						<xsl:when test="$first.char eq '#'">
-							<xsl:attribute name="internal-destination" select="substring-after( @xlink:href, '#' )"/>
+							<xsl:attribute name="internal-destination" select="substring-after( $href, '#' )"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:attribute name="external-destination" select="@xlink:href"/>
+							<xsl:attribute name="external-destination" select="$href"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:apply-templates/>
@@ -473,7 +474,7 @@
 							<fo:page-number-citation ref-id="{$idref}"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="@xlink:href"/>
+							<xsl:value-of select="$href"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>)</xsl:text>

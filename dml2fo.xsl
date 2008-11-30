@@ -624,7 +624,7 @@
 			<xsl:call-template name="common.attributes"/>
 			<xsl:if test="xs:boolean( $header.numbers )">
 				<fo:inline xsl:use-attribute-sets="figure.label">
-					<xsl:value-of select="concat( $literals/literals/figure.label, $numbering.figure, ': ')"/>
+					<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $numbering.figure, ': ')"/>
 				</fo:inline>
 			</xsl:if>
 			<xsl:apply-templates/>
@@ -659,7 +659,7 @@
 			<xsl:call-template name="common.attributes"/>
 			<xsl:if test="xs:boolean( $header.numbers )">
 				<fo:inline xsl:use-attribute-sets="example.label">
-					<xsl:value-of select="concat( $literals/literals/example.label, $numbering.example, ': ')"/>
+					<xsl:value-of select="concat( $literals/literals/example.label, ' ', $numbering.example, ': ')"/>
 				</fo:inline>
 			</xsl:if>
 			<xsl:apply-templates/>

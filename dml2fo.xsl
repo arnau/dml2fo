@@ -66,6 +66,8 @@
 
 	<!-- $header.numbers: true | false -->
 	<xsl:param name="header.numbers">true</xsl:param>
+	<!-- $appendix.format.number.type: 1. | I. | A. -->
+	<xsl:param name="format.number.type">1</xsl:param>
 	<!-- $appendix.format.number: true | false -->
 	<xsl:param name="appendix.format.number">true</xsl:param>
 	<!-- $appendix.format.number.type: 1. | I. | A. -->
@@ -432,39 +434,27 @@
 						<xsl:when test="$first.char eq '#'">
 							<xsl:if test="xs:boolean( $header.numbers )">
 								<xsl:for-each select="id( $idref )">
+									<xsl:variable name="number">
+										<xsl:call-template name="header.number"/>
+									</xsl:variable>
 									<xsl:choose>
 										<xsl:when test="$element.name eq 'table'">
-											<xsl:value-of select="$literals/literals/table.label"/>
-											<xsl:call-template name="header.number">
-												<xsl:with-param name="format.number.type"> 1</xsl:with-param>
-											</xsl:call-template>
+											<xsl:value-of select="concat( $literals/literals/table.label, ' ', $number )"/>
 											<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
 										</xsl:when>
 										<xsl:when test="$element.name eq 'figure'">
-											<xsl:value-of select="$literals/literals/figure.label"/>
-											<xsl:call-template name="header.number">
-												<xsl:with-param name="format.number.type"> 1</xsl:with-param>
-											</xsl:call-template>
+											<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $number )"/>
 											<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
 										</xsl:when>
 										<xsl:when test="$element.name eq 'example'">
-											<xsl:value-of select="$literals/literals/example.label"/>
-											<xsl:call-template name="header.number">
-												<xsl:with-param name="format.number.type"> 1</xsl:with-param>
-											</xsl:call-template>
+											<xsl:value-of select="concat( $literals/literals/example.label, ' ', $number )"/>
 											<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
 										</xsl:when>
 										<xsl:when test="id( $idref )/ancestor-or-self::*[@role='appendix']">
-											<xsl:value-of select="$literals/literals/appendix.prefix"/>
-											<xsl:call-template name="header.number">
-												<xsl:with-param name="format.number.type"> 1</xsl:with-param>
-											</xsl:call-template>
+											<xsl:value-of select="concat( $literals/literals/appendix.prefix, ' ', $number )"/>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="$literals/literals/section"/>
-											<xsl:call-template name="header.number">
-												<xsl:with-param name="format.number.type"> 1</xsl:with-param>
-											</xsl:call-template>
+											<xsl:value-of select="concat( $literals/literals/section, ' ', $number )"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:for-each>
@@ -583,6 +573,7 @@
 		<xsl:variable name="number">
 			<xsl:call-template name="header.number">
 				<xsl:with-param name="format.number.type">1. </xsl:with-param>
+				<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' ' )"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:call-template name="common.attributes"/>
@@ -601,7 +592,7 @@
 		<xsl:if test="xs:boolean( $header.numbers )">
 			<xsl:choose>
 				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and xs:boolean( $appendix.format.number )">
-					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type} "/>
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
 				</xsl:when>
 				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
 					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="{$format.number.type}"/>

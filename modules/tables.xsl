@@ -103,7 +103,7 @@
 	<xsl:template match="dml:table/dml:title">
 		<xsl:variable name="numbering.table">
 			<xsl:call-template name="header.number">
-				<xsl:with-param name="format.number.type"> 1</xsl:with-param>
+				<xsl:with-param name="format.number.type">1</xsl:with-param>
 			</xsl:call-template>
 			<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
 		</xsl:variable>
@@ -113,7 +113,7 @@
 				<fo:block xsl:use-attribute-sets="table.title">
 					<xsl:if test="xs:boolean( $header.numbers )">
 						<fo:inline xsl:use-attribute-sets="table.label">
-							<xsl:value-of select="concat( $literals/literals/table.label, $numbering.table, ': ')"/>
+							<xsl:value-of select="concat( $literals/literals/table.label, ' ', $numbering.table, ': ')"/>
 						</fo:inline>
 					</xsl:if>
 					<xsl:apply-templates/>

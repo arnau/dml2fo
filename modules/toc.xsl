@@ -47,6 +47,7 @@
 		<xsl:variable name="number">
 			<xsl:call-template name="header.number">
 				<xsl:with-param name="format.number.type">1. </xsl:with-param>
+				<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' ' )"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<fo:list-item xsl:use-attribute-sets="item">

@@ -182,8 +182,8 @@
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="h6">
-	<xsl:attribute name="font-size">0.67em</xsl:attribute>
-		<xsl:attribute name="font-weight">normal</xsl:attribute>
+		<xsl:attribute name="font-size">1em</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
 		<xsl:attribute name="font-variant">small-caps</xsl:attribute>
 		<xsl:attribute name="space-before">1.67em</xsl:attribute>
 		<xsl:attribute name="space-after">1.67em</xsl:attribute>

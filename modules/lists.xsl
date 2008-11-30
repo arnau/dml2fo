@@ -54,6 +54,10 @@
 		<xsl:attribute name="space-before">1em</xsl:attribute>
 		<xsl:attribute name="space-after">1em</xsl:attribute>
 	</xsl:attribute-set>
+	<xsl:attribute-set name="list.title" use-attribute-sets="h6">
+		<xsl:attribute name="space-after">0.5em</xsl:attribute>
+		<xsl:attribute name="start-indent">inherited-property-value(start-indent) + 1em</xsl:attribute>
+	</xsl:attribute-set>
 
 	<xsl:attribute-set name="list.nested">
 		<xsl:attribute name="space-before">0pt</xsl:attribute>
@@ -92,8 +96,14 @@
 
 
 	<xsl:template match="dml:list">
+		<xsl:if test="dml:title">
+			<fo:block xsl:use-attribute-sets="list.title">
+				<xsl:apply-templates select="dml:title"/>
+			</fo:block>
+		</xsl:if>
 		<fo:list-block xsl:use-attribute-sets="list">
-			<xsl:call-template name="common.attributes.and.children"/>
+			<xsl:call-template name="common.attributes"/>
+			<xsl:apply-templates select="*[not( self::dml:title )]"/>
 		</fo:list-block>
 	</xsl:template>
 

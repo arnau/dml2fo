@@ -616,9 +616,7 @@
 	</xsl:template>
 	<xsl:template match="dml:figure/dml:title">
 		<xsl:variable name="numbering.figure">
-			<xsl:call-template name="header.number">
-				<xsl:with-param name="format.number.type"> 1</xsl:with-param>
-			</xsl:call-template>
+			<xsl:call-template name="header.number"/>
 			<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
 		</xsl:variable>
 		
@@ -653,9 +651,7 @@
 
 	<xsl:template match="dml:example/dml:title">
 		<xsl:variable name="numbering.example">
-			<xsl:call-template name="header.number">
-				<xsl:with-param name="format.number.type"> 1</xsl:with-param>
-			</xsl:call-template>
+			<xsl:call-template name="header.number"/>
 			<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
 		</xsl:variable>
 		

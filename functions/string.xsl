@@ -68,8 +68,7 @@
 								$first.part.line, 
 								'&#xA;', 
 								$indent.spaces.line,
-								fnc:linelength( $second.part.line, $original.limit - string-length( $indent.spaces.line ) ), 
-								'&#xA;'
+								fnc:linelength( $second.part.line, $original.limit - string-length( $indent.spaces.line ) )
 							)" separator=""/>
 					</xsl:when>
 					<xsl:otherwise>

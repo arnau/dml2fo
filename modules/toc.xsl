@@ -62,7 +62,7 @@
 							<xsl:call-template name="get.id"/>
 						</xsl:attribute>
 						<xsl:value-of select="
-							if ( @role='appendix' ) then
+							if ( @role='appendix' and xs:boolean( $appendix.format.number ) ) then
 								concat( $literals/literals/appendix.prefix, $number, $appendix.separator )
 							else
 								$number

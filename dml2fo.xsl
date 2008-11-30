@@ -587,7 +587,7 @@
 		</xsl:variable>
 		<xsl:call-template name="common.attributes"/>
 		<xsl:value-of select="
-			if ( parent::dml:section[@role='appendix'] ) then
+			if ( parent::dml:section[@role='appendix'] and xs:boolean( $appendix.format.number ) ) then
 				concat( $literals/literals/appendix.prefix, $number, $appendix.separator )
 			else
 				$number

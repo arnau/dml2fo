@@ -601,7 +601,7 @@
 		<xsl:if test="xs:boolean( $header.numbers )">
 			<xsl:choose>
 				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and @role='appendix'] and xs:boolean( $appendix.format.number )">
-					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type}"/>
+					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and @role='appendix']]" level="multiple" format="{$appendix.format.number.type} "/>
 				</xsl:when>
 				<xsl:when test="ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
 					<xsl:number count="dml:section[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]" level="multiple" format="{$format.number.type}"/>

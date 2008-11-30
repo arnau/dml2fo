@@ -69,7 +69,7 @@
 	<!-- $appendix.format.number: true | false -->
 	<xsl:param name="appendix.format.number">true</xsl:param>
 	<!-- $appendix.format.number.type: 1. | I. | A. -->
-	<xsl:param name="appendix.format.number.type"> A.1</xsl:param>
+	<xsl:param name="appendix.format.number.type">A.1</xsl:param>
 	<!-- $appendix.separator: string -->
 	<xsl:param name="appendix.separator"> — </xsl:param>
 
@@ -588,7 +588,7 @@
 		<xsl:call-template name="common.attributes"/>
 		<xsl:value-of select="
 			if ( parent::dml:section[@role='appendix'] and xs:boolean( $appendix.format.number ) ) then
-				concat( $literals/literals/appendix.prefix, $number, $appendix.separator )
+				concat( $literals/literals/appendix.prefix, ' ', $number, $appendix.separator )
 			else
 				$number
 		"/>

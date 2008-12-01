@@ -22,6 +22,8 @@
 		</dml:list>
 	</dml:note>
 
+	<xsl:param name="code.linelength" select="85"/>
+
 	<xsl:attribute-set name="code.block" use-attribute-sets="monospace">
 		<xsl:attribute name="white-space">pre</xsl:attribute>
 		<xsl:attribute name="space-before">1em</xsl:attribute>
@@ -44,17 +46,16 @@
 	</xsl:template>
 
 	<xsl:template name="code.languages">
-		<xsl:variable name="limit" select="85"/>
 		<xsl:choose>
 			<xsl:when test="@language='xml'">
-				<xsl:copy-of select="fnc:xml( ., $limit )"/>
+				<xsl:copy-of select="fnc:xml( ., $code.linelength )"/>
 			</xsl:when>
 			<xsl:when test="@language='css'">
-				<xsl:copy-of select="fnc:css( ., $limit )"/>
+				<xsl:copy-of select="fnc:css( ., $code.linelength )"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="context">
-					<xsl:value-of select="fnc:linelength( ., $limit )"/>
+					<xsl:value-of select="fnc:linelength( ., $code.linelength )"/>
 				</xsl:variable>
 				<xsl:copy-of select="replace( $context, '(.+)\s*$', '$1' )"/>
 			</xsl:otherwise>

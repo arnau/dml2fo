@@ -57,24 +57,35 @@
 				<xsl:value-of select="( $context, '&#xA;' )" separator=""/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:variable name="second.part.line" select="substring( $context, $limit )"/>
-				<xsl:variable name="first.part.line" select="substring-before( $context, $second.part.line )"/>
-				<xsl:variable name="indent.spaces.line" select="substring-before( $context, normalize-space( $context ) )"/>
-				<xsl:variable name="last.char" select="substring( $first.part.line, string-length( $first.part.line ) )"/>
-				<xsl:choose>
-					<xsl:when test="not( matches( normalize-space( $first.part.line ), '\s' ) ) or matches( $last.char, '\s' )">
-						<xsl:value-of select="
-							( 
-								$first.part.line, 
-								'&#xA;', 
-								$indent.spaces.line,
-								fnc:linelength( $second.part.line, $original.limit - string-length( $indent.spaces.line ) )
-							)" separator=""/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="fnc:linelength.controller( $context, $limit - 1, $original.limit )"/>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:variable name="line" as="xs:string" select="concat( '(.{', $limit , '})(.+)' )"/>
+				<xsl:analyze-string select="$context" regex="{$line}">
+					<xsl:matching-substring>
+						<xsl:variable name="first.part.line" select="regex-group(1)"/>
+						<xsl:variable name="second.part.line" select="regex-group(2)"/>
+						<xsl:variable name="indent.spaces.line" select="substring-before( $context, normalize-space( $context ) )"/>
+						<xsl:variable name="last.char" select="substring( $first.part.line, string-length( $first.part.line ) )"/>
+
+						<xsl:choose>
+							<xsl:when test="not( matches( normalize-space( $first.part.line ), '\s' ) ) or matches( $last.char, '\s' )">
+								<xsl:value-of select="
+									( 
+										$first.part.line,
+										'&#xA;',
+										$indent.spaces.line,
+										fnc:linelength( $second.part.line, $original.limit - string-length( $indent.spaces.line ) )
+									)" separator=""/>
+
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="fnc:linelength.controller( $context, $limit - 1, $original.limit )"/>
+							</xsl:otherwise>
+						</xsl:choose>
+
+					</xsl:matching-substring>
+					<xsl:non-matching-substring>
+						<xsl:value-of select="'fail'"/>
+					</xsl:non-matching-substring>
+				</xsl:analyze-string>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>

@@ -66,7 +66,7 @@
 		<xsl:param name="context"/>
 		<xsl:param name="limit" as="xs:integer"/>
 		<xsl:variable name="comment" as="xs:string">&lt;!--[\w\W-[&lt;&gt;]]*--></xsl:variable>
-		<xsl:variable name="tag" as="xs:string">(&lt;/?)([a-zA-Z]+:)?([\w\W-[&lt;&gt;]]*)(&gt;)</xsl:variable>
+		<xsl:variable name="tag" as="xs:string">(&lt;/?)([a-zA-Z]+:)?([\w\W-[&lt;&gt;]]+?)(&gt;)</xsl:variable>
 
 		<xsl:variable name="context.formatted">
 			<xsl:value-of select="fnc:linelength( $context, $limit )" separator=""/>

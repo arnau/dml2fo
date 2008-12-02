@@ -4,6 +4,7 @@
 	<figure.label>Figura</figure.label>
 	<table.label>Tabla</table.label>
 	<example.label>Ejemplo</example.label>
+	<warning.label>Alerta</warning.label>
 	<page abbr="pág.">página</page>
 	<section abbr="sec.">Sección</section>
 	<appendix.prefix>Apéndice</appendix.prefix>

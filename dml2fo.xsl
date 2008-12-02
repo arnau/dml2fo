@@ -238,6 +238,26 @@
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 	</xsl:attribute-set>
 
+	<xsl:attribute-set name="warning">
+		<xsl:attribute name="space-before">1.5em</xsl:attribute>
+		<xsl:attribute name="space-after">1.5em</xsl:attribute>
+		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
+		<xsl:attribute name="border-bottom">3pt solid #000</xsl:attribute>
+		<xsl:attribute name="border-top">3pt solid #000</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="warning.with.title" use-attribute-sets="warning">
+		<xsl:attribute name="border-top">0</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="warning.title">
+		<xsl:attribute name="space-after">1em</xsl:attribute>
+		<xsl:attribute name="text-align">center</xsl:attribute>
+		<xsl:attribute name="border-bottom">3pt solid #000</xsl:attribute>
+		<xsl:attribute name="padding">3pt 0</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="warning.label">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+
 	<xsl:attribute-set name="monospace">
 		<xsl:attribute name="font-size">0.85em</xsl:attribute>
 		<xsl:attribute name="font-family">monospace</xsl:attribute>
@@ -665,5 +685,33 @@
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
+
+	<xsl:template match="dml:note[@role='warning']">
+		<xsl:choose>
+			<xsl:when test="dml:title">
+				<fo:block xsl:use-attribute-sets="warning.with.title">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block xsl:use-attribute-sets="warning">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="dml:note[@role='warning']/dml:title">
+		<fo:block xsl:use-attribute-sets="warning.title">
+			<xsl:call-template name="common.attributes"/>
+			<!-- <fo:inline xsl:use-attribute-sets="warning.label">
+				<xsl:value-of select="concat( $literals/literals/warning.label, ': ')"/>
+			</fo:inline> -->
+			<xsl:apply-templates/>
+		</fo:block>
+	</xsl:template>
+
 
 </xsl:stylesheet>

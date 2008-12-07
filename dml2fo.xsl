@@ -211,9 +211,10 @@
 		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:attribute-set name="figure.title"/>
+	<xsl:attribute-set name="figure.title">
+		<xsl:attribute name="space-after">0.5em</xsl:attribute>
+	</xsl:attribute-set>
 	<xsl:attribute-set name="figure.label">
-		<xsl:attribute name="space-before">0.5em</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 	</xsl:attribute-set>
 
@@ -389,6 +390,9 @@
 			</fo:flow>
 		</fo:page-sequence>
 	</xsl:template>
+
+	<!-- todo -->
+	<xsl:template match="dml:metadata"/>
 	
 	<xsl:template name="date.issued">
 		<xsl:variable name="document.id" select="/dml:dml/@xml:id"/>

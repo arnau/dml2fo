@@ -5,6 +5,7 @@
 	<table.label>Taula</table.label>
 	<example.label>Exemple</example.label>
 	<warning.label>Alerta</warning.label>
+	<param.optional.label>Opcional</param.optional.label>
 	<page abbr="pàg.">pàgina</page>
 	<section abbr="sec.">Secció</section>
 	<appendix.prefix>Apèndix</appendix.prefix>

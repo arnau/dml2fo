@@ -5,6 +5,7 @@
 	<table.label>Table</table.label>
 	<example.label>Example</example.label>
 	<warning.label>Warning</warning.label>
+	<param.optional.label>Optional</param.optional.label>
 	<page abbr="pg.">page</page>
 	<section abbr="sec.">Section</section>
 	<appendix.prefix>Appendix</appendix.prefix>

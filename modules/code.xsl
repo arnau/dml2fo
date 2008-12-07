@@ -40,9 +40,10 @@
 		<xsl:attribute name="color">#090</xsl:attribute>
 		<xsl:attribute name="font-size">0.95em</xsl:attribute>
 	</xsl:attribute-set>
-	<xsl:attribute-set name="code.value" use-attribute-sets="monospace">
-		<xsl:attribute name="color">#090</xsl:attribute>
-	</xsl:attribute-set>
+	<xsl:attribute-set name="code.value" use-attribute-sets="code.node"/>
+
+	<xsl:attribute-set name="code.param"/>
+
 
 	<xsl:template match="cdml:code">
 		<fo:inline xsl:use-attribute-sets="code.inline">
@@ -115,6 +116,18 @@
 		<fo:inline xsl:use-attribute-sets="code.value">
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:inline>
+	</xsl:template>
+
+	<xsl:template match="cdml:param">
+		<fo:inline xsl:use-attribute-sets="code.param">
+			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:inline>
+		<xsl:if test="@type eq 'optional'">
+			<fo:inline xsl:use-attribute-sets="em">
+				<xsl:value-of select="concat( ' (', $literals/literals/param.optional.label, ')' )"/>
+			</fo:inline>
+		</xsl:if>
+
 	</xsl:template>
 
 </xsl:stylesheet>

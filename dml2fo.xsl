@@ -212,7 +212,7 @@
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="figure.title">
-		<xsl:attribute name="space-after">0.5em</xsl:attribute>
+		<xsl:attribute name="space-after">2em</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="figure.label">
 		<xsl:attribute name="font-weight">bold</xsl:attribute>

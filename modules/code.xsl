@@ -36,8 +36,12 @@
 
 	<xsl:attribute-set name="code.inline" use-attribute-sets="monospace"/>
 
-	<xsl:attribute-set name="node" use-attribute-sets="monospace">
-		<xsl:attribute name="white-space">nowrap</xsl:attribute>
+	<xsl:attribute-set name="code.node" use-attribute-sets="monospace">
+		<xsl:attribute name="color">#090</xsl:attribute>
+		<xsl:attribute name="font-size">0.95em</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="code.value" use-attribute-sets="monospace">
+		<xsl:attribute name="color">#090</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:template match="cdml:code">
@@ -73,7 +77,7 @@
 		<xsl:variable name="node.prefix">
 			<xsl:call-template name="get.node.prefix"/>
 		</xsl:variable>
-		<fo:inline xsl:use-attribute-sets="node">
+		<fo:inline xsl:use-attribute-sets="code.node">
 			<xsl:call-template name="common.attributes"/>
 			<fo:character character="{$node.prefix}"/><xsl:call-template name="common.children"/>
 		</fo:inline>
@@ -84,7 +88,7 @@
 		<xsl:variable name="node.prefix">
 			<xsl:call-template name="get.node.prefix"/>
 		</xsl:variable>
-		<fo:inline xsl:use-attribute-sets="node">
+		<fo:inline xsl:use-attribute-sets="code.node">
 			<fo:character character="{$node.prefix}"/><xsl:apply-templates/>
 		</fo:inline>
 	</xsl:template>
@@ -105,6 +109,12 @@
 					then $node.attribute.prefix 
 				else ' '
 		"/>
+	</xsl:template>
+
+	<xsl:template match="cdml:value">
+		<fo:inline xsl:use-attribute-sets="code.value">
+			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:inline>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -651,7 +651,7 @@
 					<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $numbering.figure, ': ')"/>
 				</fo:inline>
 			</xsl:if>
-			<xsl:apply-templates/>
+			<xsl:call-template name="common.children"/>
 		</fo:block>
 	</xsl:template>
 
@@ -660,14 +660,12 @@
 		<xsl:choose>
 			<xsl:when test="dml:title">
 				<fo:block xsl:use-attribute-sets="example.with.title">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="common.attributes.and.children"/>
 				</fo:block>
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:block xsl:use-attribute-sets="example">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="common.attributes.and.children"/>
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -686,7 +684,7 @@
 					<xsl:value-of select="concat( $literals/literals/example.label, ' ', $numbering.example, ': ')"/>
 				</fo:inline>
 			</xsl:if>
-			<xsl:apply-templates/>
+			<xsl:call-template name="common.children"/>
 		</fo:block>
 	</xsl:template>
 
@@ -694,14 +692,12 @@
 		<xsl:choose>
 			<xsl:when test="dml:title">
 				<fo:block xsl:use-attribute-sets="warning.with.title">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="common.attributes.and.children"/>
 				</fo:block>
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:block xsl:use-attribute-sets="warning">
-					<xsl:call-template name="common.attributes"/>
-					<xsl:apply-templates/>
+					<xsl:call-template name="common.attributes.and.children"/>
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -713,7 +709,7 @@
 			<!-- <fo:inline xsl:use-attribute-sets="warning.label">
 				<xsl:value-of select="concat( $literals/literals/warning.label, ': ')"/>
 			</fo:inline> -->
-			<xsl:apply-templates/>
+			<xsl:call-template name="common.children"/>
 		</fo:block>
 	</xsl:template>
 

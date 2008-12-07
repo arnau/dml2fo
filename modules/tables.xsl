@@ -114,7 +114,7 @@
 							<xsl:value-of select="concat( $literals/literals/table.label, ' ', $numbering.table, ': ')"/>
 						</fo:inline>
 					</xsl:if>
-					<xsl:apply-templates/>
+					<xsl:call-template name="common.children"/>
 				</fo:block>
 			</fo:table-cell>
 		</fo:table-row>
@@ -122,12 +122,12 @@
 	<xsl:template match="dml:group[@role='head']" priority="2">
 		<fo:table-header xsl:use-attribute-sets="table.head">
 			<xsl:apply-templates select="parent::dml:table/dml:title"/>
-			<xsl:apply-templates/>
+			<xsl:call-template name="common.children"/>
 		</fo:table-header>
 	</xsl:template>
 	<xsl:template match="dml:group[@role='foot']" priority="2">
 		<fo:table-footer xsl:use-attribute-sets="table.foot">
-			<xsl:apply-templates/>
+			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:table-footer>
 	</xsl:template>
 	<xsl:template match="dml:group[not( @role = ( 'head', 'foot' ) ) and dml:group]" priority="2.1">

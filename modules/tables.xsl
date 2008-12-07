@@ -109,7 +109,7 @@
 		<fo:table-row>
 			<fo:table-cell number-columns-spanned="{$colspan}">
 				<fo:block xsl:use-attribute-sets="table.title">
-					<xsl:if test="xs:boolean( $header.numbers )">
+					<xsl:if test="xs:boolean( $header.numbers ) and ancestor::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
 						<fo:inline xsl:use-attribute-sets="table.label">
 							<xsl:value-of select="concat( $literals/literals/table.label, ' ', $numbering.table, ': ')"/>
 						</fo:inline>

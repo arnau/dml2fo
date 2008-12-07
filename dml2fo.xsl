@@ -456,7 +456,7 @@
 					<xsl:text> (</xsl:text>
 					<xsl:choose>
 						<xsl:when test="$first.char eq '#'">
-							<xsl:if test="xs:boolean( $header.numbers )">
+							<xsl:if test="xs:boolean( $header.numbers ) and ancestor::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
 								<xsl:for-each select="id( $idref )">
 									<xsl:variable name="number">
 										<xsl:call-template name="header.number"/>
@@ -646,7 +646,7 @@
 		
 		<fo:block xsl:use-attribute-sets="figure.title">
 			<xsl:call-template name="common.attributes"/>
-			<xsl:if test="xs:boolean( $header.numbers )">
+			<xsl:if test="xs:boolean( $header.numbers ) and ancestor::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
 				<fo:inline xsl:use-attribute-sets="figure.label">
 					<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $numbering.figure, ': ')"/>
 				</fo:inline>
@@ -679,7 +679,7 @@
 		
 		<fo:block xsl:use-attribute-sets="example.title">
 			<xsl:call-template name="common.attributes"/>
-			<xsl:if test="xs:boolean( $header.numbers )">
+			<xsl:if test="xs:boolean( $header.numbers ) and ancestor::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
 				<fo:inline xsl:use-attribute-sets="example.label">
 					<xsl:value-of select="concat( $literals/literals/example.label, ' ', $numbering.example, ': ')"/>
 				</fo:inline>

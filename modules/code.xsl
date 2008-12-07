@@ -24,6 +24,9 @@
 
 	<xsl:param name="code.linelength" select="85"/>
 
+	<xsl:param name="node.element.prefix">/</xsl:param>
+	<xsl:param name="node.attribute.prefix">@</xsl:param>
+
 	<xsl:attribute-set name="code.block" use-attribute-sets="monospace">
 		<xsl:attribute name="white-space">pre</xsl:attribute>
 		<xsl:attribute name="space-before">1em</xsl:attribute>
@@ -32,6 +35,10 @@
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="code.inline" use-attribute-sets="monospace"/>
+
+	<xsl:attribute-set name="node" use-attribute-sets="monospace">
+		<xsl:attribute name="white-space">nowrap</xsl:attribute>
+	</xsl:attribute-set>
 
 	<xsl:template match="cdml:code">
 		<fo:inline xsl:use-attribute-sets="code.inline">
@@ -61,5 +68,48 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<xsl:template match="cdml:node">
+		<xsl:variable name="node.prefix" select="
+			if ( @role eq 'element' ) 
+				then $node.element.prefix 
+			else 
+				if ( @role eq 'attribute' ) 
+					then $node.attribute.prefix 
+				else ' '
+		"/>
+		<fo:inline xsl:use-attribute-sets="node">
+			<xsl:call-template name="common.attributes"/>
+			<fo:character character="{$node.prefix}"/><xsl:call-template name="common.children"/>
+		</fo:inline>
+	</xsl:template>
+
+	<xsl:template match="cdml:node" mode="toc">
+		<!-- prevent duplicate IDs in ToC -->
+		<xsl:variable name="node.prefix" select="
+			if ( @role eq 'element' ) 
+				then $node.element.prefix 
+			else 
+				if ( @role eq 'attribute' ) 
+					then $node.attribute.prefix 
+				else ' '
+		"/>
+		<fo:inline xsl:use-attribute-sets="node">
+			<fo:character character="{$node.prefix}"/><xsl:apply-templates/>
+		</fo:inline>
+	</xsl:template>
+	<xsl:template match="cdml:node" mode="bookmark">
+		<!-- prevent duplicate IDs in bookmarks -->
+		<xsl:variable name="node.prefix" select="
+			if ( @role eq 'element' ) 
+				then $node.element.prefix 
+			else 
+				if ( @role eq 'attribute' ) 
+					then $node.attribute.prefix 
+				else ' '
+		"/>
+		<xsl:value-of select="$node.prefix"/><xsl:apply-templates/>
+	</xsl:template>
+
 
 </xsl:stylesheet>

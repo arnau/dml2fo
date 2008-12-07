@@ -456,7 +456,7 @@
 					<xsl:text> (</xsl:text>
 					<xsl:choose>
 						<xsl:when test="$first.char eq '#'">
-							<xsl:if test="xs:boolean( $header.numbers ) and ancestor::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]">
+							<xsl:if test="xs:boolean( $header.numbers ) and id( $idref )[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]">
 								<xsl:for-each select="id( $idref )">
 									<xsl:variable name="number">
 										<xsl:call-template name="header.number"/>

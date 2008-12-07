@@ -68,9 +68,10 @@
 							else
 								$number
 						"/>
-						<xsl:value-of select="dml:title"/>
+						<xsl:apply-templates select="dml:title" mode="toc"/>
 					</fo:basic-link>
-					<fo:leader leader-pattern="dots"/>
+					<!-- <fo:leader leader-pattern="dots"/> -->
+					<fo:leader leader-pattern="use-content">. </fo:leader>
 					<fo:page-number-citation>
 						<xsl:attribute name="ref-id">
 							<xsl:call-template name="get.id"/>

@@ -39,7 +39,7 @@
 					else
 						$number
 				"/>
-				<xsl:value-of select="dml:title"/>
+				<xsl:apply-templates select="dml:title" mode="bookmark"/>
 			</fo:bookmark-title>
 			<xsl:apply-templates select="dml:section" mode="bookmark"/>
 		</fo:bookmark>

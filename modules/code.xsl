@@ -70,14 +70,9 @@
 	</xsl:template>
 
 	<xsl:template match="cdml:node">
-		<xsl:variable name="node.prefix" select="
-			if ( @role eq 'element' ) 
-				then $node.element.prefix 
-			else 
-				if ( @role eq 'attribute' ) 
-					then $node.attribute.prefix 
-				else ' '
-		"/>
+		<xsl:variable name="node.prefix">
+			<xsl:call-template name="get.node.prefix"/>
+		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="node">
 			<xsl:call-template name="common.attributes"/>
 			<fo:character character="{$node.prefix}"/><xsl:call-template name="common.children"/>
@@ -86,21 +81,23 @@
 
 	<xsl:template match="cdml:node" mode="toc">
 		<!-- prevent duplicate IDs in ToC -->
-		<xsl:variable name="node.prefix" select="
-			if ( @role eq 'element' ) 
-				then $node.element.prefix 
-			else 
-				if ( @role eq 'attribute' ) 
-					then $node.attribute.prefix 
-				else ' '
-		"/>
+		<xsl:variable name="node.prefix">
+			<xsl:call-template name="get.node.prefix"/>
+		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="node">
 			<fo:character character="{$node.prefix}"/><xsl:apply-templates/>
 		</fo:inline>
 	</xsl:template>
 	<xsl:template match="cdml:node" mode="bookmark">
 		<!-- prevent duplicate IDs in bookmarks -->
-		<xsl:variable name="node.prefix" select="
+		<xsl:variable name="node.prefix">
+			<xsl:call-template name="get.node.prefix"/>
+		</xsl:variable>
+		<xsl:value-of select="$node.prefix"/><xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template name="get.node.prefix">
+		<xsl:value-of select="
 			if ( @role eq 'element' ) 
 				then $node.element.prefix 
 			else 
@@ -108,8 +105,6 @@
 					then $node.attribute.prefix 
 				else ' '
 		"/>
-		<xsl:value-of select="$node.prefix"/><xsl:apply-templates/>
 	</xsl:template>
-
 
 </xsl:stylesheet>

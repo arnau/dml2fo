@@ -443,7 +443,19 @@
 		<xsl:variable name="idref" select="substring-after( $href, '#' )"/>
 		<xsl:variable name="element.name" select="id( $idref )/local-name()"/>
 		<xsl:choose>
-			<xsl:when test="id( $idref )">
+			<xsl:when test="not( id( $idref ) ) and $first.char eq '#'">
+				<xsl:choose>
+					<xsl:when test="xs:boolean( $debug )">
+						<fo:inline xsl:use-attribute-sets="xref.error">
+							<xsl:apply-templates/> (xref error)
+						</fo:inline>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:apply-templates/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$href">
 				<fo:basic-link xsl:use-attribute-sets="toc.link">
 					<xsl:choose>
 						<xsl:when test="$first.char eq '#'">
@@ -496,11 +508,6 @@
 						</xsl:choose>
 						<xsl:text>)</xsl:text>
 					</fo:inline>
-			</xsl:when>
-			<xsl:when test="( @xlink:href or @href ) and xs:boolean( $debug )">
-				<fo:inline xsl:use-attribute-sets="xref.error">
-					<xsl:apply-templates/> (xref error)
-				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-templates/>

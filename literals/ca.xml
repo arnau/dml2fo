@@ -11,6 +11,7 @@
 	<appendix.prefix>Apèndix</appendix.prefix>
 	<toc.title>Sumari</toc.title>
 	<debug.draft>Esborrany</debug.draft>
+	<debug.review>Examinar</debug.review>
 	<debug.added>+++</debug.added>
 	<debug.deleted>---</debug.deleted>
 	<days>

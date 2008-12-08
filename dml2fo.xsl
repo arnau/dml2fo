@@ -273,6 +273,9 @@
 	<xsl:template name="draft.attribute.set">
 		<xsl:attribute name="background-color">#FFE862</xsl:attribute>
 	</xsl:template>
+	<xsl:template name="review.attribute.set">
+		<xsl:attribute name="background-color">#fc0</xsl:attribute>
+	</xsl:template>
 	<xsl:template name="added.attribute.set">
 		<xsl:attribute name="background-color">#DFD</xsl:attribute>
 	</xsl:template>
@@ -280,6 +283,7 @@
 		<xsl:attribute name="background-color">#FDD</xsl:attribute>
 	</xsl:template>
 
+	<xsl:variable name="status.hidden.values" select="('deleted', 'draft')"/>
 
 	<xsl:template match="dml:dml">
 		<fo:root xsl:use-attribute-sets="root">
@@ -287,7 +291,14 @@
 			<xsl:call-template name="layout.master.set"/>
 			<xsl:if test="xs:boolean( $bookmarks )">
 				<fo:bookmark-tree>
-					<xsl:apply-templates select="/dml:dml/dml:section" mode="bookmark"/>
+					<!-- <xsl:apply-templates select="/dml:dml/dml:section" mode="bookmark"/> -->
+					<xsl:apply-templates select="
+						if ( xs:boolean( $debug ) )
+							then /dml:dml/dml:section
+						else 
+							/dml:dml/dml:section[not( @status = $status.hidden.values )]
+					" mode="bookmark"/>
+
 				</fo:bookmark-tree>
 			</xsl:if>
 			<xsl:call-template name="body"/>
@@ -430,7 +441,7 @@
 			<xsl:call-template name="debug.attributes"/>
 		</xsl:if>
 		<xsl:choose>
-			<xsl:when test="not( xs:boolean( $debug ) ) and ( @status eq 'deleted' )"/>
+			<xsl:when test="not( xs:boolean( $debug ) ) and ( @status = $status.hidden.values )"/>
 			<xsl:otherwise>
 				<xsl:call-template name="common.children"/>
 			</xsl:otherwise>
@@ -535,6 +546,10 @@
 			<xsl:when test="@status eq 'draft'">
 				<xsl:call-template name="draft.attribute.set"/>
 				<fo:inline>(<xsl:value-of select="$literals/literals/debug.draft"/>) </fo:inline>
+			</xsl:when>
+			<xsl:when test="@status eq 'review'">
+				<xsl:call-template name="review.attribute.set"/>
+				<fo:inline>(<xsl:value-of select="$literals/literals/review.draft"/>) </fo:inline>
 			</xsl:when>
 			<xsl:when test="@status eq 'added'">
 				<xsl:call-template name="added.attribute.set"/>

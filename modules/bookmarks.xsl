@@ -41,7 +41,16 @@
 				"/>
 				<xsl:apply-templates select="dml:title" mode="bookmark"/>
 			</fo:bookmark-title>
-			<xsl:apply-templates select="dml:section" mode="bookmark"/>
+			<xsl:choose>
+				<xsl:when test="not( xs:boolean( $debug ) ) and dml:section[not( @status = $status.hidden.values )] and dml:section[@status = $status.hidden.values]">
+					<xsl:apply-templates select="dml:section[not( @status = $status.hidden.values )]" mode="bookmark"/>
+				</xsl:when>
+				<xsl:when test="not( xs:boolean( $debug ) ) and dml:section[@status = $status.hidden.values]"/>
+				<xsl:otherwise>
+					<xsl:apply-templates select="dml:section" mode="bookmark"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- <xsl:apply-templates select="dml:section" mode="bookmark"/> -->
 		</fo:bookmark>
 	</xsl:template>
 

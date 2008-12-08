@@ -33,13 +33,17 @@
 		<xsl:attribute name="color">#005A9C</xsl:attribute>
 	</xsl:attribute-set>
 
-
 	<xsl:template name="toc">
 		<fo:block xsl:use-attribute-sets="h2">
 			<xsl:value-of select="$literals/literals/toc.title"/>
 		</fo:block>
 		<fo:list-block xsl:use-attribute-sets="toc">
-		   <xsl:apply-templates select="/dml:dml/dml:section[position() gt xs:integer( $toc.skipped.sections )]" mode="toc"/>
+			<xsl:apply-templates select="
+				if ( xs:boolean( $debug ) )
+					then /dml:dml/dml:section[( position() gt xs:integer( $toc.skipped.sections ) )]
+				else 
+					/dml:dml/dml:section[( position() gt xs:integer( $toc.skipped.sections ) ) and not( @status = $status.hidden.values )]
+			" mode="toc"/>
 		</fo:list-block>
 	</xsl:template>
 
@@ -78,9 +82,19 @@
 						</xsl:attribute>
 					</fo:page-number-citation>
 					<xsl:if test="dml:section and ( count( ancestor::dml:section ) + 1 lt xs:integer( $toc.depth ) )">
-						<fo:list-block xsl:use-attribute-sets="list.nested toc.number">
-							<xsl:apply-templates select="dml:section" mode="toc"/>
-						</fo:list-block>
+						<xsl:choose>
+							<xsl:when test="not( xs:boolean( $debug ) ) and dml:section[not( @status = $status.hidden.values )] and dml:section[@status = $status.hidden.values]">
+								<fo:list-block xsl:use-attribute-sets="list.nested toc.number">
+									<xsl:apply-templates select="dml:section[not( @status = $status.hidden.values )]" mode="toc"/>
+								</fo:list-block>
+							</xsl:when>
+							<xsl:when test="not( xs:boolean( $debug ) ) and dml:section[@status = $status.hidden.values]"/>
+							<xsl:otherwise>
+								<fo:list-block xsl:use-attribute-sets="list.nested toc.number">
+									<xsl:apply-templates select="dml:section" mode="toc"/>
+								</fo:list-block>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 				</fo:block>
 			</fo:list-item-body>

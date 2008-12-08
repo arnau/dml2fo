@@ -274,7 +274,7 @@
 		<xsl:attribute name="background-color">#FFE862</xsl:attribute>
 	</xsl:template>
 	<xsl:template name="review.attribute.set">
-		<xsl:attribute name="background-color">#fc0</xsl:attribute>
+		<xsl:attribute name="background-color">#6cf</xsl:attribute>
 	</xsl:template>
 	<xsl:template name="added.attribute.set">
 		<xsl:attribute name="background-color">#DFD</xsl:attribute>

@@ -549,7 +549,7 @@
 			</xsl:when>
 			<xsl:when test="@status eq 'review'">
 				<xsl:call-template name="review.attribute.set"/>
-				<fo:inline>(<xsl:value-of select="$literals/literals/review.draft"/>) </fo:inline>
+				<fo:inline>(<xsl:value-of select="$literals/literals/debug.review"/>) </fo:inline>
 			</xsl:when>
 			<xsl:when test="@status eq 'added'">
 				<xsl:call-template name="added.attribute.set"/>

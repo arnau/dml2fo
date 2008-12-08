@@ -265,6 +265,10 @@
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="xref"/>
+	
+	<xsl:attribute-set name="xref.error">
+		<xsl:attribute name="color">red</xsl:attribute>
+	</xsl:attribute-set>
 
 	<xsl:template name="draft.attribute.set">
 		<xsl:attribute name="background-color">#FFE862</xsl:attribute>
@@ -434,13 +438,12 @@
 	</xsl:template>
 
 	<xsl:template name="common.children">
+		<xsl:variable name="href" select="@xlink:href | @href"/>
+		<xsl:variable name="first.char" select="substring( $href, 1, 1 )"/>
+		<xsl:variable name="idref" select="substring-after( $href, '#' )"/>
+		<xsl:variable name="element.name" select="id( $idref )/local-name()"/>
 		<xsl:choose>
-			<xsl:when test="@xlink:href or @href">
-				<xsl:variable name="href" select="@xlink:href | @href"/>
-				<xsl:variable name="first.char" select="substring( $href, 1, 1 )"/>
-				<xsl:variable name="idref" select="substring-after( $href, '#' )"/>
-				<xsl:variable name="element.name" select="id( $idref )/local-name()"/>
-
+			<xsl:when test="id( $idref )">
 				<fo:basic-link xsl:use-attribute-sets="toc.link">
 					<xsl:choose>
 						<xsl:when test="$first.char eq '#'">
@@ -452,46 +455,51 @@
 					</xsl:choose>
 					<xsl:apply-templates/>
 				</fo:basic-link>
-				<fo:inline xsl:use-attribute-sets="xref">
-					<xsl:text> (</xsl:text>
-					<xsl:choose>
-						<xsl:when test="$first.char eq '#'">
-							<xsl:if test="xs:boolean( $header.numbers ) and id( $idref )[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]">
-								<xsl:for-each select="id( $idref )">
-									<xsl:variable name="number">
-										<xsl:call-template name="header.number"/>
-									</xsl:variable>
-									<xsl:choose>
-										<xsl:when test="$element.name eq 'table'">
-											<xsl:value-of select="concat( $literals/literals/table.label, ' ', $number )"/>
-											<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
-										</xsl:when>
-										<xsl:when test="$element.name eq 'figure'">
-											<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $number )"/>
-											<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
-										</xsl:when>
-										<xsl:when test="$element.name eq 'example'">
-											<xsl:value-of select="concat( $literals/literals/example.label, ' ', $number )"/>
-											<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
-										</xsl:when>
-										<xsl:when test="id( $idref )/ancestor-or-self::*[@role='appendix']">
-											<xsl:value-of select="concat( $literals/literals/appendix.prefix, ' ', $number )"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="concat( $literals/literals/section, ' ', $number )"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:for-each>
-								<xsl:text>, </xsl:text>
-							</xsl:if>
-							<xsl:value-of select="concat( $literals/literals/page/@abbr, ' ' )"/>
-							<fo:page-number-citation ref-id="{$idref}"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$href"/>
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:text>)</xsl:text>
+					<fo:inline xsl:use-attribute-sets="xref">
+						<xsl:text> (</xsl:text>
+						<xsl:choose>
+							<xsl:when test="$first.char eq '#'">
+								<xsl:if test="xs:boolean( $header.numbers ) and id( $idref )[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]">
+									<xsl:for-each select="id( $idref )">
+										<xsl:variable name="number">
+											<xsl:call-template name="header.number"/>
+										</xsl:variable>
+										<xsl:choose>
+											<xsl:when test="$element.name eq 'table'">
+												<xsl:value-of select="concat( $literals/literals/table.label, ' ', $number )"/>
+												<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
+											</xsl:when>
+											<xsl:when test="$element.name eq 'figure'">
+												<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $number )"/>
+												<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
+											</xsl:when>
+											<xsl:when test="$element.name eq 'example'">
+												<xsl:value-of select="concat( $literals/literals/example.label, ' ', $number )"/>
+												<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
+											</xsl:when>
+											<xsl:when test="id( $idref )/ancestor-or-self::*[@role='appendix']">
+												<xsl:value-of select="concat( $literals/literals/appendix.prefix, ' ', $number )"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="concat( $literals/literals/section, ' ', $number )"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
+									<xsl:text>, </xsl:text>
+								</xsl:if>
+								<xsl:value-of select="concat( $literals/literals/page/@abbr, ' ' )"/>
+								<fo:page-number-citation ref-id="{$idref}"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$href"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:text>)</xsl:text>
+					</fo:inline>
+			</xsl:when>
+			<xsl:when test="( @xlink:href or @href ) and xs:boolean( $debug )">
+				<fo:inline xsl:use-attribute-sets="xref.error">
+					<xsl:apply-templates/> (xref error)
 				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise>

@@ -44,6 +44,10 @@
 
 	<xsl:attribute-set name="code.param"/>
 
+	<xsl:attribute-set name="code.variable">
+		<xsl:attribute name="font-style">italic</xsl:attribute>
+	</xsl:attribute-set>
+
 
 	<xsl:template match="cdml:code">
 		<fo:inline xsl:use-attribute-sets="code.inline">
@@ -128,6 +132,12 @@
 			</fo:inline>
 		</xsl:if>
 
+	</xsl:template>
+
+	<xsl:template match="cdml:variable">
+		<fo:inline xsl:use-attribute-sets="code.variable">
+			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:inline>
 	</xsl:template>
 
 </xsl:stylesheet>

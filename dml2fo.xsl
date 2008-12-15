@@ -259,6 +259,45 @@
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 	</xsl:attribute-set>
 
+	<xsl:attribute-set name="tip">
+		<xsl:attribute name="space-before">1.5em</xsl:attribute>
+		<xsl:attribute name="space-after">1.5em</xsl:attribute>
+		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
+		<xsl:attribute name="border-bottom">3pt solid #999</xsl:attribute>
+		<xsl:attribute name="border-top">3pt solid #999</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="tip.with.title" use-attribute-sets="tip">
+		<xsl:attribute name="border-top">0</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="tip.title">
+		<xsl:attribute name="space-after">1em</xsl:attribute>
+		<xsl:attribute name="text-align">center</xsl:attribute>
+		<xsl:attribute name="border-bottom">3pt solid #999</xsl:attribute>
+		<xsl:attribute name="padding">3pt 0</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="tip.label">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="sidebar">
+		<xsl:attribute name="space-before">1.5em</xsl:attribute>
+		<xsl:attribute name="space-after">1.5em</xsl:attribute>
+		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
+		<xsl:attribute name="border">3pt solid #999</xsl:attribute>
+		<xsl:attribute name="padding">1em</xsl:attribute>
+		<xsl:attribute name="margin">0</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="sidebar.title">
+		<xsl:attribute name="space-after">1em</xsl:attribute>
+		<xsl:attribute name="text-align">center</xsl:attribute>
+		<xsl:attribute name="border-bottom">1pt solid #999</xsl:attribute>
+		<xsl:attribute name="padding">3pt 0</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="sidebar.label">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+
+
 	<xsl:attribute-set name="monospace">
 		<xsl:attribute name="font-size">0.85em</xsl:attribute>
 		<xsl:attribute name="font-family">monospace</xsl:attribute>
@@ -739,6 +778,29 @@
 			<!-- <fo:inline xsl:use-attribute-sets="warning.label">
 				<xsl:value-of select="concat( $literals/literals/warning.label, ': ')"/>
 			</fo:inline> -->
+			<xsl:call-template name="common.children"/>
+		</fo:block>
+	</xsl:template>
+
+
+	<xsl:template match="dml:note[@role='tip']">
+		<xsl:choose>
+			<xsl:when test="dml:title">
+				<fo:block xsl:use-attribute-sets="tip.with.title">
+					<xsl:call-template name="common.attributes.and.children"/>
+				</fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block xsl:use-attribute-sets="tip">
+					<xsl:call-template name="common.attributes.and.children"/>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="dml:note[@role='tip']/dml:title">
+		<fo:block xsl:use-attribute-sets="tip.title">
+			<xsl:call-template name="common.attributes"/>
 			<xsl:call-template name="common.children"/>
 		</fo:block>
 	</xsl:template>

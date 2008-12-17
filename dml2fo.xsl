@@ -5,7 +5,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:dc="http://purl.org/dc/terms/"
 	xmlns:xlink="http://www.w3.org/1999/xlink" 
 	xmlns:fnc="dml2fo:functions" 
 	exclude-result-prefixes="xs dml cdml dc fnc xlink">
@@ -451,8 +451,9 @@
 	<xsl:template name="date.issued">
 		<xsl:variable name="document.id" select="/dml:dml/@xml:id"/>
 		<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ''"/>
+		<xsl:variable name="date.property" select="if( //dml:metadata[@about=$document.metadata]//@property='dc:modified' ) then 'dc:modified' else 'dc:issued'"/>
 
-		<xsl:variable name="isodate" select="//*[@about=$document.metadata]//*[@property='dc:issued']"/>
+		<xsl:variable name="isodate" select="//dml:metadata[@about=$document.metadata]//*[@property eq $date.property]"/>
 		<xsl:variable name="day" select="number( format-date( $isodate, '[F1]' ) )"/>
 		<xsl:variable name="month" select="number( format-date( $isodate, '[M1]' ) )"/>
 

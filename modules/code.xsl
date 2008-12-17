@@ -5,7 +5,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:dc="http://purl.org/dc/terms/"
 	xmlns:fnc="dml2fo:functions" 
 	exclude-result-prefixes="xs dml cdml dc fnc">
 	

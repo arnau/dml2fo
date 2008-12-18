@@ -16,6 +16,7 @@
 	<xsl:import href="modules/code.xsl"/>
 	<xsl:import href="modules/bookmarks.xsl"/>
 	<xsl:import href="modules/toc.xsl"/>
+	<xsl:import href="modules/footnotes.xsl"/>
 
 	<xsl:import href="functions/highlight.xsl"/>
 	
@@ -86,7 +87,7 @@
 	<xsl:param name="toc.depth">3</xsl:param>
 	<!-- $toc.skipped.sections: integer -->
 	<xsl:param name="toc.skipped.sections">1</xsl:param>
-	<!-- $toc.position: positiveInteger | -1 (puts ToC after all content) -->
+	<!-- $toc.position: -1 | 0 | 1 (-1 puts ToC after all content, 0 puts ToC before all content and 1 puts ToC before first non $toc.skipped.sections) -->
 	<xsl:param name="toc.position">1</xsl:param>
 
 	<!-- $debug: true | false -->
@@ -324,7 +325,7 @@
 
 	<xsl:variable name="status.hidden.values" select="('deleted', 'draft')"/>
 
-	<xsl:template match="dml:dml">
+	<xsl:template match="/dml:dml">
 		<fo:root xsl:use-attribute-sets="root">
 			<xsl:call-template name="common.attributes"/>
 			<xsl:call-template name="layout.master.set"/>
@@ -419,6 +420,14 @@
 					</fo:block>
 				</fo:block>
 			</fo:static-content>
+			<fo:static-content flow-name="xsl-footnote-separator">
+				<fo:block>
+					<fo:leader leader-pattern="rule"
+						leader-length="10%"
+						rule-style="solid"
+						rule-thickness="0.5pt"/>
+					</fo:block>
+				</fo:static-content>
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block xsl:use-attribute-sets="document.title">
 					<xsl:value-of select="$title"/>
@@ -426,14 +435,11 @@
 				<xsl:call-template name="date.issued"/>
 				<fo:block xsl:use-attribute-sets="body">
 					<xsl:call-template name="common.attributes"/>
+
 					<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq 0 )">
 						<xsl:call-template name="toc"/>
 					</xsl:if>
-
-					<xsl:apply-templates select="dml:*[not( self::dml:list[@about and preceding-sibling::dml:title] or self::dml:title )]"/>
-
-					<!-- calls the endnotes template -->
-					<!-- <xsl:call-template name="make.endnotes.list"/> -->
+					<xsl:apply-templates select="dml:*[not( self::dml:title or self::dml:metadata )]"/>
 
 					<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq -1 )">
 						<xsl:call-template name="toc"/>
@@ -477,9 +483,6 @@
 
 	<xsl:template name="common.attributes.and.children">
 		<xsl:call-template name="common.attributes"/>
-		<xsl:if test="xs:boolean( $debug )">
-			<xsl:call-template name="debug.attributes"/>
-		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="not( xs:boolean( $debug ) ) and ( @status = $status.hidden.values )"/>
 			<xsl:otherwise>
@@ -506,11 +509,16 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
+			<xsl:when test="//dml:note[( @role eq 'footnote' ) and ( @xml:id eq $idref )] and $href">
+				<xsl:call-template name="xref.footnote">
+					<xsl:with-param name="idref" select="$idref"/>
+				</xsl:call-template>
+			</xsl:when>
 			<xsl:when test="$href">
-				<fo:basic-link xsl:use-attribute-sets="toc.link">
+				<fo:basic-link xsl:use-attribute-sets="toc.xref">
 					<xsl:choose>
 						<xsl:when test="$first.char eq '#'">
-							<xsl:attribute name="internal-destination" select="substring-after( $href, '#' )"/>
+							<xsl:attribute name="internal-destination" select="$idref"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="external-destination" select="$href"/>
@@ -518,47 +526,47 @@
 					</xsl:choose>
 					<xsl:apply-templates/>
 				</fo:basic-link>
-					<fo:inline xsl:use-attribute-sets="xref">
-						<xsl:text> (</xsl:text>
-						<xsl:choose>
-							<xsl:when test="$first.char eq '#'">
-								<xsl:if test="xs:boolean( $header.numbers ) and id( $idref )[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]">
-									<xsl:for-each select="id( $idref )">
-										<xsl:variable name="number">
-											<xsl:call-template name="header.number"/>
-										</xsl:variable>
-										<xsl:choose>
-											<xsl:when test="$element.name eq 'table'">
-												<xsl:value-of select="concat( $literals/literals/table.label, ' ', $number )"/>
-												<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
-											</xsl:when>
-											<xsl:when test="$element.name eq 'figure'">
-												<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $number )"/>
-												<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
-											</xsl:when>
-											<xsl:when test="$element.name eq 'example'">
-												<xsl:value-of select="concat( $literals/literals/example.label, ' ', $number )"/>
-												<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
-											</xsl:when>
-											<xsl:when test="id( $idref )/ancestor-or-self::*[@role='appendix']">
-												<xsl:value-of select="concat( $literals/literals/appendix.prefix, ' ', $number )"/>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="concat( $literals/literals/section, ' ', $number )"/>
-											</xsl:otherwise>
-										</xsl:choose>
-									</xsl:for-each>
-									<xsl:text>, </xsl:text>
-								</xsl:if>
-								<xsl:value-of select="concat( $literals/literals/page/@abbr, ' ' )"/>
-								<fo:page-number-citation ref-id="{$idref}"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$href"/>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:text>)</xsl:text>
-					</fo:inline>
+				<fo:inline xsl:use-attribute-sets="xref">
+					<xsl:text> (</xsl:text>
+					<xsl:choose>
+						<xsl:when test="$first.char eq '#'">
+							<xsl:if test="xs:boolean( $header.numbers ) and id( $idref )[ancestor-or-self::dml:*[parent::dml:dml and count( preceding-sibling::dml:section ) ge xs:integer( $toc.skipped.sections )]]">
+								<xsl:for-each select="id( $idref )">
+									<xsl:variable name="number">
+										<xsl:call-template name="header.number"/>
+									</xsl:variable>
+									<xsl:choose>
+										<xsl:when test="$element.name eq 'table'">
+											<xsl:value-of select="concat( $literals/literals/table.label, ' ', $number )"/>
+											<xsl:number from="dml:section" count="dml:table" level="any" format="-1"/>
+										</xsl:when>
+										<xsl:when test="$element.name eq 'figure'">
+											<xsl:value-of select="concat( $literals/literals/figure.label, ' ', $number )"/>
+											<xsl:number from="dml:section" count="dml:figure" level="any" format="-1"/>
+										</xsl:when>
+										<xsl:when test="$element.name eq 'example'">
+											<xsl:value-of select="concat( $literals/literals/example.label, ' ', $number )"/>
+											<xsl:number from="dml:section" count="dml:example" level="any" format="-1"/>
+										</xsl:when>
+										<xsl:when test="id( $idref )/ancestor-or-self::*[@role='appendix']">
+											<xsl:value-of select="concat( $literals/literals/appendix.prefix, ' ', $number )"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="concat( $literals/literals/section, ' ', $number )"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:for-each>
+								<xsl:text>, </xsl:text>
+							</xsl:if>
+							<xsl:value-of select="concat( $literals/literals/page/@abbr, ' ' )"/>
+							<fo:page-number-citation ref-id="{$idref}"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$href"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text>)</xsl:text>
+				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-templates/>
@@ -568,7 +576,6 @@
 
 	<xsl:template name="common.attributes">
 		<xsl:attribute name="role">
-			<!-- TODO: it makes sense or need to be something like html:h1? -->
 			<xsl:value-of select="concat( 'dml:', local-name() )"/>
 		</xsl:attribute>
 		<xsl:if test="@xml:lang">
@@ -578,6 +585,9 @@
 		<xsl:if test="@align">
 			<!-- TODO: must be ignored? -->
 			<xsl:attribute name="align" select="@align"/>
+		</xsl:if>
+		<xsl:if test="xs:boolean( $debug )">
+			<xsl:call-template name="debug.attributes"/>
 		</xsl:if>
 	</xsl:template>
 	
@@ -621,11 +631,12 @@
 
 	<xsl:template match="dml:section">
 		<fo:block xsl:use-attribute-sets="section">
-			<xsl:call-template name="common.attributes.and.children"/>
+			<xsl:call-template name="common.attributes"/>
+			<xsl:if test="xs:boolean( $toc ) and parent::dml:dml and ( count( preceding-sibling::dml:section ) eq xs:integer( $toc.skipped.sections ) )">
+				<xsl:call-template name="toc"/>
+			</xsl:if>
+			<xsl:call-template name="common.children"/>
 		</fo:block>
-		<xsl:if test="xs:boolean( $toc ) and parent::dml:dml and ( position() eq xs:integer( $toc.position ) )">
-			<xsl:call-template name="toc"/>
-		</xsl:if>
 	</xsl:template>
 	<xsl:template match="dml:section/dml:title">
 		<xsl:variable name="section.counter" select="count( ancestor::dml:section )"/>

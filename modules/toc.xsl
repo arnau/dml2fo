@@ -29,7 +29,7 @@
 	<xsl:attribute-set name="toc.number">
 		<xsl:attribute name="margin-left">2em</xsl:attribute>
 	</xsl:attribute-set>
-	<xsl:attribute-set name="toc.link">
+	<xsl:attribute-set name="toc.xref">
 		<xsl:attribute name="color">#005A9C</xsl:attribute>
 	</xsl:attribute-set>
 
@@ -62,7 +62,7 @@
 			<!-- <fo:list-item-body start-indent="body-start()"> -->
 			<fo:list-item-body>
 				<fo:block text-align-last="justify">
-					<fo:basic-link xsl:use-attribute-sets="toc.link">
+					<fo:basic-link xsl:use-attribute-sets="toc.xref">
 						<xsl:attribute name="internal-destination">
 							<xsl:call-template name="get.id"/>
 						</xsl:attribute>

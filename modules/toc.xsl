@@ -25,6 +25,9 @@
 	<xsl:attribute-set name="toc">
 		<xsl:attribute name="space-after">3em</xsl:attribute>
 		<!-- <xsl:attribute name="page-break-after">always</xsl:attribute> -->
+		<!-- <xsl:attribute name="break-before">page</xsl:attribute>
+		<xsl:attribute name="break-after">page</xsl:attribute> -->
+		<xsl:attribute name="keep-together">1</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="toc.number">
 		<xsl:attribute name="margin-left">2em</xsl:attribute>

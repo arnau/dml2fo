@@ -168,7 +168,7 @@
 		</fo:table-cell>
 	</xsl:template>
 	<xsl:template match="dml:cell">
-		<fo:table-cell xsl:use-attribute-sets="table.cell">
+		<fo:table-cell>
 			<xsl:call-template name="table.cell"/>
 		</fo:table-cell>
 	</xsl:template>
@@ -187,9 +187,8 @@
 		<!-- TODO: review -->
 		<!-- <xsl:attribute name="display-align">from-table-column()</xsl:attribute>
 		<xsl:attribute name="relative-align">from-table-column()</xsl:attribute> -->
-		<xsl:call-template name="common.attributes"/>
-		<fo:block>
-			<xsl:apply-templates/>
+		<fo:block xsl:use-attribute-sets="table.cell">
+			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:block>
 	</xsl:template>
 

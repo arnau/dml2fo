@@ -455,26 +455,30 @@
 	<xsl:template match="dml:metadata"/>
 	
 	<xsl:template name="date.issued">
-		<xsl:variable name="document.id" select="/dml:dml/@xml:id"/>
-		<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ''"/>
-		<xsl:variable name="date.property" select="if( //dml:metadata[@about=$document.metadata]//@property='dc:modified' ) then 'dc:modified' else 'dc:issued'"/>
-
+		<xsl:variable name="document.id" select="/( dml:dml, dml:note )/@xml:id"/>
+		<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ()"/>
+		<xsl:variable name="date.property" select="if ( //dml:metadata[@about=$document.metadata]//@property='dc:modified' ) then 'dc:modified' else 'dc:issued'"/>
 		<xsl:variable name="isodate" select="//dml:metadata[@about=$document.metadata]//*[@property eq $date.property]"/>
-		<xsl:variable name="day" select="number( format-date( $isodate, '[F1]' ) )"/>
-		<xsl:variable name="month" select="number( format-date( $isodate, '[M1]' ) )"/>
 
-		<fo:block xsl:use-attribute-sets="date.issued">
-			<xsl:if test="$isodate and xs:boolean( $date.issued )">
+		<xsl:if test="xs:boolean( $date.issued )">
+			<fo:block xsl:use-attribute-sets="date.issued">
 				<xsl:choose>
-					<xsl:when test="lang('ca') or lang('es')">
-						<xsl:value-of select="( $literals/literals/month/item[$month], $literals/literals/date.preposition, year-from-date( $isodate ) )"/>
+					<xsl:when test="$isodate castable as xs:date">
+						<xsl:variable name="day" select="number( format-date( $isodate, '[F1]' ) )"/>
+						<xsl:variable name="month" select="number( format-date( $isodate, '[M1]' ) )"/>
+						<xsl:value-of select="
+							if ( lang('ca') or lang('es') ) then
+								( $literals/literals/month/item[$month], $literals/literals/date.preposition, year-from-date( $isodate ) )
+							else
+								( $literals/literals/month/item[$month], year-from-date( $isodate ) )
+						"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="( $literals/literals/month/item[$month], year-from-date( $isodate ) )"/>
+						<xsl:apply-templates select="$isodate/node()"/>
 					</xsl:otherwise>
 				</xsl:choose>
-			</xsl:if>
-		</fo:block>
+			</fo:block>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="header.content">

@@ -6,9 +6,8 @@
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
 	xmlns:dc="http://purl.org/dc/terms/"
-	xmlns:xlink="http://www.w3.org/1999/xlink" 
 	xmlns:fnc="dml2fo:functions" 
-	exclude-result-prefixes="xs dml cdml dc fnc xlink">
+	exclude-result-prefixes="xs dml cdml dc fnc">
 	
 	<xsl:import href="modules/inline.xsl"/>
 	<xsl:import href="modules/lists.xsl"/>
@@ -495,7 +494,7 @@
 	</xsl:template>
 
 	<xsl:template name="common.children">
-		<xsl:variable name="href" select="@xlink:href | @href"/>
+		<xsl:variable name="href" select="@href"/>
 		<xsl:variable name="first.char" select="substring( $href, 1, 1 )"/>
 		<xsl:variable name="idref" select="substring-after( $href, '#' )"/>
 		<xsl:variable name="element.name" select="id( $idref )/local-name()"/>

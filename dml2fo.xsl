@@ -134,6 +134,7 @@
 		<xsl:attribute name="keep-with-next.within-column">always</xsl:attribute>
 		<xsl:attribute name="keep-together.within-column">always</xsl:attribute>
 	</xsl:attribute-set>
+
 	<xsl:attribute-set name="h1">
 		<xsl:attribute name="font-size">2em</xsl:attribute>
 		<xsl:attribute name="font-weight">normal</xsl:attribute>
@@ -325,20 +326,18 @@
 
 	<xsl:variable name="status.hidden.values" select="('deleted', 'draft')"/>
 
-	<xsl:template match="/dml:dml">
+	<xsl:template match="/dml:dml | /dml:note">
 		<fo:root xsl:use-attribute-sets="root">
 			<xsl:call-template name="common.attributes"/>
 			<xsl:call-template name="layout.master.set"/>
 			<xsl:if test="xs:boolean( $bookmarks )">
 				<fo:bookmark-tree>
-					<!-- <xsl:apply-templates select="/dml:dml/dml:section" mode="bookmark"/> -->
 					<xsl:apply-templates select="
 						if ( xs:boolean( $debug ) )
-							then /dml:dml/dml:section
+							then /(dml:dml, dml:note)/dml:section
 						else 
-							/dml:dml/dml:section[not( @status = $status.hidden.values )]
+							/(dml:dml, dml:note)/dml:section[not( @status = $status.hidden.values )]
 					" mode="bookmark"/>
-
 				</fo:bookmark-tree>
 			</xsl:if>
 			<xsl:call-template name="body"/>
@@ -401,7 +400,7 @@
 	</xsl:template>
 
 	<xsl:template name="body">
-		<xsl:variable name="title" select="/dml:dml/dml:title"/>
+		<xsl:variable name="title" select="/(dml:dml, dml:note)/dml:title"/>
 		<fo:page-sequence master-reference="all.pages">
 			<fo:title>
 				<xsl:value-of select="$title"/>
@@ -645,27 +644,27 @@
 	<xsl:template match="dml:section/dml:title">
 		<xsl:variable name="section.counter" select="count( ancestor::dml:section )"/>
 		<xsl:choose>
-			<xsl:when test="$section.counter = 1">
+			<xsl:when test="$section.counter eq 1">
 				<fo:block xsl:use-attribute-sets="h1">
 					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
-			<xsl:when test="$section.counter = 2">
+			<xsl:when test="$section.counter eq 2">
 				<fo:block xsl:use-attribute-sets="h2">
 					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
-			<xsl:when test="$section.counter = 3">
+			<xsl:when test="$section.counter eq 3">
 				<fo:block xsl:use-attribute-sets="h3">
 					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
-			<xsl:when test="$section.counter = 4">
+			<xsl:when test="$section.counter eq 4">
 				<fo:block xsl:use-attribute-sets="h4">
 					<xsl:call-template name="header.children"/>
 				</fo:block>
 			</xsl:when>
-			<xsl:when test="$section.counter = 5">
+			<xsl:when test="$section.counter eq 5">
 				<fo:block xsl:use-attribute-sets="h5">
 					<xsl:call-template name="header.children"/>
 				</fo:block>
@@ -679,20 +678,23 @@
 	</xsl:template>
 
 	<xsl:template name="header.children">
+		<xsl:call-template name="common.attributes"/>
+		<xsl:call-template name="header.children.number"/>
+		<xsl:call-template name="common.children"/>
+	</xsl:template>
+	<xsl:template name="header.children.number">
 		<xsl:variable name="number">
 			<xsl:call-template name="header.number">
 				<xsl:with-param name="format.number.type">1. </xsl:with-param>
 				<xsl:with-param name="appendix.format.number.type" select="concat( $appendix.format.number.type, ' ' )"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:call-template name="common.attributes"/>
 		<xsl:value-of select="
 			if ( parent::dml:section[@role='appendix'] and xs:boolean( $appendix.format.number ) ) then
 				concat( $literals/literals/appendix.prefix, ' ', $number, $appendix.separator )
 			else
 				$number
 		"/>
-		<xsl:apply-templates/>
 	</xsl:template>
 	
 	<xsl:template name="header.number">

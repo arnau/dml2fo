@@ -49,7 +49,7 @@
 						<xsl:if test="$document.publisher">
 							<dc:publisher><xsl:value-of select="$document.publisher"/></dc:publisher>
 						</xsl:if>
-						<xsl:if test="$document.publisher">
+						<xsl:if test="$document.rights">
 							<dc:rights><xsl:value-of select="$document.rights"/></dc:rights>
 						</xsl:if>
 					</rdf:Description>

@@ -4,18 +4,22 @@
 	xmlns:fo="http://www.w3.org/1999/XSL/Format"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0"
-	xmlns:dc="http://purl.org/dc/terms/"
+	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fnc="dml2fo:functions"
+	xmlns:x="adobe:ns:meta/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	exclude-result-prefixes="xs dml dc">
+	xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+	exclude-result-prefixes="xs dml dct fnc">
 
 	<dml:note>
 		<dml:list>
-			<dml:item property="dc:creator">Arnau Siches</dml:item>
-			<dml:item property="dc:issued">2008-12-28</dml:item>
-			<dml:item property="dc:description">
+			<dml:item property="dct:creator">Arnau Siches</dml:item>
+			<dml:item property="dct:issued">2008-12-28</dml:item>
+			<dml:item property="dct:description">
 				<p>Metadata for dml2fo.xsl</p>
 			</dml:item>
-			<dml:item property="dc:license">
+			<dml:item property="dct:license">
 				<!-- todo -->
 			</dml:item>
 		</dml:list>
@@ -24,18 +28,17 @@
 	<xsl:variable name="document.metadata" select="/(dml:dml, dml:note)/dml:metadata"/>
 
 	<xsl:variable name="document.title" select="/(dml:dml, dml:note)/dml:title"/>
-	<xsl:variable name="document.description" select="$document.metadata//*[@property='dc:description']"/>
-	<xsl:variable name="document.rights" select="$document.metadata//*[@property='dc:rights']"/>
-
-	<xsl:variable name="document.creator" select="$document.metadata//*[@property='dc:creator']/node()"/>
-	<xsl:variable name="document.subject" select="$document.metadata//*[@property='dc:subject']/node()"/>
-	<xsl:variable name="document.publisher" select="$document.metadata//*[@property='dc:publisher']/node()"/>
+	<xsl:variable name="document.description" select="fnc:dc.extractor( $document.metadata, 'description' )"/>
+	<xsl:variable name="document.rights" select="fnc:dc.extractor( $document.metadata, 'rights' )"/>
+	<xsl:variable name="document.creator" select="fnc:dc.extractor( $document.metadata, 'creator' )"/>
+	<xsl:variable name="document.subject" select="fnc:dc.extractor( $document.metadata, 'subject' )"/>
+	<xsl:variable name="document.publisher" select="fnc:dc.extractor( $document.metadata, 'publisher' )"/>
 
 	<xsl:template name="metadata">
 		<fo:declarations>
-			<x:xmpmeta xmlns:x="adobe:ns:meta/">
+			<x:xmpmeta>
 				<rdf:RDF>
-					<rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<rdf:Description rdf:about="">
 						<dc:title><xsl:value-of select="$document.title"/></dc:title>
 						<xsl:if test="$document.creator">
 							<dc:creator><xsl:apply-templates select="$document.creator" mode="metadata.rdf"/></dc:creator>
@@ -53,7 +56,7 @@
 							<dc:rights><xsl:value-of select="$document.rights"/></dc:rights>
 						</xsl:if>
 					</rdf:Description>
-					<rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+					<rdf:Description rdf:about="">
 						<xmp:CreatorTool>DML2FO</xmp:CreatorTool>
 					</rdf:Description>
 				</rdf:RDF>
@@ -69,6 +72,18 @@
 	<xsl:template match="dml:item" mode="metadata.rdf">
 		<rdf:li><xsl:value-of select="."/></rdf:li>
 	</xsl:template>
+
+	<xsl:function name="fnc:dc.extractor">
+		<xsl:param name="context"/>
+		<xsl:param name="type" as="xs:string"/>
+		<xsl:variable name="dc.ns" select="( 'http://purl.org/dc/elements/1.1/', 'http://purl.org/dc/terms/' )"/>
+		<xsl:sequence select="
+			$context//*[
+				( replace( @property, '.+:(.+)', '$1' ) eq $type ) and
+				( some $i in $dc.ns satisfies $i eq namespace-uri-for-prefix( replace( @property, '(.+):.+', '$1' ), /* ) )
+			]/node()
+		"/>
+	</xsl:function>
 
 
 </xsl:stylesheet>

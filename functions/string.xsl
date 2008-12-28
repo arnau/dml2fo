@@ -4,17 +4,20 @@
 	xmlns:fo="http://www.w3.org/1999/XSL/Format" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
-	xmlns:dc="http://purl.org/dc/terms/"
+	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
 	xmlns:fnc="dml2fo:functions" 
-	exclude-result-prefixes="xs dml dc rdf fnc">
+	exclude-result-prefixes="xs dml dct rdf fnc">
 
 	<dml:note>
 		<dml:list>
-			<dml:item property="dc:creator">Arnau Siches</dml:item>
-			<dml:item property="dc:issued">2008-10-20</dml:item>
-			<dml:item property="dc:description">String functions</dml:item>
+			<dml:item property="dct:creator">Arnau Siches</dml:item>
+			<dml:item property="dct:issued">2008-10-20</dml:item>
+			<dml:item property="dct:description">String functions</dml:item>
+			<dml:item property="dct:license">
+				<!-- todo -->
+			</dml:item>
 		</dml:list>
 	</dml:note>
 

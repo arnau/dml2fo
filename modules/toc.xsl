@@ -4,17 +4,17 @@
 	xmlns:fo="http://www.w3.org/1999/XSL/Format" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
-	xmlns:dc="http://purl.org/dc/terms/"
-	exclude-result-prefixes="xs dml dc">
+	xmlns:dct="http://purl.org/dc/terms/"
+	exclude-result-prefixes="xs dml dct">
 	
 	<dml:note>
 		<dml:list>
-			<dml:item property="dc:creator">Arnau Siches</dml:item>
-			<dml:item property="dc:issued">2008-11-13</dml:item>
-			<dml:item property="dc:description">
+			<dml:item property="dct:creator">Arnau Siches</dml:item>
+			<dml:item property="dct:issued">2008-11-13</dml:item>
+			<dml:item property="dct:description">
 				<p>Table of Contents for dml2fo.xsl.</p>
 			</dml:item>
-			<dml:item property="dc:license">
+			<dml:item property="dct:license">
 				<!-- todo -->
 			</dml:item>
 		</dml:list>

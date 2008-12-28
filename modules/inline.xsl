@@ -5,18 +5,18 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
-	xmlns:dc="http://purl.org/dc/terms/"
+	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fnc="dml2fo:functions" 
-	exclude-result-prefixes="xs dml cdml dc fnc">
+	exclude-result-prefixes="xs dml cdml dct fnc">
 	
 	<dml:note>
 		<dml:list>
-			<dml:item property="dc:creator">Arnau Siches</dml:item>
-			<dml:item property="dc:issued">2008-11-09</dml:item>
-			<dml:item property="dc:description">
+			<dml:item property="dct:creator">Arnau Siches</dml:item>
+			<dml:item property="dct:issued">2008-11-09</dml:item>
+			<dml:item property="dct:description">
 				<p>DML inline elements to XSL-FO.</p>
 			</dml:item>
-			<dml:item property="dc:license">
+			<dml:item property="dct:license">
 				<!-- todo -->
 			</dml:item>
 		</dml:list>

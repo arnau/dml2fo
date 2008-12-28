@@ -5,10 +5,10 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
-	xmlns:dc="http://purl.org/dc/terms/"
+	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:fnc="dml2fo:functions" 
-	exclude-result-prefixes="xs dml cdml dc fnc">
+	exclude-result-prefixes="xs dml cdml dct fnc">
 	
 	<xsl:import href="config.xsl"/>
 	<xsl:import href="modules/inline.xsl"/>
@@ -24,12 +24,12 @@
 	
 	<dml:note>
 		<dml:list>
-			<dml:item property="dc:creator">Arnau Siches</dml:item>
-			<dml:item property="dc:issued">2008-11-07</dml:item>
-			<dml:item property="dc:description">
+			<dml:item property="dct:creator">Arnau Siches</dml:item>
+			<dml:item property="dct:issued">2008-11-07</dml:item>
+			<dml:item property="dct:description">
 				<p>Transforms a DML source to XSL-FO.</p>
 			</dml:item>
-			<dml:item property="dc:license">
+			<dml:item property="dct:license">
 				<!-- todo -->
 			</dml:item>
 		</dml:list>
@@ -142,6 +142,7 @@
 					<xsl:apply-templates select="$document.title"/>
 				</fo:block>
 				<xsl:call-template name="date.issued"/>
+
 				<fo:block xsl:use-attribute-sets="body">
 					<xsl:call-template name="common.attributes"/>
 
@@ -166,8 +167,11 @@
 	<xsl:template name="date.issued">
 		<xsl:variable name="document.id" select="/( dml:dml, dml:note )/@xml:id"/>
 		<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ()"/>
-		<xsl:variable name="date.property" select="if ( //dml:metadata[@about=$document.metadata]//@property='dc:modified' ) then 'dc:modified' else 'dc:issued'"/>
-		<xsl:variable name="isodate" select="//dml:metadata[@about=$document.metadata]//*[@property eq $date.property]"/>
+		<xsl:variable name="document.metadata.node" select="/( dml:dml, dml:note )/dml:metadata[@about=$document.metadata]"/>
+		<xsl:variable name="date.property" select="if ( fnc:dc.extractor( $document.metadata.node, 'modified' ) ) then 'modified' else 'issued'"/>
+		<!-- <xsl:variable name="date.property" select="if ( //dml:metadata[@about=$document.metadata]//@property='dct:modified' ) then 'dct:modified' else 'dct:issued'"/> -->
+		<xsl:variable name="isodate" select="fnc:dc.extractor( $document.metadata.node, $date.property )"/>
+		<!-- <xsl:variable name="isodate" select="//dml:metadata[@about=$document.metadata]//*[@property eq $date.property]"/> -->
 
 		<xsl:if test="xs:boolean( $date.issued )">
 			<fo:block xsl:use-attribute-sets="date.issued">

@@ -310,4 +310,9 @@
 		<xsl:attribute name="background-color">#FDD</xsl:attribute>
 	</xsl:template>
 
+	<xsl:template name="foreign.language">
+		<xsl:attribute name="font-style">italic</xsl:attribute>
+	</xsl:template>
+
+
 </xsl:stylesheet>

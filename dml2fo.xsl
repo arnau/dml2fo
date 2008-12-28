@@ -297,7 +297,11 @@
 		</xsl:attribute>
 		<xsl:if test="@xml:lang">
 			<xsl:attribute name="xml:lang" select="@xml:lang"/>
+			<xsl:if test="@xml:lang ne /*/@xml:lang">
+				<xsl:call-template name="foreign.language"/>
+			</xsl:if>
 		</xsl:if>
+
 		<xsl:call-template name="set.id"/>
 		<xsl:if test="@align">
 			<!-- TODO: must be ignored? -->

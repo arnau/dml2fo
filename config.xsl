@@ -21,6 +21,7 @@
 
 	<dml:note>Parameters</dml:note>
 	<xsl:variable name="literals" select="document( concat( 'literals/', /dml:dml/@xml:lang, '.xml' ) )"/>
+	<xsl:variable name="status.hidden.values" select="('deleted', 'draft')"/>
 
 	<!-- page size -->
 	<xsl:param name="page.width">auto</xsl:param>
@@ -308,7 +309,5 @@
 	<xsl:template name="deleted.attribute.set">
 		<xsl:attribute name="background-color">#FDD</xsl:attribute>
 	</xsl:template>
-
-	<xsl:variable name="status.hidden.values" select="('deleted', 'draft')"/>
 
 </xsl:stylesheet>

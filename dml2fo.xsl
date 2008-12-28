@@ -6,6 +6,7 @@
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
 	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
 	xmlns:dc="http://purl.org/dc/terms/"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:fnc="dml2fo:functions" 
 	exclude-result-prefixes="xs dml cdml dc fnc">
 	
@@ -17,6 +18,7 @@
 	<xsl:import href="modules/bookmarks.xsl"/>
 	<xsl:import href="modules/toc.xsl"/>
 	<xsl:import href="modules/footnotes.xsl"/>
+	<xsl:import href="modules/metadata.xsl"/>
 
 	<xsl:import href="functions/highlight.xsl"/>
 	
@@ -33,7 +35,6 @@
 		</dml:list>
 	</dml:note>
 	<xsl:output method="xml" version="1.0" encoding="utf-8" indent="no"/>
-	
 
 	<xsl:template match="/dml:dml | /dml:note">
 		<fo:root xsl:use-attribute-sets="root">
@@ -106,13 +107,13 @@
 				</xsl:choose>
 			</fo:simple-page-master>
 		</fo:layout-master-set>
+		<xsl:call-template name="metadata"/>
 	</xsl:template>
 
 	<xsl:template name="body">
-		<xsl:variable name="title" select="/(dml:dml, dml:note)/dml:title"/>
 		<fo:page-sequence master-reference="all.pages">
 			<fo:title>
-				<xsl:value-of select="$title"/>
+				<xsl:value-of select="$document.title"/>
 			</fo:title>
 			<fo:static-content flow-name="page.header">
 				<xsl:call-template name="header.content"/>
@@ -120,7 +121,7 @@
 			<fo:static-content flow-name="page.footer">
 				<fo:block space-after.conditionality="retain" space-after="{$page.footer.margin}" xsl:use-attribute-sets="page.footer">
 					<fo:block text-align-last="justify">
-						<xsl:value-of select="$title"/>
+						<xsl:value-of select="$document.title"/>
 						<fo:leader/>
 						<fo:page-number/>
 						<xsl:value-of select="( ' ', $literals/literals/pagenumber.preposition, ' ' )"/>
@@ -138,7 +139,7 @@
 				</fo:static-content>
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block xsl:use-attribute-sets="document.title">
-					<xsl:value-of select="$title"/>
+					<xsl:apply-templates select="$document.title"/>
 				</fo:block>
 				<xsl:call-template name="date.issued"/>
 				<fo:block xsl:use-attribute-sets="body">

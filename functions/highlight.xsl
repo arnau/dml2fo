@@ -22,42 +22,6 @@
 		</dml:list>
 	</dml:note>
 
-	<xsl:attribute-set name="xml.comment">
-		<xsl:attribute name="font-style">italic</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="xml.tag">
-		<xsl:attribute name="color">#067</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="xml.ns">
-		<xsl:attribute name="color">#056</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="xml.attribute">
-		<xsl:attribute name="color">#067</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="xml.attribute.ns" use-attribute-sets="xml.ns"/>
-	<xsl:attribute-set name="xml.attribute.value">
-		<xsl:attribute name="color">#090</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="xpath">
-		<xsl:attribute name="color">#900</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="css.rule"/>
-	<xsl:attribute-set name="css.selector">
-		<xsl:attribute name="color">#056</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="css.property">
-		<xsl:attribute name="color">#900</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="css.value">
-		<xsl:attribute name="color">#090</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="css.important">
-		<xsl:attribute name="color">#f00</xsl:attribute>
-		<xsl:attribute name="font-weight">bold</xsl:attribute>
-	</xsl:attribute-set>
-
 	<dml:note about="#highlight.xml">
 		<dml:list>
 			<dml:item property="dct:creator">Arnau Siches</dml:item>

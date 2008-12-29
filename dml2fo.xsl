@@ -538,8 +538,19 @@
 
 	<xsl:template match="dml:note[@role='tip']/dml:title">
 		<fo:block xsl:use-attribute-sets="tip.title">
-			<xsl:call-template name="common.attributes"/>
-			<xsl:call-template name="common.children"/>
+			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:block>
+	</xsl:template>
+
+	<xsl:template match="dml:note[@role='sidebar']">
+		<fo:block xsl:use-attribute-sets="sidebar">
+			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:block>
+	</xsl:template>
+
+	<xsl:template match="dml:note[@role='sidebar']/dml:title">
+		<fo:block xsl:use-attribute-sets="sidebar.title">
+			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:block>
 	</xsl:template>
 

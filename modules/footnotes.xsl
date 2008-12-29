@@ -21,17 +21,6 @@
 		</dml:list>
 	</dml:note>
 
-	<xsl:attribute-set name="xref.footnote">
-		<xsl:attribute name="vertical-align">super</xsl:attribute>
-		<xsl:attribute name="font-size">0.8em</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="footnote">
-		<xsl:attribute name="font-size">9pt</xsl:attribute>
-		<xsl:attribute name="start-indent">0</xsl:attribute>
-		<xsl:attribute name="padding">0</xsl:attribute>
-		<xsl:attribute name="text-align">left</xsl:attribute>
-	</xsl:attribute-set>
-
 	<xsl:template name="xref.footnote">
 		<xsl:param name="idref"/>
 		<fo:footnote>
@@ -59,7 +48,5 @@
 			<xsl:number count="dml:*[substring-after( @href, '#' ) = //dml:note[@role eq 'footnote']/@xml:id]" level="any" format="[1]"/>
 		</fo:inline>
 	</xsl:template>
-
-
 
 </xsl:stylesheet>

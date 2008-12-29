@@ -22,33 +22,6 @@
 		</dml:list>
 	</dml:note>
 
-	<xsl:param name="code.linelength" select="85"/>
-
-	<xsl:param name="node.element.prefix">/</xsl:param>
-	<xsl:param name="node.attribute.prefix">@</xsl:param>
-
-	<xsl:attribute-set name="code.block" use-attribute-sets="monospace">
-		<xsl:attribute name="white-space">pre</xsl:attribute>
-		<xsl:attribute name="space-before">1em</xsl:attribute>
-		<xsl:attribute name="space-after">1em</xsl:attribute>
-		<xsl:attribute name="padding">0 3pt</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="code.inline" use-attribute-sets="monospace"/>
-
-	<xsl:attribute-set name="code.node" use-attribute-sets="monospace">
-		<xsl:attribute name="color">#090</xsl:attribute>
-		<xsl:attribute name="font-size">0.95em</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="code.value" use-attribute-sets="code.node"/>
-
-	<xsl:attribute-set name="code.param"/>
-
-	<xsl:attribute-set name="code.variable">
-		<xsl:attribute name="font-style">italic</xsl:attribute>
-	</xsl:attribute-set>
-
-
 	<xsl:template match="cdml:code">
 		<fo:inline xsl:use-attribute-sets="code.inline">
 			<xsl:call-template name="code.languages"/>

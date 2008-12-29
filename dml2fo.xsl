@@ -11,6 +11,8 @@
 	exclude-result-prefixes="xs dml cdml dct fnc">
 	
 	<xsl:import href="config.xsl"/>
+	<xsl:import href="styles/original.xsl"/>
+
 	<xsl:import href="modules/inline.xsl"/>
 	<xsl:import href="modules/lists.xsl"/>
 	<xsl:import href="modules/tables.xsl"/>

@@ -22,54 +22,6 @@
 		</dml:list>
 	</dml:note>
 
-	<xsl:attribute-set name="strong">
-		<xsl:attribute name="font-weight">bold</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="em.strong">
-		<xsl:attribute name="font-weight">bold</xsl:attribute>
-		<xsl:attribute name="font-style">italic</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="cite">
-		<xsl:attribute name="font-style">italic</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="em">
-		<xsl:attribute name="font-style">italic</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="code">
-		<xsl:attribute name="font-family">monospace</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="kbd">
-		<xsl:attribute name="font-family">monospace</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="sub">
-		<xsl:attribute name="baseline-shift">sub</xsl:attribute>
-		<xsl:attribute name="font-size">smaller</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="sup">
-		<xsl:attribute name="baseline-shift">super</xsl:attribute>
-		<xsl:attribute name="font-size">smaller</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="del">
-		<xsl:attribute name="text-decoration">line-through</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="ins">
-	<xsl:attribute name="text-decoration">underline</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="abbr"/>
-
-	<xsl:attribute-set name="span"/>
-
-	<xsl:attribute-set name="quote"/>
-	<xsl:attribute-set name="quote.nested"/>
-
-	<xsl:attribute-set name="object"/>
-
 	<xsl:template match="dml:em">
 		<fo:inline xsl:use-attribute-sets="em">
 			<xsl:call-template name="common.attributes.and.children"/>

@@ -50,7 +50,6 @@
 					<xsl:apply-templates select="dml:section" mode="bookmark"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<!-- <xsl:apply-templates select="dml:section" mode="bookmark"/> -->
 		</fo:bookmark>
 	</xsl:template>
 

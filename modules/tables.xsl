@@ -20,54 +20,6 @@
 		</dml:list>
 	</dml:note>
 
-	<xsl:attribute-set name="table">
-		<xsl:attribute name="border-collapse">collapse</xsl:attribute>
-		<xsl:attribute name="table-layout">fixed</xsl:attribute>
-		<xsl:attribute name="width">100%</xsl:attribute>
-		<xsl:attribute name="space-after">1.5em</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="table.title">
-		<xsl:attribute name="margin-top">1em</xsl:attribute>
-		<xsl:attribute name="padding-bottom">0.8em</xsl:attribute>
-		<xsl:attribute name="text-align">center</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="table.label">
-		<xsl:attribute name="space-before">0.5em</xsl:attribute>
-		<xsl:attribute name="font-weight">bold</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="inside-table">
-		<xsl:attribute name="start-indent">0pt</xsl:attribute>
-		<xsl:attribute name="end-indent">0pt</xsl:attribute>
-		<xsl:attribute name="text-indent">0pt</xsl:attribute>
-		<xsl:attribute name="last-line-end-indent">0pt</xsl:attribute>
-		<xsl:attribute name="text-align">start</xsl:attribute>
-		<xsl:attribute name="text-align-last">relative</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="table.head" use-attribute-sets="inside-table"/>
-	<xsl:attribute-set name="table.foot" use-attribute-sets="inside-table"/>
-	<xsl:attribute-set name="table.body" use-attribute-sets="inside-table"/>
-	<xsl:attribute-set name="table.group"/>
-
-	<xsl:attribute-set name="table.group.title">
-		<xsl:attribute name="border-right">3pt solid #000</xsl:attribute>
-		<xsl:attribute name="font-weight">bold</xsl:attribute>
-		<xsl:attribute name="text-align">left</xsl:attribute>
-		<xsl:attribute name="padding">4pt</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="table.head.title" use-attribute-sets="table.group.title">
-		<xsl:attribute name="border-bottom">3pt solid #000</xsl:attribute>
-		<xsl:attribute name="border-right">0</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="table.head.title.first" use-attribute-sets="table.head.title">
-		<xsl:attribute name="border-right">3pt solid #000</xsl:attribute>
-	</xsl:attribute-set>
-	<xsl:attribute-set name="table.cell">
-		<xsl:attribute name="padding">4pt</xsl:attribute>
-	</xsl:attribute-set>
-
-
 	<xsl:template match="dml:table">
 		<xsl:variable name="width" select="if ( @width ) then @width else '100%'"/>
 		<fo:table xsl:use-attribute-sets="table" start-indent="(100% - {$width}) div 2">

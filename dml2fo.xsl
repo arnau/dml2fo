@@ -37,7 +37,7 @@
 		</dml:list>
 	</dml:note>
 	<xsl:output method="xml" version="1.0" encoding="utf-8" indent="no"/>
-	<xsl:strip-space elements="dml:*"/>
+	<xsl:strip-space elements="dml:dml dml:example dml:figure dml:list dml:item dml:metadata dml:note dml:p dml:quote dml:section dml:table dml:title"/>
 
 	<xsl:template match="/dml:dml | /dml:note">
 		<fo:root xsl:use-attribute-sets="root">

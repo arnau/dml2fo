@@ -28,7 +28,7 @@
 		</fo:inline>
 	</xsl:template>
 
-	<xsl:template match="*[( self::dml:section, self::dml:example )]/cdml:code">
+	<xsl:template match="*[( self::dml:dml, self::dml:section, self::dml:example, self::dml:item )]/cdml:code">
 		<fo:block xsl:use-attribute-sets="code.block">
 			<xsl:call-template name="code.languages"/>
 		</fo:block>
@@ -41,6 +41,9 @@
 			</xsl:when>
 			<xsl:when test="@language='css'">
 				<xsl:copy-of select="fnc:css( ., $code.linelength )"/>
+			</xsl:when>
+			<xsl:when test="@language='ebnf'">
+				<xsl:copy-of select="fnc:ebnf( ., $code.linelength )"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="context">

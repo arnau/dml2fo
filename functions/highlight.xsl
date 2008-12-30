@@ -184,6 +184,50 @@
 
 	</xsl:function>
 
+	<xsl:function name="fnc:ebnf">
+		<xsl:param name="context"/>
+		<xsl:param name="limit" as="xs:integer"/>
+
+		<xsl:apply-templates select="$context/node()" mode="code"/>
+	</xsl:function>
+
+	<xsl:template match="dml:span" mode="code">
+		<xsl:variable name="href" select="@href"/>
+		<xsl:variable name="first.char" select="substring( $href, 1, 1 )"/>
+		<xsl:variable name="idref" select="substring-after( $href, '#' )"/>
+		<xsl:variable name="element.name" select="id( $idref )/local-name()"/>
+		<xsl:choose>
+			<xsl:when test="not( id( $idref ) ) and $first.char eq '#'">
+				<xsl:choose>
+					<xsl:when test="xs:boolean( $debug )">
+						<fo:inline xsl:use-attribute-sets="xref.error">
+							<xsl:apply-templates/> (xref error)
+						</fo:inline>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:apply-templates/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$href">
+				<fo:basic-link xsl:use-attribute-sets="toc.xref">
+					<xsl:choose>
+						<xsl:when test="$first.char eq '#'">
+							<xsl:attribute name="internal-destination" select="$idref"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="external-destination" select="$href"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:apply-templates/>
+				</fo:basic-link>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 <!--
 
 	<xsl:function name="fnc:javascript">

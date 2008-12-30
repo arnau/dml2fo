@@ -373,7 +373,7 @@
 		<xsl:attribute name="font-style">italic</xsl:attribute>
 	</xsl:template>
 	<xsl:attribute-set name="monospace">
-		<xsl:attribute name="font-size">0.85em</xsl:attribute>
+		<xsl:attribute name="font-size">0.87em</xsl:attribute>
 		<xsl:attribute name="font-family">monospace</xsl:attribute>
 	</xsl:attribute-set>
 
@@ -460,9 +460,10 @@
 	</xsl:attribute-set>
 	<xsl:attribute-set name="code.value" use-attribute-sets="code.node"/>
 
-	<xsl:attribute-set name="code.param"/>
+	<xsl:attribute-set name="code.param" use-attribute-sets="monospace">
+	</xsl:attribute-set>
 
-	<xsl:attribute-set name="code.variable">
+	<xsl:attribute-set name="code.variable" use-attribute-sets="monospace">
 		<xsl:attribute name="font-style">italic</xsl:attribute>
 	</xsl:attribute-set>
 

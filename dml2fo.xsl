@@ -413,7 +413,7 @@
 		</xsl:variable>
 		<xsl:value-of select="
 			if ( parent::dml:section[@role='appendix'] and xs:boolean( $appendix.format.number ) ) then
-				concat( $literals/literals/appendix.prefix, ' ', $number, $appendix.separator )
+				concat( $literals/literals/appendix.prefix, ' ', $number, $appendix.separator, ' ' )
 			else
 				$number
 		"/>

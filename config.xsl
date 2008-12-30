@@ -60,7 +60,7 @@
 	<!-- $appendix.format.number.type: 1. | I. | A. -->
 	<xsl:param name="appendix.format.number.type">A.1</xsl:param>
 	<!-- $appendix.separator: string -->
-	<xsl:param name="appendix.separator"> — </xsl:param>
+	<xsl:param name="appendix.separator">—</xsl:param>
 
 	<!-- $bookmarks: true | false -->
 	<xsl:param name="bookmarks">true</xsl:param>

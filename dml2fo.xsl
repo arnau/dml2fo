@@ -37,6 +37,7 @@
 		</dml:list>
 	</dml:note>
 	<xsl:output method="xml" version="1.0" encoding="utf-8" indent="no"/>
+	<xsl:strip-space elements="dml:*"/>
 
 	<xsl:template match="/dml:dml | /dml:note">
 		<fo:root xsl:use-attribute-sets="root">
@@ -310,6 +311,7 @@
 			<xsl:attribute name="align" select="@align"/>
 		</xsl:if>
 		<xsl:if test="xs:boolean( $debug )">
+			<!-- TODO: Change fo:inline to fo:block if parent needs it -->
 			<xsl:call-template name="debug.attributes"/>
 		</xsl:if>
 	</xsl:template>

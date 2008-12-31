@@ -28,7 +28,7 @@
 		</fo:inline>
 	</xsl:template>
 
-	<xsl:template match="*[( self::dml:dml, self::dml:section, self::dml:example, self::dml:item )]/cdml:code">
+	<xsl:template match="*[( self::dml:dml, self::dml:section, self::dml:example, self::dml:item[not( text() )] )]/cdml:code">
 		<fo:block xsl:use-attribute-sets="code.block">
 			<xsl:call-template name="code.languages"/>
 		</fo:block>

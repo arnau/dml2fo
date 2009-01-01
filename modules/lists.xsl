@@ -81,7 +81,7 @@
 
 	<xsl:template match="dml:list[@role]/dml:item[dml:title]" priority="2.1">
 		<xsl:choose>
-			<xsl:when test="( some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded' ) and ( @role eq 'foot' )">
+			<xsl:when test="( some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded' ) and ( @role eq 'footer' )">
 				<fo:list-item xsl:use-attribute-sets="item.foot">
 					<xsl:call-template name="list.leaded">
 						<xsl:with-param name="leader.pattern" select="$leader.pattern.foot"/>

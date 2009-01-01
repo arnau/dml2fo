@@ -80,7 +80,7 @@
 	<xsl:param name="debug">true</xsl:param>
 
 	<!-- Code parameters -->
-	<xsl:param name="code.linelength" select="85"/>
+	<xsl:param name="code.linelength">80</xsl:param>
 	<xsl:param name="node.element.prefix">/</xsl:param>
 	<xsl:param name="node.attribute.prefix">@</xsl:param>
 

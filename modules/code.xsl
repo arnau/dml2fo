@@ -37,17 +37,17 @@
 	<xsl:template name="code.languages">
 		<xsl:choose>
 			<xsl:when test="@language='xml'">
-				<xsl:copy-of select="fnc:xml( ., $code.linelength )"/>
+				<xsl:copy-of select="fnc:xml( ., xs:integer( $code.linelength ) )"/>
 			</xsl:when>
 			<xsl:when test="@language='css'">
-				<xsl:copy-of select="fnc:css( ., $code.linelength )"/>
+				<xsl:copy-of select="fnc:css( ., xs:integer( $code.linelength ) )"/>
 			</xsl:when>
 			<xsl:when test="@language='ebnf'">
-				<xsl:copy-of select="fnc:ebnf( ., $code.linelength )"/>
+				<xsl:copy-of select="fnc:ebnf( ., xs:integer( $code.linelength ) )"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="context">
-					<xsl:value-of select="fnc:linelength( ., $code.linelength )"/>
+					<xsl:value-of select="fnc:linelength( ., xs:integer( $code.linelength ) )"/>
 				</xsl:variable>
 				<xsl:copy-of select="replace( $context, '(.+)\s*$', '$1' )"/>
 			</xsl:otherwise>

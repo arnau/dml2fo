@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="2.0" xml:lang="en"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:fo="http://www.w3.org/1999/XSL/Format" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns:dml="http://purl.oclc.org/NET/dml/1.0" 
-	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0" 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:fo="http://www.w3.org/1999/XSL/Format"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:dml="http://purl.oclc.org/NET/dml/1.0/"
+	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0/"
 	xmlns:dct="http://purl.org/dc/terms/"
-	xmlns:fnc="dml2fo:functions" 
+	xmlns:fnc="dml2fo:functions"
 	exclude-result-prefixes="xs dml cdml dct fnc">
 	
 	<dml:note>

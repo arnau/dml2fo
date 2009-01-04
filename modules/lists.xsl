@@ -81,51 +81,12 @@
 
 	<xsl:template match="dml:list[@role]/dml:item[dml:title]" priority="2.1">
 		<xsl:choose>
-			<xsl:when test="( some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded' ) and ( @role eq 'footer' )">
-				<fo:list-item xsl:use-attribute-sets="item.foot">
-					<xsl:call-template name="list.leaded">
-						<xsl:with-param name="leader.pattern" select="$leader.pattern.foot"/>
-					</xsl:call-template>
-				</fo:list-item>
-			</xsl:when>
-			<xsl:when test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'leaded'">
-				<fo:list-item xsl:use-attribute-sets="item">
-					<xsl:call-template name="list.leaded">
-						<xsl:with-param name="leader.pattern" select="$leader.pattern"/>
-					</xsl:call-template>
-				</fo:list-item>
-			</xsl:when>
 			<xsl:when test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'ordered'">
 				<fo:list-item xsl:use-attribute-sets="item">
 					<xsl:call-template name="item.with.title"/>
 				</fo:list-item>
 			</xsl:when>
 		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template name="list.leaded">
-		<xsl:param name="leader.pattern">.</xsl:param>
-		<xsl:call-template name="common.attributes"/>
-		<fo:list-item-label end-indent="label-end()" text-align="end" wrap-option="no-wrap">
-			<fo:block xsl:use-attribute-sets="item.group.leaded">
-				<xsl:if test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'ordered'">
-					<xsl:call-template name="list.ordered.numbers"/>
-				</xsl:if>
-			</fo:block>
-		</fo:list-item-label>
-		<fo:list-item-body>
-			<xsl:if test="some $i in tokenize( parent::dml:list/@role, '\s+' ) satisfies $i eq 'ordered'">
-				<xsl:attribute name="start-indent">body-start()</xsl:attribute>
-			</xsl:if>
-			<fo:block xsl:use-attribute-sets="item.group.leaded" text-align-last="justify">
-				<xsl:apply-templates select="dml:title/node()"/>
-				<fo:leader leader-pattern="use-content"><xsl:value-of select="$leader.pattern"/></fo:leader>
-				<xsl:text> </xsl:text>
-				<fo:inline>
-					<xsl:apply-templates select="*[not( self::dml:title )]/node()"/>
-				</fo:inline>
-			</fo:block>
-		</fo:list-item-body>
 	</xsl:template>
 
 	<xsl:template name="item.with.title">

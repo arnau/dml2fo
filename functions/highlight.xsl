@@ -112,13 +112,82 @@
 	
 	<xsl:function name="fnc:xpath">
 		<xsl:param name="context"/>
-		<xsl:variable name="rule" as="xs:string">(.+)</xsl:variable>
-		<xsl:analyze-string select="$context" regex="{$rule}">
+		<xsl:param name="limit" as="xs:integer"/>
+		<xsl:variable name="variable">(\$[^\[\]\(\)\s\*\+\?]+)</xsl:variable>
+		<xsl:variable name="predicate">(\[|\])</xsl:variable>
+		<xsl:variable name="storage">(\(|\))</xsl:variable>
+		<xsl:variable name="operator">(\s)(or|\||and|lt|gt|ne|eq)(\s)</xsl:variable>
+		<xsl:variable name="modifier">(\*|\+|\?)</xsl:variable>
+		<xsl:variable name="axis">((self|parent|ancestor|ancestor-or-self|preceding|preceding-sibling|following|following-sibling|child|descendant|descendant-or-self)::)</xsl:variable>
+		<xsl:variable name="function">([a-zA-Z-_\.]+)(\()</xsl:variable>
+		<xsl:variable name="node">(@?\i\c*)</xsl:variable>
+
+		<xsl:variable name="context.formatted">
+			<xsl:value-of select="fnc:linelength( $context, $limit )" separator=""/>
+		</xsl:variable>
+		<xsl:analyze-string select="
+			if ( $limit ) then
+				(: strip last &#xA; :)
+				replace( $context.formatted, '(.+)\s*$', '$1' )
+			else $context
+		" regex="{$variable}">
 			<xsl:matching-substring>
-				<fo:inline xsl:use-attribute-sets="xpath"><xsl:value-of select="regex-group(1)"/></fo:inline>
+				<fo:inline xsl:use-attribute-sets="xpath.variable"><xsl:value-of select="regex-group(1)"/></fo:inline>
 			</xsl:matching-substring>
 			<xsl:non-matching-substring>
-				<xsl:copy-of select="."/>
+				<xsl:analyze-string select="." regex="{$predicate}">
+					<xsl:matching-substring>
+						<fo:inline xsl:use-attribute-sets="xpath.predicate"><xsl:value-of select="regex-group(1)"/></fo:inline>
+					</xsl:matching-substring>
+					<xsl:non-matching-substring>
+						<xsl:analyze-string select="." regex="{$function}">
+							<xsl:matching-substring>
+								<fo:inline xsl:use-attribute-sets="xpath.function"><xsl:value-of select="regex-group(1)"/></fo:inline>
+								<fo:inline xsl:use-attribute-sets="xpath.storage"><xsl:value-of select="regex-group(2)"/></fo:inline>
+							</xsl:matching-substring>
+							<xsl:non-matching-substring>
+								<xsl:analyze-string select="." regex="{$operator}">
+									<xsl:matching-substring>
+										<xsl:value-of select="regex-group(1)"/>
+										<fo:inline xsl:use-attribute-sets="xpath.operator"><xsl:value-of select="regex-group(2)"/></fo:inline>
+										<xsl:value-of select="regex-group(3)"/>
+									</xsl:matching-substring>
+									<xsl:non-matching-substring>
+										<xsl:analyze-string select="." regex="{$modifier}">
+											<xsl:matching-substring>
+												<fo:inline xsl:use-attribute-sets="xpath.modifier"><xsl:value-of select="regex-group(1)"/></fo:inline>
+											</xsl:matching-substring>
+											<xsl:non-matching-substring>
+												<xsl:analyze-string select="." regex="{$axis}">
+													<xsl:matching-substring>
+														<fo:inline xsl:use-attribute-sets="xpath.axis"><xsl:value-of select="regex-group(1)"/></fo:inline>
+													</xsl:matching-substring>
+													<xsl:non-matching-substring>
+														<xsl:analyze-string select="." regex="{$storage}">
+															<xsl:matching-substring>
+																<fo:inline xsl:use-attribute-sets="xpath.storage"><xsl:value-of select="regex-group(1)"/></fo:inline>
+															</xsl:matching-substring>
+															<xsl:non-matching-substring>
+																<xsl:analyze-string select="." regex="{$node}">
+																	<xsl:matching-substring>
+																		<fo:inline xsl:use-attribute-sets="xpath.node"><xsl:value-of select="regex-group(1)"/></fo:inline>
+																	</xsl:matching-substring>
+																	<xsl:non-matching-substring>
+																		<xsl:copy-of select="."/>
+																	</xsl:non-matching-substring>
+																</xsl:analyze-string>
+															</xsl:non-matching-substring>
+														</xsl:analyze-string>
+													</xsl:non-matching-substring>
+												</xsl:analyze-string>
+											</xsl:non-matching-substring>
+										</xsl:analyze-string>
+									</xsl:non-matching-substring>
+								</xsl:analyze-string>
+							</xsl:non-matching-substring>
+						</xsl:analyze-string>
+					</xsl:non-matching-substring>
+				</xsl:analyze-string>
 			</xsl:non-matching-substring>
 		</xsl:analyze-string>
 	</xsl:function>

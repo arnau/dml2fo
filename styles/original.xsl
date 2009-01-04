@@ -488,6 +488,28 @@
 	<xsl:attribute-set name="xpath">
 		<xsl:attribute name="color">#900</xsl:attribute>
 	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.variable">
+		<xsl:attribute name="font-style">italic</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.predicate">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.operator">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.modifier">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.storage">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.axis">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.node">
+		<xsl:attribute name="color">#090</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.function"/>
 
 	<xsl:attribute-set name="css.rule"/>
 	<xsl:attribute-set name="css.selector">

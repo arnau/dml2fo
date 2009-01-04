@@ -45,6 +45,9 @@
 			<xsl:when test="@language='ebnf'">
 				<xsl:copy-of select="fnc:ebnf( ., xs:integer( $code.linelength ) )"/>
 			</xsl:when>
+			<xsl:when test="@language='xpath'">
+				<xsl:copy-of select="fnc:xpath( ., xs:integer( $code.linelength ) )"/>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="context">
 					<xsl:value-of select="fnc:linelength( ., xs:integer( $code.linelength ) )"/>

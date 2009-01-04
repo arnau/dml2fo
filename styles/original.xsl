@@ -488,6 +488,10 @@
 	<xsl:attribute-set name="xpath">
 		<xsl:attribute name="color">#900</xsl:attribute>
 	</xsl:attribute-set>
+	<xsl:attribute-set name="xpath.comment">
+		<xsl:attribute name="color">#555</xsl:attribute>
+		<xsl:attribute name="font-style">italic</xsl:attribute>
+	</xsl:attribute-set>
 	<xsl:attribute-set name="xpath.variable">
 		<xsl:attribute name="font-style">italic</xsl:attribute>
 	</xsl:attribute-set>

@@ -81,7 +81,9 @@
 
 	<!-- Code parameters -->
 	<xsl:param name="code.linelength">80</xsl:param>
-	<xsl:param name="node.element.prefix">/</xsl:param>
+	<xsl:param name="node.element.prefix"></xsl:param>
 	<xsl:param name="node.attribute.prefix">@</xsl:param>
+	<xsl:param name="value.prefix">"</xsl:param>
+	<xsl:param name="value.suffix">"</xsl:param>
 
 </xsl:stylesheet>

@@ -60,7 +60,7 @@
 		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="code.node">
 			<xsl:call-template name="common.attributes"/>
-			<fo:character character="{$node.prefix}"/><xsl:call-template name="common.children"/>
+			<xsl:if test="$node.prefix ne ''"><fo:character character="{$node.prefix}"/></xsl:if><xsl:call-template name="common.children"/>
 		</fo:inline>
 	</xsl:template>
 
@@ -70,7 +70,7 @@
 			<xsl:call-template name="get.node.prefix"/>
 		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="code.node">
-			<fo:character character="{$node.prefix}"/><xsl:apply-templates/>
+			<xsl:if test="$node.prefix ne ''"><fo:character character="{$node.prefix}"/></xsl:if><xsl:call-template name="common.children"/><xsl:apply-templates/>
 		</fo:inline>
 	</xsl:template>
 	<xsl:template match="cdml:node" mode="bookmark">
@@ -94,7 +94,10 @@
 
 	<xsl:template match="cdml:value">
 		<fo:inline xsl:use-attribute-sets="code.value">
-			<xsl:call-template name="common.attributes.and.children"/>
+			<xsl:call-template name="common.attributes"/>
+			<xsl:value-of select="$value.prefix"/>
+			<xsl:call-template name="common.children"/>
+			<xsl:value-of select="$value.suffix"/>
 		</fo:inline>
 	</xsl:template>
 

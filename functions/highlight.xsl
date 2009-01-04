@@ -117,7 +117,7 @@
 		<xsl:variable name="comment">(\(:.+?:\))</xsl:variable>
 		<xsl:variable name="predicate">(\[|\])</xsl:variable>
 		<xsl:variable name="storage">(\(|\))</xsl:variable>
-		<xsl:variable name="operator">(\s)(or|\||and|lt|gt|ne|eq)(\s)</xsl:variable>
+		<xsl:variable name="operator">(\s)(or|\||,|and|lt|gt|ne|eq)(\s)</xsl:variable>
 		<xsl:variable name="modifier">(\*|\+|\?)</xsl:variable>
 		<xsl:variable name="axis">((self|parent|ancestor|ancestor-or-self|preceding|preceding-sibling|following|following-sibling|child|descendant|descendant-or-self)::)</xsl:variable>
 		<xsl:variable name="function">([a-zA-Z-_\.]+)(\()</xsl:variable>

@@ -70,7 +70,7 @@
 			<xsl:call-template name="get.node.prefix"/>
 		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="code.node">
-			<xsl:if test="$node.prefix ne ''"><fo:character character="{$node.prefix}"/></xsl:if><xsl:call-template name="common.children"/><xsl:apply-templates/>
+			<xsl:if test="$node.prefix ne ''"><fo:character character="{$node.prefix}"/></xsl:if><xsl:apply-templates/>
 		</fo:inline>
 	</xsl:template>
 	<xsl:template match="cdml:node" mode="bookmark">

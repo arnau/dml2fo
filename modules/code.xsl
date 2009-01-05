@@ -121,5 +121,10 @@
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:inline>
 	</xsl:template>
+	<xsl:template match="cdml:datatype">
+		<fo:inline xsl:use-attribute-sets="code.datatype">
+			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:inline>
+	</xsl:template>
 
 </xsl:stylesheet>

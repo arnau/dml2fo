@@ -466,6 +466,7 @@
 	<xsl:attribute-set name="code.variable" use-attribute-sets="monospace">
 		<xsl:attribute name="font-style">italic</xsl:attribute>
 	</xsl:attribute-set>
+	<xsl:attribute-set name="code.datatype" use-attribute-sets="monospace"/>
 
 	<!-- XML Highlighting Styles -->
 	<xsl:attribute-set name="xml.comment">

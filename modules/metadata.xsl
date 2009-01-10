@@ -33,6 +33,13 @@
 	<xsl:variable name="document.creator" select="fnc:dc.extractor( $document.metadata, 'creator' )"/>
 	<xsl:variable name="document.subject" select="fnc:dc.extractor( $document.metadata, 'subject' )"/>
 	<xsl:variable name="document.publisher" select="fnc:dc.extractor( $document.metadata, 'publisher' )"/>
+	<xsl:variable name="document.identifier" select="fnc:dc.extractor( $document.metadata, 'identifier' )"/>
+	<xsl:variable name="document.issued" select="
+		if ( fnc:dc.extractor( $document.metadata, 'issued' ) ) then
+			fnc:dc.extractor( $document.metadata, 'issued' )
+		else
+			fnc:dc.extractor( $document.metadata, 'modified' )
+	"/>
 
 	<xsl:template name="metadata">
 		<fo:declarations>

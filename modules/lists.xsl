@@ -107,6 +107,10 @@
 	</xsl:template>
 
 	<xsl:template name="list.unordered.labels">
+		<xsl:param name="ul.label.1" tunnel="yes"/>
+		<xsl:param name="ul.label.2" tunnel="yes"/>
+		<xsl:param name="ul.label.3" tunnel="yes"/>
+
 		<xsl:variable name="depth" select="count( ancestor::dml:list[dml:item[not( dml:title )]] )"/>
 		<xsl:choose>
 			<xsl:when test="$depth = 1">
@@ -128,6 +132,10 @@
 	</xsl:template>
 
 	<xsl:template name="list.ordered.numbers">
+		<xsl:param name="ol.label.1" tunnel="yes"/>
+		<xsl:param name="ol.label.2" tunnel="yes"/>
+		<xsl:param name="ol.label.3" tunnel="yes"/>
+
 		<xsl:variable name="depth" select="count( ancestor::dml:list[some $i in tokenize( @role, '\s+' ) satisfies $i eq 'ordered'] )"/>
 		<xsl:choose>
 			<xsl:when test="$depth = 1">

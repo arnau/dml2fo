@@ -38,4 +38,7 @@
 		<item>Diciembre</item>
 	</month>
 	<date.preposition>del</date.preposition>
+	<document.editor>Editor</document.editor>
+	<document.issued>Fecha de publicación</document.issued>
+	<document.version>Última versión</document.version>
 </literals>

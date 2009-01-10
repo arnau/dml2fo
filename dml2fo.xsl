@@ -122,15 +122,7 @@
 				<xsl:call-template name="header.content"/>
 			</fo:static-content>
 			<fo:static-content flow-name="page.footer">
-				<fo:block space-after.conditionality="retain" space-after="{$page.footer.margin}" xsl:use-attribute-sets="page.footer">
-					<fo:block text-align-last="justify">
-						<xsl:value-of select="$document.title"/>
-						<fo:leader/>
-						<fo:page-number/>
-						<xsl:value-of select="( ' ', $literals/literals/pagenumber.preposition, ' ' )"/>
-						<fo:page-number-citation ref-id="last.page"/>
-					</fo:block>
-				</fo:block>
+				<xsl:call-template name="footer.content"/>
 			</fo:static-content>
 			<fo:static-content flow-name="xsl-footnote-separator">
 				<fo:block>
@@ -199,6 +191,18 @@
 
 	<xsl:template name="header.content">
 		<fo:block></fo:block>
+	</xsl:template>
+
+	<xsl:template name="footer.content">
+		<fo:block space-after.conditionality="retain" space-after="{$page.footer.margin}" xsl:use-attribute-sets="page.footer">
+			<fo:block text-align-last="justify">
+				<xsl:value-of select="$document.title"/>
+				<fo:leader/>
+				<fo:page-number/>
+				<xsl:value-of select="( ' ', $literals/literals/pagenumber.preposition, ' ' )"/>
+				<fo:page-number-citation ref-id="last.page"/>
+			</fo:block>
+		</fo:block>
 	</xsl:template>
 
 	<xsl:template name="common.attributes.and.children">

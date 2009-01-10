@@ -85,5 +85,33 @@
 		"/>
 	</xsl:function>
 
+	<xsl:template name="date.issued">
+		<xsl:variable name="document.id" select="/( dml:dml, dml:note )/@xml:id"/>
+		<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ()"/>
+		<xsl:variable name="document.metadata.node" select="/( dml:dml, dml:note )/dml:metadata[@about=$document.metadata]"/>
+		<xsl:variable name="date.property" select="if ( fnc:dc.extractor( $document.metadata.node, 'modified' ) ) then 'modified' else 'issued'"/>
+		<xsl:variable name="isodate" select="fnc:dc.extractor( $document.metadata.node, $date.property )"/>
+
+		<xsl:if test="xs:boolean( $date.issued )">
+			<fo:block xsl:use-attribute-sets="date.issued">
+				<xsl:choose>
+					<xsl:when test="$isodate castable as xs:date">
+						<xsl:variable name="day" select="number( format-date( $isodate, '[F1]' ) )"/>
+						<xsl:variable name="month" select="number( format-date( $isodate, '[M1]' ) )"/>
+						<xsl:value-of select="
+							if ( lang('ca') or lang('es') ) then
+								( $literals/literals/month/item[$month], $literals/literals/date.preposition, year-from-date( $isodate ) )
+							else
+								( $literals/literals/month/item[$month], year-from-date( $isodate ) )
+						"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:apply-templates select="$isodate/node()"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</fo:block>
+		</xsl:if>
+	</xsl:template>
+
 
 </xsl:stylesheet>

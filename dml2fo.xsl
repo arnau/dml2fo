@@ -133,60 +133,34 @@
 					</fo:block>
 				</fo:static-content>
 			<fo:flow flow-name="xsl-region-body">
-				<fo:block xsl:use-attribute-sets="document.title">
-					<xsl:apply-templates select="$document.title"/>
-				</fo:block>
-				<xsl:call-template name="date.issued"/>
-
-				<fo:block xsl:use-attribute-sets="body">
-					<xsl:call-template name="common.attributes"/>
-
-					<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq 0 )">
-						<xsl:call-template name="toc"/>
-					</xsl:if>
-					<xsl:apply-templates select="dml:*[not( self::dml:title or self::dml:metadata )]"/>
-
-					<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq -1 )">
-						<xsl:call-template name="toc"/>
-					</xsl:if>
-
-					<fo:block id="last.page"/>
-				</fo:block>
+				<xsl:call-template name="body.content"/>
 			</fo:flow>
 		</fo:page-sequence>
 	</xsl:template>
 
 	<!-- todo -->
 	<xsl:template match="dml:metadata"/>
-	
-	<xsl:template name="date.issued">
-		<xsl:variable name="document.id" select="/( dml:dml, dml:note )/@xml:id"/>
-		<xsl:variable name="document.metadata" select="if ( $document.id ) then concat( '#', $document.id ) else ()"/>
-		<xsl:variable name="document.metadata.node" select="/( dml:dml, dml:note )/dml:metadata[@about=$document.metadata]"/>
-		<xsl:variable name="date.property" select="if ( fnc:dc.extractor( $document.metadata.node, 'modified' ) ) then 'modified' else 'issued'"/>
-		<!-- <xsl:variable name="date.property" select="if ( //dml:metadata[@about=$document.metadata]//@property='dct:modified' ) then 'dct:modified' else 'dct:issued'"/> -->
-		<xsl:variable name="isodate" select="fnc:dc.extractor( $document.metadata.node, $date.property )"/>
-		<!-- <xsl:variable name="isodate" select="//dml:metadata[@about=$document.metadata]//*[@property eq $date.property]"/> -->
 
-		<xsl:if test="xs:boolean( $date.issued )">
-			<fo:block xsl:use-attribute-sets="date.issued">
-				<xsl:choose>
-					<xsl:when test="$isodate castable as xs:date">
-						<xsl:variable name="day" select="number( format-date( $isodate, '[F1]' ) )"/>
-						<xsl:variable name="month" select="number( format-date( $isodate, '[M1]' ) )"/>
-						<xsl:value-of select="
-							if ( lang('ca') or lang('es') ) then
-								( $literals/literals/month/item[$month], $literals/literals/date.preposition, year-from-date( $isodate ) )
-							else
-								( $literals/literals/month/item[$month], year-from-date( $isodate ) )
-						"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:apply-templates select="$isodate/node()"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</fo:block>
-		</xsl:if>
+	<xsl:template name="body.content">
+		<fo:block xsl:use-attribute-sets="document.title">
+			<xsl:apply-templates select="$document.title"/>
+		</fo:block>
+		<xsl:call-template name="date.issued"/>
+
+		<fo:block xsl:use-attribute-sets="body">
+			<xsl:call-template name="common.attributes"/>
+
+			<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq 0 )">
+				<xsl:call-template name="toc"/>
+			</xsl:if>
+			<xsl:apply-templates select="dml:*[not( self::dml:title or self::dml:metadata )]"/>
+
+			<xsl:if test="xs:boolean( $toc ) and ( xs:integer( $toc.position ) eq -1 )">
+				<xsl:call-template name="toc"/>
+			</xsl:if>
+
+			<fo:block id="last.page"/>
+		</fo:block>
 	</xsl:template>
 
 	<xsl:template name="header.content">
@@ -357,7 +331,6 @@
 		</xsl:attribute>
 	</xsl:template>
 
-
 	<xsl:template match="dml:section">
 		<fo:block xsl:use-attribute-sets="section">
 			<xsl:call-template name="common.attributes"/>
@@ -468,7 +441,6 @@
 		</fo:block>
 	</xsl:template>
 
-
 	<xsl:template match="dml:example">
 		<xsl:choose>
 			<xsl:when test="dml:title">
@@ -526,7 +498,6 @@
 		</fo:block>
 	</xsl:template>
 
-
 	<xsl:template match="dml:note[@role='tip']">
 		<xsl:choose>
 			<xsl:when test="dml:title">
@@ -559,6 +530,5 @@
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:block>
 	</xsl:template>
-
 
 </xsl:stylesheet>

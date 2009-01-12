@@ -203,7 +203,7 @@
 	<xsl:function name="fnc:css">
 		<xsl:param name="context"/>
 		<xsl:param name="limit" as="xs:integer"/>
-		<xsl:variable name="rule" as="xs:string">(\s*[\w\W-[\\\{]]+\s+?\\\{)([\w\W-[\\\}]]+)*(\\\})</xsl:variable>
+		<xsl:variable name="rule" as="xs:string">(\s*[\w\W-[\{]]+\s+?)(\{)([\w\W-[\}]]+)*(\})?</xsl:variable>
 		<xsl:variable name="property" as="xs:string">([\w\W-[:]]+:)([\w\W-[;]]+)(\s?!important)?(;\s*)</xsl:variable>
 		<xsl:variable name="arroba-rule" as="xs:string">(\s*@[\w\W-[""\n]]+\s+?)([\w\W]+?)(;\s*)</xsl:variable>
 
@@ -222,7 +222,8 @@
 					<fo:inline xsl:use-attribute-sets="css.selector">
 						<xsl:value-of select="regex-group(1)"/>
 					</fo:inline>
-					<xsl:analyze-string select="regex-group(2)" regex="{$property}">
+					<xsl:value-of select="regex-group(2)"/>
+					<xsl:analyze-string select="regex-group(3)" regex="{$property}">
 						<xsl:matching-substring>
 							<fo:inline xsl:use-attribute-sets="css.property">
 								<xsl:value-of select="regex-group(1)"/>
@@ -238,7 +239,7 @@
 							<xsl:value-of select="regex-group(4)"/>
 						</xsl:matching-substring>
 					</xsl:analyze-string>
-					<xsl:value-of select="regex-group(3)"/>
+					<xsl:value-of select="regex-group(4)"/>
 				</fo:inline>
 			</xsl:matching-substring>
 			<xsl:non-matching-substring>

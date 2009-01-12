@@ -22,6 +22,8 @@
 		</dml:list>
 	</dml:note>
 
+	<xsl:strip-space elements="cdml:node cdml:value"/>
+
 	<xsl:template match="cdml:code">
 		<fo:inline xsl:use-attribute-sets="code.inline">
 			<xsl:call-template name="code.languages"/>

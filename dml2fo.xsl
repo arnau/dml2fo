@@ -332,11 +332,16 @@
 	</xsl:template>
 
 	<xsl:template match="dml:section">
+		<xsl:if test="
+			xs:boolean( $toc ) and
+			parent::dml:dml and
+			( count( preceding-sibling::dml:section ) eq xs:integer( $toc.skipped.sections ) )
+		">
+			<xsl:call-template name="toc"/>
+		</xsl:if>
+
 		<fo:block xsl:use-attribute-sets="section">
 			<xsl:call-template name="common.attributes"/>
-			<xsl:if test="xs:boolean( $toc ) and parent::dml:dml and ( count( preceding-sibling::dml:section ) eq xs:integer( $toc.skipped.sections ) )">
-				<xsl:call-template name="toc"/>
-			</xsl:if>
 			<xsl:call-template name="common.children"/>
 		</fo:block>
 	</xsl:template>

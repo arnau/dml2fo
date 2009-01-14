@@ -4,10 +4,10 @@
 	xmlns:fo="http://www.w3.org/1999/XSL/Format"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0/"
-	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0/"
+	xmlns:pml="http://purl.oclc.org/NET/pml/1.0/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fnc="dml2fo:functions"
-	exclude-result-prefixes="xs dml cdml dct fnc">
+	exclude-result-prefixes="xs dml pml dct fnc">
 	
 	<dml:note>
 		<dml:list>
@@ -22,15 +22,15 @@
 		</dml:list>
 	</dml:note>
 
-	<xsl:strip-space elements="cdml:node cdml:value"/>
+	<xsl:strip-space elements="pml:node pml:value"/>
 
-	<xsl:template match="cdml:code">
+	<xsl:template match="pml:code">
 		<fo:inline xsl:use-attribute-sets="code.inline">
 			<xsl:call-template name="code.languages"/>
 		</fo:inline>
 	</xsl:template>
 
-	<xsl:template match="*[( self::dml:dml, self::dml:section, self::dml:example, self::dml:item[dml:example | dml:figure | dml:p | dml:title] )]/cdml:code">
+	<xsl:template match="*[( self::dml:dml, self::dml:section, self::dml:example, self::dml:item[dml:example | dml:figure | dml:p | dml:title] )]/pml:code">
 		<fo:block xsl:use-attribute-sets="code.block">
 			<xsl:call-template name="code.languages"/>
 		</fo:block>
@@ -59,7 +59,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="cdml:node">
+	<xsl:template match="pml:node">
 		<xsl:variable name="node.prefix">
 			<xsl:call-template name="get.node.prefix"/>
 		</xsl:variable>
@@ -69,7 +69,7 @@
 		</fo:inline>
 	</xsl:template>
 
-	<xsl:template match="cdml:node" mode="toc">
+	<xsl:template match="pml:node" mode="toc">
 		<!-- prevent duplicate IDs in ToC -->
 		<xsl:variable name="node.prefix">
 			<xsl:call-template name="get.node.prefix"/>
@@ -78,7 +78,7 @@
 			<xsl:if test="$node.prefix ne ''"><fo:character character="{$node.prefix}"/></xsl:if><xsl:apply-templates/>
 		</fo:inline>
 	</xsl:template>
-	<xsl:template match="cdml:node" mode="bookmark">
+	<xsl:template match="pml:node" mode="bookmark">
 		<!-- prevent duplicate IDs in bookmarks -->
 		<xsl:variable name="node.prefix">
 			<xsl:call-template name="get.node.prefix"/>
@@ -97,7 +97,7 @@
 		"/>
 	</xsl:template>
 
-	<xsl:template match="cdml:value">
+	<xsl:template match="pml:value">
 		<fo:inline xsl:use-attribute-sets="code.value">
 			<xsl:call-template name="common.attributes"/>
 			<xsl:value-of select="$value.prefix"/>
@@ -106,7 +106,7 @@
 		</fo:inline>
 	</xsl:template>
 
-	<xsl:template match="cdml:param">
+	<xsl:template match="pml:param">
 		<fo:inline xsl:use-attribute-sets="code.param">
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:inline>
@@ -118,12 +118,12 @@
 
 	</xsl:template>
 
-	<xsl:template match="cdml:variable">
+	<xsl:template match="pml:variable">
 		<fo:inline xsl:use-attribute-sets="code.variable">
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:inline>
 	</xsl:template>
-	<xsl:template match="cdml:datatype">
+	<xsl:template match="pml:datatype">
 		<fo:inline xsl:use-attribute-sets="code.datatype">
 			<xsl:call-template name="common.attributes.and.children"/>
 		</fo:inline>

@@ -4,10 +4,10 @@
 	xmlns:fo="http://www.w3.org/1999/XSL/Format"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:dml="http://purl.oclc.org/NET/dml/1.0/"
-	xmlns:cdml="http://purl.oclc.org/NET/cdml/1.0/"
+	xmlns:pml="http://purl.oclc.org/NET/pml/1.0/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fnc="dml2fo:functions"
-	exclude-result-prefixes="xs dml cdml dct fnc">
+	exclude-result-prefixes="xs dml pml dct fnc">
 	
 	<dml:note>
 		<dml:list>

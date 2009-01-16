@@ -267,25 +267,27 @@
 	</xsl:attribute-set>
 
 	<!-- List Styles -->
-	<xsl:param name="leader.pattern">.</xsl:param>
-	<xsl:param name="leader.pattern.foot" select="' '"/>
 
-	<xsl:param name="ul.label.1">&#x2022;</xsl:param>
+	<xsl:param name="ul.label.1">&#x25CF;</xsl:param>
 	<xsl:attribute-set name="ul.label.1">
-		<xsl:attribute name="font">1.2em serif</xsl:attribute>
+		<xsl:attribute name="font">6pt ZapfDingbats</xsl:attribute>
+		<xsl:attribute name="baseline-shift">0.4pt</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:param name="ul.label.2">o</xsl:param>
+	<xsl:param name="ul.label.2">&#x2666;</xsl:param>
 	<xsl:attribute-set name="ul.label.2">
-		<xsl:attribute name="font">0.67em monospace</xsl:attribute>
-		<xsl:attribute name="baseline-shift">0.25em</xsl:attribute>
+		<xsl:attribute name="font">7pt ZapfDingbats</xsl:attribute>
 	</xsl:attribute-set>
 
-	<xsl:param name="ul.label.3">-</xsl:param>
+	<xsl:param name="ul.label.3">&#x25A0;</xsl:param>
 	<xsl:attribute-set name="ul.label.3">
-		<xsl:attribute name="font">bold 0.9em sans-serif</xsl:attribute>
-		<xsl:attribute name="baseline-shift">0.05em</xsl:attribute>
+		<xsl:attribute name="font">5pt ZapfDingbats</xsl:attribute>
+		<xsl:attribute name="baseline-shift">0.4pt</xsl:attribute>
 	</xsl:attribute-set>
+	<xsl:attribute-set name="item.group.label">
+		<xsl:attribute name="margin-top">4.8pt</xsl:attribute>
+	</xsl:attribute-set>
+
 
 	<xsl:param name="ol.label.1">1.</xsl:param>
 	<xsl:attribute-set name="ol.label.1"/>
@@ -297,47 +299,34 @@
 	<xsl:attribute-set name="ol.label.3"/>
 
 	<xsl:attribute-set name="list">
-		<xsl:attribute name="space-before">1em</xsl:attribute>
-		<xsl:attribute name="space-after">1em</xsl:attribute>
+		<xsl:attribute name="space-before">10pt</xsl:attribute>
+		<xsl:attribute name="space-after">10pt</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="list.title" use-attribute-sets="h6">
-		<xsl:attribute name="space-after">0.5em</xsl:attribute>
-		<xsl:attribute name="start-indent">inherited-property-value(start-indent) + 1em</xsl:attribute>
+		<xsl:attribute name="space-after">5pt</xsl:attribute>
+		<xsl:attribute name="start-indent">inherited-property-value(start-indent) + 10pt</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="list.nested">
-		<xsl:attribute name="space-before">0pt</xsl:attribute>
-		<xsl:attribute name="space-after">0pt</xsl:attribute>
+		<xsl:attribute name="margin-left">-10pt</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="item">
 		<xsl:attribute name="relative-align">baseline</xsl:attribute>
-		<xsl:attribute name="padding-bottom">0.1em</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="item.foot" use-attribute-sets="item">
-		<xsl:attribute name="border-top">2pt solid #000</xsl:attribute>
-		<xsl:attribute name="space-before">0.5em</xsl:attribute>
-		<xsl:attribute name="padding-top">0.5em</xsl:attribute>
+		<xsl:attribute name="padding-bottom">1pt</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="item.group">
-		<xsl:attribute name="margin-top">0.5em</xsl:attribute>
-		<xsl:attribute name="margin-bottom">0.5em</xsl:attribute>
-	</xsl:attribute-set>
-
-	<xsl:attribute-set name="item.group.leaded">
-		<xsl:attribute name="margin-top">0.2em</xsl:attribute>
-		<xsl:attribute name="margin-bottom">0.2em</xsl:attribute>
+		<xsl:attribute name="margin-top">5pt</xsl:attribute>
+		<xsl:attribute name="margin-bottom">5pt</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="item.title">
-		<!-- <xsl:attribute name="font-weight">bold</xsl:attribute> -->
-		<xsl:attribute name="space-after">0.2em</xsl:attribute>
+		<xsl:attribute name="space-after">2pt</xsl:attribute>
 		<xsl:attribute name="page-break-after">avoid</xsl:attribute>
 	</xsl:attribute-set>
 	<xsl:attribute-set name="item.content">
-		<xsl:attribute name="start-indent">inherited-property-value(start-indent) + 2em</xsl:attribute>
+		<xsl:attribute name="start-indent">inherited-property-value(start-indent) + 10pt</xsl:attribute>
 	</xsl:attribute-set>
 
 	<!-- ToC Styles -->

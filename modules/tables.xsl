@@ -21,22 +21,12 @@
 	</dml:note>
 
 	<xsl:template match="dml:table">
-		<xsl:variable name="width" select="'100%'"/>
-		<fo:table xsl:use-attribute-sets="table" start-indent="(100% - {$width}) div 2">
+		<fo:table xsl:use-attribute-sets="table">
 			<xsl:call-template name="table.children"/>
 		</fo:table>
 	</xsl:template>
 
 	<xsl:template name="table.children">
-		<xsl:if test="@width">
-			<xsl:attribute name="inline-progression-dimension" select="
-				(: if ( contains( @width, '%' ) ) then :)
-				if ( matches( @width, '\D+' ) ) then 
-					@width 
-				else 
-					concat( @width, 'px' )"/>
-			<xsl:attribute name="width" select="@width"/>
-		</xsl:if>
 		<xsl:call-template name="common.attributes"/>
 		<xsl:apply-templates select="dml:group[@role='header']"/>
 		<xsl:apply-templates select="dml:group[@role='footer']"/>

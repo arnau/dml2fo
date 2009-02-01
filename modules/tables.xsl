@@ -21,7 +21,7 @@
 	</dml:note>
 
 	<xsl:template match="dml:table">
-		<xsl:variable name="width" select="if ( @width ) then @width else '100%'"/>
+		<xsl:variable name="width" select="'100%'"/>
 		<fo:table xsl:use-attribute-sets="table" start-indent="(100% - {$width}) div 2">
 			<xsl:call-template name="table.children"/>
 		</fo:table>

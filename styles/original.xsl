@@ -147,7 +147,7 @@
 	<xsl:attribute-set name="example">
 		<xsl:attribute name="space-before">1.5em</xsl:attribute>
 		<xsl:attribute name="space-after">1.5em</xsl:attribute>
-		<xsl:attribute name="page-break-inside">avoid</xsl:attribute>
+		<!-- <xsl:attribute name="page-break-inside">avoid</xsl:attribute> -->
 		<xsl:attribute name="border-bottom">2pt solid #ccc</xsl:attribute>
 		<xsl:attribute name="border-top">2pt solid #ccc</xsl:attribute>
 	</xsl:attribute-set>

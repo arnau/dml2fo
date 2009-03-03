@@ -20,6 +20,7 @@
 	</dml:note>
 
 	<!-- Parameters -->
+	<!-- TODO: control existence of /dml:dml/@xml:lang and show a comprensible error if not -->
 	<xsl:variable name="literals" select="document( concat( 'literals/', /dml:dml/@xml:lang, '.xml' ) )"/>
 	<xsl:variable name="status.hidden.values" select="('deleted', 'draft')"/>
 

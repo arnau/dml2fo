@@ -428,8 +428,18 @@
 
 	<xsl:attribute-set name="span"/>
 
-	<xsl:attribute-set name="quote"/>
+	<xsl:attribute-set name="quote.inline"/>
 	<xsl:attribute-set name="quote.nested"/>
+	<xsl:attribute-set name="quote.block">
+		<xsl:attribute name="padding">0.5em 1em</xsl:attribute>
+		<xsl:attribute name="margin">1em 2em 0</xsl:attribute>
+		<xsl:attribute name="background-color">#eee</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="citation">
+		<xsl:attribute name="padding">0.5em 0</xsl:attribute>
+		<xsl:attribute name="margin">0 2em</xsl:attribute>
+		<xsl:attribute name="border-top">2pt solid #ccc</xsl:attribute>
+	</xsl:attribute-set>
 
 	<xsl:attribute-set name="object"/>
 

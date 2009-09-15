@@ -59,27 +59,44 @@
 	</xsl:template>
 
 	<xsl:template match="dml:quote">
-		<fo:inline xsl:use-attribute-sets="quote">
-			<xsl:call-template name="common.attributes"/>
-			<xsl:choose>
-				<xsl:when test="lang('ca') or lang('es')">
-					<xsl:text>«</xsl:text>
-					<xsl:apply-templates/>
-					<xsl:text>»</xsl:text>
-				</xsl:when>
-				<xsl:when test="lang('ja')">
-					<xsl:text>「</xsl:text>
-					<xsl:apply-templates/>
-					<xsl:text>」</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<!-- lang('en') -->
-					<xsl:text>“</xsl:text>
-					<xsl:apply-templates/>
-					<xsl:text>”</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-		</fo:inline>
+		<xsl:choose>
+			<xsl:when test="parent::dml:section">
+				<fo:block xsl:use-attribute-sets="quote.block">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:apply-templates select="*[not(self::dml:citation)]"/>
+				</fo:block>
+				<xsl:apply-templates select="dml:citation"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline xsl:use-attribute-sets="quote.inline">
+					<xsl:call-template name="common.attributes"/>
+					<xsl:choose>
+						<xsl:when test="lang('ca') or lang('es')">
+							<xsl:text>«</xsl:text>
+							<xsl:apply-templates/>
+							<xsl:text>»</xsl:text>
+						</xsl:when>
+						<xsl:when test="lang('ja')">
+							<xsl:text>「</xsl:text>
+							<xsl:apply-templates/>
+							<xsl:text>」</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<!-- lang('en') -->
+							<xsl:text>“</xsl:text>
+							<xsl:apply-templates/>
+							<xsl:text>”</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+				</fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="dml:citation">
+		<fo:block xsl:use-attribute-sets="citation">
+			<xsl:call-template name="common.attributes.and.children"/>
+		</fo:block>
 	</xsl:template>
 
 	<xsl:template match="dml:quote//dml:quote">

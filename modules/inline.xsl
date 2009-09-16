@@ -60,7 +60,7 @@
 
 	<xsl:template match="dml:quote">
 		<xsl:choose>
-			<xsl:when test="parent::dml:section">
+			<xsl:when test="parent::dml:cell | parent::dml:dml | parent::dml:example | parent::dml:figure | parent::dml:item | parent::dml:note | parent::dml:object | parent::dml:section">
 				<fo:block xsl:use-attribute-sets="quote.block">
 					<xsl:call-template name="common.attributes"/>
 					<xsl:apply-templates select="*[not(self::dml:citation)]"/>

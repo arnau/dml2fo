@@ -13,6 +13,7 @@
 		<dml:list>
 			<dml:item property="dct:creator">Arnau Siches</dml:item>
 			<dml:item property="dct:issued">2008-11-09</dml:item>
+			<dml:item property="dct:modified">2010-03-03</dml:item>
 			<dml:item property="dct:description">
 				<p>DML inline elements to XSL-FO.</p>
 			</dml:item>
@@ -131,7 +132,7 @@
 	</xsl:template>
 
 	<xsl:template name="object.content">
-		<xsl:attribute name="src" select="concat( 'url(', @src, ')' )"/>
+		<xsl:attribute name="src" select="concat( 'url(', $assets.base.path, @src, ')' )"/>
 		<xsl:if test="@width">
 			<xsl:choose>
 				<xsl:when test="contains( @width, '%' )">
